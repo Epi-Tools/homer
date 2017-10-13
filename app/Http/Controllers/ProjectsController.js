@@ -9,6 +9,14 @@ class ProjectsController {
         yield response.sendView('projects', { projects: projects.toJSON() })
     }
 
+    * create (request, response) {
+        yield response.sendView('projects.create')
+    }
+
+    * store (request, response) {
+
+    }
+
 }
 
 module.exports = ProjectsController

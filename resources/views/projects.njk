@@ -1,11 +1,13 @@
+{% from 'macros.link' import link %}
 {% extends 'master' %}
 {% block content %}
+<span class="float-right">{{ link('Create Project', 'projects/create', 'primary') }}</span>
 <h2>Projects</h2>
 <div class="posts-wrapper">
     {% for project in projects %} 
       <div class="post">
         <h2><a href="/projet/{{ project.id }}"> {{ project.name }} </a> | {{ project.spices }} </h2> 
-        <p> {{ project.description }} </p>
+        <p> {{ project.description | truncate(150) }} </p>
         <p> Members: {{ project.members }}</p>
       </div>
     {% else %}

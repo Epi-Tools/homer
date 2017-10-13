@@ -1,0 +1,73 @@
+{% extends 'master' %}
+
+{% block content %}
+<div style="margin-bottom: 40px;">
+  {{ form.open({action: 'ProjectsController.store'}) }}
+
+    {{ csrfField }}
+
+    <fieldset class="form-group">
+      {{ form.label('Project Name') }}
+      {{ form.text('name', null, { class: 'form-control', placeholder: 'Name', required: true }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Description') }}
+      {{ form.textarea('content', null, { class: 'form-control', required: true }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Github') }}
+      {{ form.url('github', null, { class: 'form-control' }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Diapo') }}
+      {{ form.url('daipo', null, { class: 'form-control', required: true }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Spices') }}
+      {{ form.text('spices', null, { class: 'form-control', placeholder: 60, required: true }) }}
+    </fieldset> 
+
+    <fieldset class="form-group">
+      {{ form.label('Follow-Up 1') }}
+      {{ form.textarea('followUp1', null, { class: 'form-control', required: true }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Date Follow-Up 1') }}
+      {{ form.date('dateFollowUp1', null, { class: 'form-control', required: true, placeholder: '00/00/20XX' }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Follow-Up 2') }}
+      {{ form.textarea('followUp2', null, { class: 'form-control', required: true }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Date Follow-Up 2') }}
+      {{ form.date('dateFollowUp2', null, { class: 'form-control', required: true, placeholder: '00/00/20XX' }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Delivery') }}
+      {{ form.textarea('delivery', null, { class: 'form-control', required: true }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Date Delivery') }}
+      {{ form.date('dateDelivery', null, { class: 'form-control', required: true, placeholder: '00/00/20XX' }) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+      {{ form.label('Members') }}
+      {{ form.textarea('Members', null, { class: 'form-control', required: true, placeholder: 'One member per line' }) }}
+    </fieldset>
+
+    {{ form.submit('Submit', 'submit', { class: 'btn btn-primary btn-block' }) }}
+
+  {{ form.close() }}
+{% endblock %}
+</div>
