@@ -14,10 +14,10 @@ class ProjectsController {
         yield response.sendView('projects.create')
     }
 
-    // TODO: fix date consistency
+    // TODO: fix date consistency and members verification, provide user info, state info, validation info
     * store (request, response) {
         const only = [ 'name', 'description', 'github', 'presentation',
-            'spices', 'followUp1', 'followUp2', 'delivery', 'members',
+            'askedSpices', 'followUp1', 'followUp2', 'delivery', 'members',
             'dateFollowUp1', 'dateFollowUp2', 'dateDelivery' ]
         const data = request.only(...only)
         const rules = {
@@ -25,7 +25,7 @@ class ProjectsController {
             description: 'required',
             github: 'url',
             presentation: 'required|url',
-            spices: 'required|max:3|min:2',
+            askedSpices: 'required|max:3|min:2',
             followUp1: 'required',
             followUp2: 'required',
             delivery: 'required',
@@ -35,7 +35,7 @@ class ProjectsController {
             dateDelivery: 'required|date'
         }
         const validation = yield Validator.validate(data, rules) 
-        const spicesNb = parseInt(data.spices)
+        const spicesNb = parseInt(data.askedSpices)
         if (validation.fails() || spicesNb === NaN || spicesNb < 60 || spicesNb > 840) {
             const errors = validation.messages().length !== 0 ? validation.messages() : [ { message: 'Spices must be a number between 60 and 840' } ]   
             yield request.withOnly(...only).andWith({ errors })
@@ -43,7 +43,12 @@ class ProjectsController {
             response.redirect('back')
             return
         }
-        data.spices = spicesNb
+        data.askedSpices = spicesNb
+        // FIXME: add real infos
+        data.spices = 0
+        data.state = 0
+        data.validate = 0
+        data.userId = 1
         yield Projects.create(data) 
         response.redirect('/projects')
     }

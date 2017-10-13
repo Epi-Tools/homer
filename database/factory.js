@@ -38,12 +38,13 @@ Factory.blueprint('App/Model/Project', fake => ({
   followUp1: fake.paragraph(),
   followUp2: fake.paragraph(),
   delivery: fake.paragraph(),
-  dateFollowUp1: (new Date).toISOString(),
-  dateFollowUp2: (new Date).toISOString(),
-  dateDelivery: (new Date).toISOString(),
-  spices: fake.integer({ min: 60, max: 500 }),
-  askedSpices: 0,
+  dateFollowUp1: fake.date({ string: true }),
+  dateFollowUp2: fake.date({ string: true }),
+  dateDelivery: fake.date({ string: true }),
+  spices: 0,
+  askedSpices: fake.integer({ min: 60, max: 840 }),
   members: JSON.stringify([ fake.name(), fake.name() ]),
-  state: fake.integer({ min: 1, ma: 4 }),
-  validate: fake.bool()
+  state: 0,
+  validate: fake.bool(),
+  userId: 1
 }))
