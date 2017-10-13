@@ -17,6 +17,6 @@
 
 const Route = use('Route')
 
-Route.on('/').render('home')
-Route.on('/projects').render('projects')
-Route.on('/about').render('about')
+Route.get('/', 'IndexController.index')
+Route.get('/projects', 'ProjectsController.index')
+Route.get('/about', 'AboutController.index')
