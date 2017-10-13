@@ -3,7 +3,13 @@
 {% block content %}
 <div style="margin-bottom: 40px;">
   {{ form.open({action: 'ProjectsController.store'}) }}
-
+    {% if old('errors') %}
+      <div class="alert alert-danger">
+        {% for error in old('errors') %}
+          <li> {{ error.message }} </li>
+        {% endfor %}
+      </div>
+    {% endif %}
     {{ csrfField }}
 
     <fieldset class="form-group">
@@ -13,7 +19,7 @@
 
     <fieldset class="form-group">
       {{ form.label('Description') }}
-      {{ form.textarea('content', null, { class: 'form-control', required: true }) }}
+      {{ form.textarea('description', null, { class: 'form-control', required: true }) }}
     </fieldset>
 
     <fieldset class="form-group">
@@ -23,12 +29,12 @@
 
     <fieldset class="form-group">
       {{ form.label('Diapo') }}
-      {{ form.url('daipo', null, { class: 'form-control', required: true }) }}
+      {{ form.url('presentation', null, { class: 'form-control', required: true }) }}
     </fieldset>
 
     <fieldset class="form-group">
       {{ form.label('Spices') }}
-      {{ form.text('spices', null, { class: 'form-control', placeholder: 60, required: true }) }}
+      {{ form.input('number', 'spices', null, { class: 'form-control', placeholder: 60, required: true, type: 'number' }) }}
     </fieldset> 
 
     <fieldset class="form-group">
@@ -63,7 +69,7 @@
 
     <fieldset class="form-group">
       {{ form.label('Members') }}
-      {{ form.textarea('Members', null, { class: 'form-control', required: true, placeholder: 'One member per line' }) }}
+      {{ form.textarea('members', null, { class: 'form-control', required: true, placeholder: 'One member per line' }) }}
     </fieldset>
 
     {{ form.submit('Submit', 'submit', { class: 'btn btn-primary btn-block' }) }}
