@@ -29,7 +29,8 @@ const providers = [
   'adonis-lucid/providers/FactoryProvider',
   'adonis-middleware/providers/AppMiddlewareProvider',
   'adonis-auth/providers/AuthManagerProvider',
-  'adonis-websocket/providers/WsProvider'
+  'adonis-websocket/providers/WsProvider',
+  'adonis-validation-provider/providers/ValidatorProvider'
 ]
 
 /*
