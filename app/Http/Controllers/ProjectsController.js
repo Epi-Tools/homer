@@ -6,7 +6,7 @@ const Validator = use('Validator')
 class ProjectsController {
 
     * index (request, response) {
-        const projects = yield Projects.all()
+        const projects = yield Projects.query().orderBy('id', 'desc').fetch()
         yield response.sendView('projects', { projects: projects.toJSON() })
     }
 
