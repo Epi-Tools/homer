@@ -19,4 +19,5 @@ const Route = use('Route')
 
 Route.get('/', 'IndexController.index')
 Route.get('/projects', 'ProjectsController.index')
+Route.get('/profile', 'ProfileController.index')
 Route.get('/about', 'AboutController.index')

@@ -1,11 +1,14 @@
 'use strict'
 
+const Projects = use('App/Model/Project')
+
 class ProjectsController {
 
     * index (request, response) {
-        yield response.sendView('projects')
+        const projects = yield Projects.all()
+        yield response.sendView('projects', { projects: projects.toJSON() })
     }
-    
+
 }
 
 module.exports = ProjectsController
