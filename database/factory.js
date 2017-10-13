@@ -42,6 +42,7 @@ Factory.blueprint('App/Model/Project', fake => ({
   dateFollowUp2: (new Date).toISOString(),
   dateDelivery: (new Date).toISOString(),
   spices: fake.integer({ min: 60, max: 500 }),
+  askedSpices: 0,
   members: JSON.stringify([ fake.name(), fake.name() ]),
   state: fake.integer({ min: 1, ma: 4 }),
   validate: fake.bool()

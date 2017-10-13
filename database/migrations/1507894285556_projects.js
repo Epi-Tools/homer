@@ -18,6 +18,7 @@ class ProjectsTableSchema extends Schema {
       table.date('dateFollowUp2')
       table.date('dateDelivery')
       table.integer('spices')
+      table.integer('askedSpices')
       table.text('members')
       table.integer('state')
       table.boolean('validate')
