@@ -14,6 +14,7 @@ class ProjectsController {
         yield response.sendView('projects.create')
     }
 
+    // TODO: fix date consistency
     * store (request, response) {
         const only = [ 'name', 'description', 'github', 'presentation',
             'spices', 'followUp1', 'followUp2', 'delivery', 'members',
@@ -24,7 +25,7 @@ class ProjectsController {
             description: 'required',
             github: 'url',
             presentation: 'required|url',
-            spices: 'required',
+            spices: 'required|max:3|min:2',
             followUp1: 'required',
             followUp2: 'required',
             delivery: 'required',
@@ -34,13 +35,16 @@ class ProjectsController {
             dateDelivery: 'required|date'
         }
         const validation = yield Validator.validate(data, rules) 
-        if (validation.fails()) {
-            yield request.withOnly(...only).andWith({ errors: validation.messages() })
-            .flash() 
+        const spicesNb = parseInt(data.spices)
+        if (validation.fails() || spicesNb === NaN || spicesNb < 60 || spicesNb > 840) {
+            const errors = validation.messages().length !== 0 ? validation.messages() : [ { message: 'Spices must be a number between 60 and 840' } ]   
+            yield request.withOnly(...only).andWith({ errors })
+                .flash() 
             response.redirect('back')
             return
         }
-        yield Post.create(postData) 
+        data.spices = spicesNb
+        yield Projects.create(data) 
         response.redirect('/projects')
     }
 
