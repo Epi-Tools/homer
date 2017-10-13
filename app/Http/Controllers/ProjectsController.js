@@ -36,7 +36,7 @@ class ProjectsController {
         }
         const validation = yield Validator.validate(data, rules) 
         const spicesNb = parseInt(data.askedSpices)
-        if (validation.fails() || spicesNb === NaN || spicesNb < 60 || spicesNb > 840) {
+        if (validation.fails() || isNaN(spicesNb) || spicesNb < 60 || spicesNb > 840) {
             const errors = validation.messages().length !== 0 ? validation.messages() : [ { message: 'Spices must be a number between 60 and 840' } ]   
             yield request.withOnly(...only).andWith({ errors })
                 .flash() 
@@ -51,6 +51,16 @@ class ProjectsController {
         data.userId = 1
         yield Projects.create(data) 
         response.redirect('/projects')
+    }
+
+    * show(request, response) {
+        const number = parseInt(request.param('id'))
+        if (isNaN(number) || number <= 0) return yield response.status('404')
+            .sendView('errors.index', { error: { status: 404 } })
+        const project = yield Projects.find(number)
+        if (project == null || project === undefined) return yield response.status('404')
+            .sendView('errors.index', { error: { status: 404 } })
+        yield response.sendView('projects.show', { project: project.toJSON() })
     }
 
 }

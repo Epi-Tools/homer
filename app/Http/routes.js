@@ -22,6 +22,7 @@ Route.get('/', 'IndexController.index')
 Route.get('/projects', 'ProjectsController.index')
 Route.get('/projects/create', 'ProjectsController.create')
 Route.post('/projects/create', 'ProjectsController.store')
+Route.get('/projects/:id', 'ProjectsController.show')
 
 Route.get('/profile', 'ProfileController.index')
 

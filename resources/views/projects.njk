@@ -6,7 +6,7 @@
 <div class="posts-wrapper">
     {% for project in projects %} 
       <div class="post">
-        <h2><a href="/projet/{{ project.id }}"> {{ project.name }} </a> | {{ project.spices }} / {{ project.askedSpices }} </h2> 
+        <h2><a href="/projects/{{ project.id }}"> {{ project.name }} </a> | {{ project.spices }} / {{ project.askedSpices }} </h2> 
         <p> {{ project.description | truncate(150) }} </p>
         <p> Members: {{ project.members }}</p>
       </div>
