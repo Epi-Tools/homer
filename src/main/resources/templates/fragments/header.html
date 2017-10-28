@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <div th:fragment="header-css">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/}">Homer</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/home' ? 'active' : ''}">
+                        <a th:href="@{/}">Home</a>
+                    </li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'active' : ''}">
+                        <a th:href="@{/about}">About</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" >
+                        <a th:href="@{/login}">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>
