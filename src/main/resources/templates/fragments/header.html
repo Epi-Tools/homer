@@ -25,6 +25,9 @@
                     <li sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" >
                         <a th:href="@{/login}">Login</a>
                     </li>
+                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active' : ''}" >
+                        <a th:href="@{/logout}">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
