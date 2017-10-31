@@ -3,13 +3,12 @@ package com.epitools.homer.homer.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Project {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name="userId", nullable=false)
     private String userId;
     @Column(columnDefinition="boolean default false", nullable=false)
     private Integer spices;
@@ -24,9 +23,9 @@ public class Project {
     @Column(nullable=false)
     private String delivery;
     @Column(nullable=false)
-    private LocalDateTime dateFollowUp1;
+    private LocalDateTime dateFollowUp;
     @Column(nullable=false)
-    private LocalDateTime dateFollowUp2;
+    private LocalDateTime dateFollowUp1;
     @Column(nullable=false)
     private LocalDateTime dateDelivery;
 
@@ -102,19 +101,19 @@ public class Project {
         this.dateDelivery = dateDelivery;
     }
 
-    public LocalDateTime getDateFollowUp2() {
-        return dateFollowUp2;
-    }
-
-    public void setDateFollowUp2(LocalDateTime dateFollowUp2) {
-        this.dateFollowUp2 = dateFollowUp2;
-    }
-
     public LocalDateTime getDateFollowUp1() {
         return dateFollowUp1;
     }
 
     public void setDateFollowUp1(LocalDateTime dateFollowUp1) {
         this.dateFollowUp1 = dateFollowUp1;
+    }
+
+    public LocalDateTime getDateFollowUp() {
+        return dateFollowUp;
+    }
+
+    public void setDateFollowUp(LocalDateTime dateFollowUp) {
+        this.dateFollowUp = dateFollowUp;
     }
 }

@@ -22,7 +22,7 @@ public class BetRestController {
         return betRepository.findAll();
     }
 
-    @RequestMapping(value="/Bets", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value="/bets/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bet> getBetById(@PathVariable(value="id") Long BetId) {
         Bet Bet = betRepository.findOne(BetId);
         if(Bet == null) return ResponseEntity.notFound().build();

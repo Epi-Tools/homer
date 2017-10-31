@@ -22,7 +22,7 @@ public class ContributorRestController {
         return contributorRepository.findAll();
     }
 
-    @RequestMapping(value="/contributors", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value="/contributors/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Contributor> getContributorById(@PathVariable(value="id") Long contributorId) {
         Contributor contributor = contributorRepository.findOne(contributorId);
         if(contributor == null) return ResponseEntity.notFound().build();

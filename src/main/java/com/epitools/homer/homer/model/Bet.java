@@ -2,13 +2,12 @@ package com.epitools.homer.homer.model;
 
 import javax.persistence.*;
 
+@Entity
 public class Bet {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name="userId")
     private String userId;
     @Column(columnDefinition="integer default 5")
     private Integer spices;

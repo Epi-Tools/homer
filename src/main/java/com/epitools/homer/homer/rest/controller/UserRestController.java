@@ -22,7 +22,7 @@ public class UserRestController {
         return userRepository.findAll();
     }
 
-    @RequestMapping(value="/users", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value="/users/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<User> getUserById(@PathVariable(value="id") Long userId) {
         User user = userRepository.findOne(userId);
         if(user == null) return ResponseEntity.notFound().build();
