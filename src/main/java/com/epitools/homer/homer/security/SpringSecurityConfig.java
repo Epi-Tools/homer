@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+// TODO(carlendev) check redirection on API
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -18,7 +19,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     // custom 403 access denied handler
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http.csrf().disable()
+        http.csrf().disable()
             .authorizeRequests()
             .antMatchers("/", "/home", "/about").permitAll()
             .antMatchers("/admin/**", "/api/**").hasAnyRole("ADMIN")
@@ -32,10 +33,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
             .permitAll()
             .and()
-            .exceptionHandling().accessDeniedHandler(accessDeniedHandler);*/
-        http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/**").permitAll();
+            .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
     // create two users, admin and user
