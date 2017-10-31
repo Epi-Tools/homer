@@ -8,8 +8,9 @@ public class Contributor {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+    @Column(nullable=false)
     private String userId;
-    @Column(name="projectId")
+    @Column(nullable=false)
     private Integer projectId;
 
     public Integer getId() {

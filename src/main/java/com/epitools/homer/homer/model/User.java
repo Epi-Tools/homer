@@ -7,10 +7,11 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    @Column(nullable=false)
     private String email;
-    @Column(columnDefinition="boolean default false")
+    @Column(columnDefinition="boolean default false", nullable=false)
     private boolean admin;
-    @Column(columnDefinition="integer default 60")
+    @Column(columnDefinition="integer default 60", nullable=false)
     private Integer spices;
 
     public Integer getId() {

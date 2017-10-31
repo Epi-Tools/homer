@@ -45,6 +45,7 @@ public class ProjectRestController {
         project.setDateFollowUp(projectDetails.getDateFollowUp());
         project.setDateFollowUp1(projectDetails.getDateFollowUp1());
         project.setDateDelivery(projectDetails.getDateDelivery());
+        project.setStatus(projectDetails.getStatus());
         Project updatedProject = projectRepository.save(project);
         return ResponseEntity.ok(updatedProject);
     }

@@ -8,8 +8,9 @@ public class Bet {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    @Column(nullable=false)
     private String userId;
-    @Column(columnDefinition="integer default 5")
+    @Column(columnDefinition="integer default 5", nullable=false)
     private Integer spices;
 
     public Integer getId() {
