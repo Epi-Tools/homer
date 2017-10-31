@@ -14,7 +14,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/home' ? 'active' : ''}">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/home' || #httpServletRequest.getRequestURI() == '/' ? 'active' : ''}">
                         <a th:href="@{/}">Home</a>
                     </li>
                     <li th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'active' : ''}">

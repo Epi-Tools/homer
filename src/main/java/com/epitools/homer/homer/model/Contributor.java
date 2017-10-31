@@ -1,0 +1,39 @@
+package com.epitools.homer.homer.model;
+
+import javax.persistence.*;
+
+public class Contributor {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Integer id;
+    @ManyToOne
+    @JoinColumn(name="userId")
+    private String userId;
+    @Column(name="projectId")
+    private Integer spices;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Integer getSpices() {
+        return spices;
+    }
+
+    public void setSpices(Integer spices) {
+        this.spices = spices;
+    }
+}
