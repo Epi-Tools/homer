@@ -11,7 +11,7 @@ public class Contributor {
     @JoinColumn(name="userId")
     private String userId;
     @Column(name="projectId")
-    private Integer spices;
+    private Integer projectId;
 
     public Integer getId() {
         return id;
@@ -29,11 +29,11 @@ public class Contributor {
         this.userId = userId;
     }
 
-    public Integer getSpices() {
-        return spices;
+    public Integer getProjectId() {
+        return projectId;
     }
 
-    public void setSpices(Integer spices) {
-        this.spices = spices;
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 }
