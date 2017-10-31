@@ -23,7 +23,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value="/users", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) {
+    public ResponseEntity<User> getUserById(@PathVariable(value="id") Long userId) {
         User user = userRepository.findOne(userId);
         if(user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(user);
@@ -41,6 +41,16 @@ public class UserRestController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<User> deleteUser(@PathVariable(value="id") Long userId) {
+        User user = userRepository.findOne(userId);
+        if(user == null) return ResponseEntity.notFound().build();
+        userRepository.delete(user);
+        return ResponseEntity.ok().build();
+    }
 
-
+    @RequestMapping(value="/users", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public User createUser(@Valid @RequestBody User user) {
+        return userRepository.save(user);
+    }
 }
