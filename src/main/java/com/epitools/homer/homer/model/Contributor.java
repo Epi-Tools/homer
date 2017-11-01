@@ -3,6 +3,7 @@ package com.epitools.homer.homer.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name="contributor")
 public class Contributor {
 
     @Id

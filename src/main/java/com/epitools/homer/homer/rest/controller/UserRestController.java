@@ -3,6 +3,7 @@ package com.epitools.homer.homer.rest.controller;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +24,14 @@ public class UserRestController {
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<User> getUserById(@PathVariable(value="id") Long userId) {
+    public ResponseEntity<User> getUserById(@PathVariable(value="id") Integer userId) {
         User user = userRepository.findOne(userId);
         if(user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(user);
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<User> updateUser(@PathVariable(value="id") Long userId,
+    public ResponseEntity<User> updateUser(@PathVariable(value="id") Integer userId,
                                            @Valid @RequestBody User userDetails) {
         User user = userRepository.findOne(userId);
         if(user == null) return ResponseEntity.notFound().build();
@@ -42,7 +43,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<User> deleteUser(@PathVariable(value="id") Long userId) {
+    public ResponseEntity<User> deleteUser(@PathVariable(value="id") Integer userId) {
         User user = userRepository.findOne(userId);
         if(user == null) return ResponseEntity.notFound().build();
         userRepository.delete(user);
@@ -50,7 +51,12 @@ public class UserRestController {
     }
 
     @RequestMapping(value="/users", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public User createUser(@Valid @RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+        User maybeUser = userRepository.findByEmail(user.getEmail());
+        if (maybeUser != null) return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{ \"error\" : \"User already exist\" }");
+        return ResponseEntity.ok(userRepository.save(user));
     }
 }

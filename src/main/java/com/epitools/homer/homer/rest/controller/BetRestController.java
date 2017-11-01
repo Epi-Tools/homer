@@ -23,14 +23,14 @@ public class BetRestController {
     }
 
     @RequestMapping(value="/bets/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Bet> getBetById(@PathVariable(value="id") Long BetId) {
-        Bet Bet = betRepository.findOne(BetId);
-        if(Bet == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok().body(Bet);
+    public ResponseEntity<Bet> getBetById(@PathVariable(value="id") Integer betId) {
+        Bet bet = betRepository.findOne(betId);
+        if(bet == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(bet);
     }
 
     @RequestMapping(value="/bets/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Bet> updateBet(@PathVariable(value="id") Long betId,
+    public ResponseEntity<Bet> updateBet(@PathVariable(value="id") Integer betId,
                                            @Valid @RequestBody Bet betDetails) {
         Bet bet = betRepository.findOne(betId);
         if(bet == null) return ResponseEntity.notFound().build();
@@ -41,7 +41,7 @@ public class BetRestController {
     }
 
     @RequestMapping(value="/bets/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Bet> deleteBet(@PathVariable(value="id") Long betId) {
+    public ResponseEntity<Bet> deleteBet(@PathVariable(value="id") Integer betId) {
         Bet bet = betRepository.findOne(betId);
         if(bet == null) return ResponseEntity.notFound().build();
         betRepository.delete(bet);

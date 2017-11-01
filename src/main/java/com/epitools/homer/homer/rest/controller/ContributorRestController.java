@@ -23,14 +23,14 @@ public class ContributorRestController {
     }
 
     @RequestMapping(value="/contributors/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Contributor> getContributorById(@PathVariable(value="id") Long contributorId) {
+    public ResponseEntity<Contributor> getContributorById(@PathVariable(value="id") Integer contributorId) {
         Contributor contributor = contributorRepository.findOne(contributorId);
         if(contributor == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(contributor);
     }
 
     @RequestMapping(value="/contributors/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Contributor> updateContributor(@PathVariable(value="id") Long contributorId,
+    public ResponseEntity<Contributor> updateContributor(@PathVariable(value="id") Integer contributorId,
                                          @Valid @RequestBody Contributor contributorDetails) {
         Contributor contributor = contributorRepository.findOne(contributorId);
         if(contributor == null) return ResponseEntity.notFound().build();
@@ -40,7 +40,7 @@ public class ContributorRestController {
     }
 
     @RequestMapping(value="/contributors/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Contributor> deleteContributor(@PathVariable(value="id") Long contributorId) {
+    public ResponseEntity<Contributor> deleteContributor(@PathVariable(value="id") Integer contributorId) {
         Contributor contributor = contributorRepository.findOne(contributorId);
         if(contributor == null) return ResponseEntity.notFound().build();
         contributorRepository.delete(contributor);

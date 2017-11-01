@@ -24,14 +24,14 @@ public class ProjectRestController {
     }
 
     @RequestMapping(value="/projects/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Project> getProjectById(@PathVariable(value="id") Long projectId) {
+    public ResponseEntity<Project> getProjectById(@PathVariable(value="id") Integer projectId) {
         Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(project);
     }
 
     @RequestMapping(value="/projects/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Project> updateProject(@PathVariable(value="id") Long projectId,
+    public ResponseEntity<Project> updateProject(@PathVariable(value="id") Integer projectId,
                                            @Valid @RequestBody Project projectDetails) {
         Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
@@ -51,7 +51,7 @@ public class ProjectRestController {
     }
 
     @RequestMapping(value="/projects/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Project> deleteProject(@PathVariable(value="id") Long projectId) {
+    public ResponseEntity<Project> deleteProject(@PathVariable(value="id") Integer projectId) {
         Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
         projectRepository.delete(project);

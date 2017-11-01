@@ -3,6 +3,7 @@ package com.epitools.homer.homer.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name="bet")
 public class Bet {
 
     @Id
@@ -10,8 +11,8 @@ public class Bet {
     private Integer id;
     @Column(nullable=false)
     private String userId;
-    @Column(columnDefinition="integer default 5", nullable=false)
-    private Integer spices;
+    @Column(nullable=false)
+    private Integer spices = 5;
 
     public Integer getId() {
         return id;
