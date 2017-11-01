@@ -1,6 +1,7 @@
 package com.epitools.homer.homer.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="contributor")
@@ -9,8 +10,10 @@ public class Contributor {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+    @NotNull
     @Column(nullable=false)
     private String userId;
+    @NotNull
     @Column(nullable=false)
     private Integer projectId;
 

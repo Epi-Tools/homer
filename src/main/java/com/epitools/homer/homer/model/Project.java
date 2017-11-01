@@ -1,6 +1,7 @@
 package com.epitools.homer.homer.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,24 +12,34 @@ public class Project {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     private String userId;
-    @Column(columnDefinition="boolean default false", nullable=false)
+    @NotNull
+    @Column(nullable=false)
     private Integer spices;
+    @NotNull
     @Column(nullable=false)
     private String name;
+    @NotNull
     @Column(nullable=false)
     private String description;
+    @NotNull
     @Column(nullable=false)
     private String followUp;
+    @NotNull
     @Column(nullable=false)
     private String followUp1;
+    @NotNull
     @Column(nullable=false)
     private String delivery;
+    @NotNull
     @Column(nullable=false)
     private LocalDateTime dateFollowUp;
+    @NotNull
     @Column(nullable=false)
     private LocalDateTime dateFollowUp1;
+    @NotNull
     @Column(nullable=false)
     private LocalDateTime dateDelivery;
+    @NotNull
     @Column(nullable=false)
     private Integer status;
 

@@ -1,6 +1,7 @@
 package com.epitools.homer.homer.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="bet")
@@ -9,6 +10,7 @@ public class Bet {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    @NotNull
     @Column(nullable=false)
     private String userId;
     @Column(nullable=false)
