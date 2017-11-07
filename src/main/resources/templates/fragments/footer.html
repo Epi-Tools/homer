@@ -11,7 +11,7 @@
                 HOMER
                 <span sec:authorize="isAuthenticated()">
                     | Logged user: <span sec:authentication="name"></span> |
-                    Roles: <span sec:authentication="principal.authorities"></span> |
+                    <!--Roles: <span sec:authentication="principal.authorities"></span> |-->
                     <a th:href="@{/logout}">Sign Out</a>
                 </span>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

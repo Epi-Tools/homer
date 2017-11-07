@@ -1,18 +1,27 @@
 package com.epitools.homer.homer.security;
 
+import com.epitools.homer.homer.provider.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-// TODO(carlendev) check redirection on API
+// TODO(carlendev) check redirection on API3
+// TODO(carlendev) check that annotations
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled=true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
 
     // roles admin allow to access /admin/**
     // roles user allow to access /user/**
@@ -21,6 +30,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
+            .antMatchers("/","/public/**", "/resources/**","/resources/public/**", "/css/**", "/js/**").permitAll()
             .antMatchers("/", "/home", "/about").permitAll()
             .antMatchers("/admin/**", "/api/**").hasAnyRole("ADMIN")
             .antMatchers("/user/**").hasAnyRole("USER")
@@ -28,6 +38,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .formLogin()
             .loginPage("/login")
+            .defaultSuccessUrl("/", true)
             .permitAll()
             .and()
             .logout()
@@ -39,9 +50,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     // create two users, admin and user
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
+        auth.authenticationProvider(authProvider);
+        /*auth.inMemoryAuthentication()
             .withUser("user").password("password").roles("USER")
             .and()
-            .withUser("admin").password("password").roles("ADMIN");
+            .withUser("admin").password("password").roles("ADMIN");*/
     }
 }
