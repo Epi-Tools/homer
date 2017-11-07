@@ -39,12 +39,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         try {
             final okhttp3.Response resp = Utils.authBlih(email, password);
             JSONObject jsonObj = new JSONObject(resp.body().string());
+            if (jsonObj.getString("token") == null) return null;
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             final User user = userRepository.findByEmail(email);
             if (user == null) {
                 User nUser = new User();
                 nUser.setEmail(email);
-                nUser.setAdmin(true);
+                nUser.setAdmin(false);
                 userRepository.save(nUser);
                 grantedAuthorities.add(new SimpleGrantedAuthority(nUser.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER"));
                 return new UsernamePasswordAuthenticationToken(email, passwordEncoder.encode(jsonObj.getString("token")), grantedAuthorities);
@@ -53,13 +54,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             return new UsernamePasswordAuthenticationToken(email, passwordEncoder.encode(jsonObj.getString("token")), grantedAuthorities);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         return null;
