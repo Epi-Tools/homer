@@ -20,6 +20,12 @@
                     <li th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'active' : ''}">
                         <a th:href="@{/about}">About</a>
                     </li>
+                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/all' ? 'active' : ''}" >
+                        <a th:href="@{/project/all}">Projects</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/create' ? 'active' : ''}" >
+                        <a th:href="@{/project/new}">Create</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" >
