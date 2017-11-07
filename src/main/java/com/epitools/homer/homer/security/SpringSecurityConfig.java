@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-// TODO(carlendev) check redirection on API3
+// TODO(carlendev) check redirection on API
 // TODO(carlendev) check that annotations
 @Configuration
 @EnableWebSecurity
@@ -32,7 +32,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/","/public/**", "/resources/**","/resources/public/**", "/css/**", "/js/**", "/webjars/**").permitAll()
             .antMatchers("/", "/home", "/about", "/project/all").permitAll()
-            .antMatchers("/admin/**", "/api/**", "project/**").hasAuthority("ADMIN")
+            .antMatchers("/admin/**", "api/**", "project/**").hasAuthority("ADMIN")
             .antMatchers("/user/**", "project/**").hasAuthority("USER")
             .anyRequest().authenticated()
             .and()
@@ -51,9 +51,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider);
-        /*auth.inMemoryAuthentication()
-            .withUser("user").password("password").roles("USER")
-            .and()
-            .withUser("admin").password("password").roles("ADMIN");*/
     }
 }

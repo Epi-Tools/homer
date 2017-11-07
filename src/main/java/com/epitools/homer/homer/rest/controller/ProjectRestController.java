@@ -2,9 +2,11 @@ package com.epitools.homer.homer.rest.controller;
 
 import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.repository.ProjectRepository;
+import com.epitools.homer.homer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +19,9 @@ public class ProjectRestController {
     
     @Autowired
     ProjectRepository projectRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping(value="/projects", method= RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public List<Project> getAllProjects() {
@@ -60,6 +65,9 @@ public class ProjectRestController {
 
     @RequestMapping(value="/projects", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public Project createProject(@Valid @RequestBody Project project) {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        project.setUserId(userRepository.findByEmail(user).getId());
+        project.setStatus(0);
         return projectRepository.save(project);
     }
 }

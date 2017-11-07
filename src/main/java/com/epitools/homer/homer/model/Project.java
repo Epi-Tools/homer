@@ -1,9 +1,12 @@
 package com.epitools.homer.homer.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+// TODO(carlendev) add spice positive verification in the model
 @Entity
 @Table(name="project")
 public class Project {
@@ -11,7 +14,8 @@ public class Project {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    private String userId;
+    @Column(nullable=false)
+    private Integer userId;
     @NotNull
     @Column(nullable=false)
     private Integer spices;
@@ -32,14 +36,16 @@ public class Project {
     private String delivery;
     @NotNull
     @Column(nullable=false)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.TIME)
     private LocalDateTime dateFollowUp;
     @NotNull
     @Column(nullable=false)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.TIME)
     private LocalDateTime dateFollowUp1;
     @NotNull
     @Column(nullable=false)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.TIME)
     private LocalDateTime dateDelivery;
-    @NotNull
     @Column(nullable=false)
     private Integer status;
 
@@ -51,19 +57,19 @@ public class Project {
         this.id = id;
     }
 
-    public Integer getSpices() {
+    public int getSpices() {
         return spices;
     }
 
-    public void setSpices(Integer spices) {
+    public void setSpices(int spices) {
         this.spices = spices;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
