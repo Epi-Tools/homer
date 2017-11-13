@@ -14,6 +14,8 @@ public class Bet {
     @Column(nullable=false)
     private String userId;
     @Column(nullable=false)
+    private String projectId;
+    @Column(nullable=false)
     private Integer spices = 5;
 
     public Integer getId() {
@@ -38,5 +40,13 @@ public class Bet {
 
     public void setSpices(Integer spices) {
         this.spices = spices;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,5 +59,16 @@ public class UserRestController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{ \"error\" : \"User already exist\" }");
         return ResponseEntity.ok(userRepository.save(user));
+    }
+
+    @RequestMapping(value="/users/current", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> currentUser() {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User maybeUser = userRepository.findByEmail(user);
+        if (maybeUser == null) return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{ \"error\" : \"User not connected\" }");
+        return ResponseEntity.ok(maybeUser);
     }
 }

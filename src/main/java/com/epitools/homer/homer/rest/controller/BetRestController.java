@@ -36,6 +36,7 @@ public class BetRestController {
         if(bet == null) return ResponseEntity.notFound().build();
         bet.setSpices(betDetails.getSpices());
         bet.setUserId(betDetails.getUserId());
+        bet.setProjectId(betDetails.getProjectId());
         Bet updatedBet = betRepository.save(bet);
         return ResponseEntity.ok(updatedBet);
     }
