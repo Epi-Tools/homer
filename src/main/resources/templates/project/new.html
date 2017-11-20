@@ -12,7 +12,6 @@
             <fieldset>
                 <h1>New Project</h1>
                 <div id="alert-project" class="alert alert-danger" style="display: none;">
-                    <!-- set content by api error -->
                 </div>
                 <div class="form-group">
                     <label for="name">Name</label>
@@ -45,10 +44,6 @@
                     <textarea class="form-control" rows="5" id="followUp1" required="true" placeholder="FollowUp 1..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="followUp">FollowUp</label>
-                    <textarea class="form-control" rows="5" id="followUp" required="true" placeholder="FollowUp..."></textarea>
-                </div>
-                <div class="form-group">
                     <label for="dateDelivery">Date Delivery</label>
                     <input type="date" name="dateDelivery" id="dateDelivery" class="form-control input-lg" required="true"/>
                 </div>
@@ -73,18 +68,17 @@
     $(document).ready(() => {
         $('#alert-project').hide()
         $('#project-btn').click(e => {
-            e.preventDefault();
-            /*
-            const username = $('#username').val()
-            const password = $('#password').val()
+            e.preventDefault()
+            const name = $('#name').val()
+            const description = $('#description').val()
             $.ajax({
                 type: 'post',
-                url: '/login',
-                data: { username, password },
-                success: () => window.location.href = '/',
-                error: () => $('#alert-login').show()
+                url: '/api/project',
+                dataType: 'json',
+                data: { name, description },
+                success: () => window.location.href = '/project',
+                error: () => $('#alert-project').show()
             })
-            */
         })
     })
 </script>
