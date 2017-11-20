@@ -64,57 +64,5 @@
 </div>
 <!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
-<script>
-    const date = str => `${str}T00:00:00`
-
-    $(document).ready(() => {
-        $('#alert-project').hide()
-        $('#project-btn').click(function (e) {
-            $(this).prop('disabled',true)
-            e.preventDefault()
-            const name = $('#name').val()
-            const spices = $('#spices').val()
-            const description = $('#description').val()
-            const followUp = $('#followUp').val()
-            const dateFollowUp = $('#dateFollowUp').val()
-            const followUp1 = $('#followUp1').val()
-            const dateFollowUp1 = $('#dateFollowUp1').val()
-            const delivery = $('#delivery').val()
-            const dateDelivery = $('#dateDelivery').val()
-            $.ajax({
-                type: 'post',
-                url: '/api/projects',
-                data: JSON.stringify({ name,
-                    spices,
-                    description,
-                    followUp,
-                    dateFollowUp: date(dateFollowUp) != 'T00:00:00' ? date(dateFollowUp) : undefined,
-                    followUp1,
-                    dateFollowUp1: date(dateFollowUp1) != 'T00:00:00' ? date(dateFollowUp1) : undefined,
-                    delivery,
-                    dateDelivery: date(dateDelivery) != 'T00:00:00' ? date(dateDelivery) : undefined }),
-                contentType: 'application/json; charset=utf-8',
-                success: () => {
-                    window.location.href = '/project/all'
-                    $(this).prop('disabled', false)
-                },
-                error: error => {
-                    const responseError = error.responseJSON.errors
-                    if (responseError === undefined) {
-                        $(this).prop('disabled', false)
-                        $('#alert-project').show().html(`<ul><li>Wrong date or spice format</li></ul>`)
-                        return;
-                    }
-                    const errors = responseError.reduce((acc, curr) => {
-                        acc.push(`${curr.field} ${curr.defaultMessage}`)
-                        return acc
-                    }, []);
-                    $('#alert-project').show().html(`<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`)
-                    $(this).prop('disabled', false)
-                }
-            })
-        })
-    })
-</script>
 </body>
 </html>
