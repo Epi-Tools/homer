@@ -30,6 +30,11 @@
                                disabled="true" th:value="${project.spices}"/>
                     </div>
                     <div class="form-group">
+                        <label for="currentSpices">Current Spices</label>
+                        <input type="number" name="currentSpices" id="currentSpices" class="form-control input-lg"
+                               disabled="true" th:value="${project.currentSpices}"/>
+                    </div>
+                    <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" rows="5" id="description"
                                   disabled="true" th:inline="text">[[${project.description}]]</textarea>
