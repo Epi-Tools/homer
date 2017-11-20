@@ -8,7 +8,7 @@
 <div th:replace="fragments/header :: header"/>
 <div class="container">
     <div class="starter-template" style="margin-bottom: 50px;">
-        <form th:action="@{/api/projects}" method="post">
+        <form>
             <fieldset>
                 <h1>New Project</h1>
                 <div id="alert-project" class="alert alert-danger" style="display: none;">
@@ -65,18 +65,34 @@
 <!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
 <script>
+    const date = str => `${str}T00:00:00`
     $(document).ready(() => {
         $('#alert-project').hide()
         $('#project-btn').click(e => {
             e.preventDefault()
             const name = $('#name').val()
+            const spices = $('#spices').val()
             const description = $('#description').val()
+            const followUp = $('#followUp').val()
+            const dateFollowUp = date($('#dateFollowUp').val())
+            const followUp1 = $('#followUp1').val()
+            const dateFollowUp1 = date($('#dateFollowUp1').val())
+            const delivery = $('#delivery').val()
+            const dateDelivery = date($('#dateDelivery').val())
             $.ajax({
                 type: 'post',
                 url: '/api/projects',
-                data: JSON.stringify({ name, description }),
-                contentType: "application/json; charset=utf-8",
-                success: () => window.location.href = '/project',
+                data: JSON.stringify({ name,
+                    spices,
+                    description,
+                    followUp,
+                    dateFollowUp,
+                    followUp1,
+                    dateFollowUp1,
+                    delivery,
+                    dateDelivery }),
+                contentType: 'application/json; charset=utf-8',
+                success: () => window.location.href = '/project/all',
                 error: error => {
                     const responseError = error.responseJSON.errors
                     const errors = responseError.reduce((acc, curr) => {

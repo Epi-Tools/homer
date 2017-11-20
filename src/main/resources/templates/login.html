@@ -12,7 +12,7 @@
 <div class="container">
     <div class="row" style="margin-top:20px">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <form th:action="@{/login}" method="post">
+            <form>
                 <fieldset>
                     <h1>Please Sign In</h1>
                     <div id="alert-login" class="alert alert-danger" style="display: none;">
@@ -48,7 +48,8 @@
 <script>
     $(document).ready(() => {
         $('#alert-login').hide()
-        $('#login-btn').click(e => {
+        $('#login-btn').click(function (e) {
+            $(this).prop('disabled',true)
             e.preventDefault();
             const username = $('#username').val()
             const password = $('#password').val()
@@ -57,7 +58,10 @@
                 url: '/login',
                 data: { username, password },
                 success: () => window.location.href = '/',
-                error: () => $('#alert-login').show()
+                error: () => {
+                    $(this).prop('disabled', false)
+                    $('#alert-login').show()
+                }
             })
         })
     })
