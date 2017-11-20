@@ -14,8 +14,6 @@ public class CustomAuthenticationHandler implements AuthenticationFailureHandler
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(401);
-        //response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        //response.sendRedirect("/login?error");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }
