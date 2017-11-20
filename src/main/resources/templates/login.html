@@ -15,10 +15,8 @@
             <form th:action="@{/login}" method="post">
                 <fieldset>
                     <h1>Please Sign In</h1>
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">
-                            Invalid username and password.
-                        </div>
+                    <div id="alert-login" class="alert alert-danger" style="display: none;">
+                        Invalid username and password.
                     </div>
                     <div th:if="${param.logout}">
                         <div class="alert alert-info">
@@ -35,7 +33,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/>
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In" id="login-btn"/>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
                         </div>
@@ -47,6 +45,21 @@
 </div>
 
 <div th:replace="fragments/footer :: footer"/>
-
+<script>
+    $(document).ready(() => {
+        $('#login-btn').click((e) => {
+            e.preventDefault();
+            const username = $('#username').val()
+            const password = $('#password').val()
+            $.ajax({
+                type: 'post',
+                url: '/login',
+                data: { username, password },
+                success: () => window.location.href = '/',
+                error: () => $('#alert-login').show()
+            })
+        })
+    })
+</script>
 </body>
 </html>
