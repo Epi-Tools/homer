@@ -48,8 +48,7 @@
 <script>
     $(document).ready(() => {
         $('#alert-login').hide()
-        $('#login-btn').click(function (e) {
-            $(this).prop('disabled',true)
+        $('#login-btn').click(e => {
             e.preventDefault();
             const username = $('#username').val()
             const password = $('#password').val()
@@ -58,10 +57,7 @@
                 url: '/login',
                 data: { username, password },
                 success: () => window.location.href = '/',
-                error: () => {
-                    $(this).prop('disabled', false)
-                    $('#alert-login').show()
-                }
+                error: () => $('#alert-login').show()
             })
         })
     })
