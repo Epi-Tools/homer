@@ -37,7 +37,7 @@
                     <div class="form-group">
                         <label for="dateFollowUp">Date FollowUp</label>
                         <input type="date" name="dateFollowUp" id="dateFollowUp" class="form-control input-lg"
-                               disabled="true" th:value="${project.dateFollowUp}"/>
+                               disabled="true"/>
                     </div>
                     <div class="form-group">
                         <label for="followUp">FollowUp</label>
@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label for="dateFollowUp1">Date FollowUp 1</label>
                         <input type="date" name="dateFollowUp1" id="dateFollowUp1" class="form-control input-lg"
-                               required="true" disabled="true" th:value="${project.dateFollowUp1}"/>
+                               required="true" disabled="true"/>
                     </div>
                     <div class="form-group">
                         <label for="followUp1">FollowUp 1</label>
@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <label for="dateDelivery">Date Delivery</label>
                         <input type="date" name="dateDelivery" id="dateDelivery" class="form-control input-lg"
-                               disabled="true" th:value="${project.dateDelivery}"/>
+                               disabled="true"/>
                     </div>
                     <div class="form-group">
                         <label for="delivery">Delivery</label>
@@ -79,5 +79,17 @@
 </div>
 <!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
+<script th:inline="javascript">
+    $(document).ready(() => {
+        /*<![CDATA[*/
+        const dateFollowUp = [[${project.dateFollowUp}]];
+        const dateFollowUp1 = [[${project.dateFollowUp1}]];
+        const dateDelivery = [[${project.dateDelivery}]];
+        /*]]>*/
+        $('#dateDelivery').val(`${dateDelivery.year}-${dateDelivery.monthValue}-${dateDelivery.dayOfMonth}`)
+        $('#dateFollowUp').val(`${dateFollowUp.year}-${dateFollowUp.monthValue}-${dateFollowUp.dayOfMonth}`)
+        $('#dateFollowUp1').val(`${dateFollowUp1.year}-${dateFollowUp1.monthValue}-${dateFollowUp1.dayOfMonth}`)
+    })
+</script>
 </body>
 </html>
