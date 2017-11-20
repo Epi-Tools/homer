@@ -73,11 +73,18 @@
             const description = $('#description').val()
             $.ajax({
                 type: 'post',
-                url: '/api/project',
-                dataType: 'json',
-                data: { name, description },
+                url: '/api/projects',
+                data: JSON.stringify({ name, description }),
+                contentType: "application/json; charset=utf-8",
                 success: () => window.location.href = '/project',
-                error: () => $('#alert-project').show()
+                error: error => {
+                    const responseError = error.responseJSON.errors
+                    const errors = responseError.reduce((acc, curr) => {
+                        acc.push(`${curr.field} ${curr.defaultMessage}`)
+                        return acc
+                    }, []);
+                    $('#alert-project').show().html(`<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`)
+                }
             })
         })
     })
