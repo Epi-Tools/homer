@@ -23,6 +23,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationProvider authProvider;
 
+    @Autowired
+    CustomAuthenticationHandler customAuthenticationHandler;
+
     // roles admin allow to access /admin/**
     // roles user allow to access /user/**
     // custom 403 access denied handler
@@ -39,6 +42,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             .loginPage("/login")
             .defaultSuccessUrl("/", true)
+            .failureUrl("/login?error")
+            .failureHandler(customAuthenticationHandler)
             .permitAll()
             .and()
             .logout()

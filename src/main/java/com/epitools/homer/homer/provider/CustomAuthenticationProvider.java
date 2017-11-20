@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -39,7 +40,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         try {
             final okhttp3.Response resp = Utils.authBlih(email, password);
             JSONObject jsonObj = new JSONObject(resp.body().string());
-            if (jsonObj.getString("token") == null) return null;
+            if (!jsonObj.has("token"))  throw new BadCredentialsException("Invalid credentials");
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             final User user = userRepository.findByEmail(email);
             if (user == null) {
@@ -63,7 +64,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new BadCredentialsException("Invalid credentials");
     }
 
     @Override
