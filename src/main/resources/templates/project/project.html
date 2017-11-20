@@ -8,58 +8,65 @@
 <div th:replace="fragments/header :: header"/>
 <div class="container">
     <div class="starter-template" style="margin-bottom: 50px;">
-        <form>
-            <fieldset>
-                <h1>New Project</h1>
-                <div id="alert-project" class="alert alert-danger" style="display: none;">
-                </div>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="form-control input-lg"
-                           placeholder="Name" required="true" autofocus="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="spices">Spices</label>
-                    <input type="number" name="spices" id="spices" class="form-control input-lg"
-                           placeholder="60" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" rows="5" id="description" required="true" placeholder="Description..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateFollowUp">Date FollowUp</label>
-                    <input type="date" name="dateFollowUp" id="dateFollowUp" class="form-control input-lg" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="followUp">FollowUp</label>
-                    <textarea class="form-control" rows="5" id="followUp" required="true" placeholder="FollowUp..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateFollowUp1">Date FollowUp 1</label>
-                    <input type="date" name="dateFollowUp1" id="dateFollowUp1" class="form-control input-lg" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="followUp1">FollowUp 1</label>
-                    <textarea class="form-control" rows="5" id="followUp1" required="true" placeholder="FollowUp 1..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateDelivery">Date Delivery</label>
-                    <input type="date" name="dateDelivery" id="dateDelivery" class="form-control input-lg" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="delivery">Delivery</label>
-                    <textarea class="form-control" rows="5" id="delivery" required="true" placeholder="Delivery..."></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create" id="project-btn"/>
+        <div th:if="${error}">
+            <div class="alert alert-info">
+                <span th:text="${error}"></span>
+            </div>
+        </div>
+        <div th:if="${error == null}">
+            <form>
+                <fieldset>
+                    <h1>Project <span th:text="${project.name}"></span></h1>
+                    <div id="alert-project" class="alert alert-danger" style="display: none;">
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control input-lg"
+                               disabled="true" th:value="${project.name}"/>
                     </div>
-                </div>
-            </fieldset>
-        </form>
+                    <div class="form-group">
+                        <label for="spices">Spices</label>
+                        <input type="number" name="spices" id="spices" class="form-control input-lg"
+                               disabled="true" th:value="${project.spices}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" rows="5" id="description" disabled="true" th:inline="text">[[${project.description}]]</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateFollowUp">Date FollowUp</label>
+                        <input type="date" name="dateFollowUp" id="dateFollowUp" class="form-control input-lg" disabled="true" th:value="${project.dateFollowUp}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="followUp">FollowUp</label>
+                        <textarea class="form-control" rows="5" id="followUp" disabled="true" th:inline="text">[[${project.followUp}]]</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateFollowUp1">Date FollowUp 1</label>
+                        <input type="date" name="dateFollowUp1" id="dateFollowUp1" class="form-control input-lg" required="true" disabled="true" th:value="${project.dateFollowUp1}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="followUp1">FollowUp 1</label>
+                        <textarea class="form-control" rows="5" id="followUp1" disabled="true" th:inline="text">[[${project.followUp1}]]</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateDelivery">Date Delivery</label>
+                        <input type="date" name="dateDelivery" id="dateDelivery" class="form-control input-lg" disabled="true" th:value="${project.dateDelivery}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery">Delivery</label>
+                        <textarea class="form-control" rows="5" id="delivery" disabled="true" th:inline="text">[[${project.delivery}]]</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create" id="project-btn"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
 </div>
 <!-- /.container -->
