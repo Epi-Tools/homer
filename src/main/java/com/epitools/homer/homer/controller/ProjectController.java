@@ -1,6 +1,7 @@
 package com.epitools.homer.homer.controller;
 
 import com.epitools.homer.homer.model.Project;
+import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Map;
 
+// TODO(carlendev) add 404 custom
+// TODO(carlendev) remove devtools
 @Controller
 public class ProjectController {
 
@@ -37,10 +40,20 @@ public class ProjectController {
         return "project/all";
     }
 
+    @GetMapping("/project/my")
+    public String my(final Map<String, Object> model) {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User maybeUser = userRepository.findByEmail(user);
+        if (maybeUser == null) return "redirect:/project/all";
+        model.put("projects", projectRepository.findByUserId(maybeUser.getId()));
+        model.put("username", maybeUser.getEmail());
+        return "project/my";
+    }
+
     @RequestMapping(value="/project/{id}", method=RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
     public String byId(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         Project project = projectRepository.findOne(projectId);
-        if(project == null) model.put("error", "Wrong Project Id");
+        if (project == null) model.put("error", "Wrong Project Id");
         else model.put("project", project);
         return "project/project";
     }
