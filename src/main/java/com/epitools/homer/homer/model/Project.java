@@ -22,6 +22,9 @@ public class Project {
     private Integer spices;
     @NotNull
     @Column(nullable=false)
+    private Integer currentSpices;
+    @NotNull
+    @Column(nullable=false)
     private String name;
     @NotNull
     @Column(nullable=false)
@@ -144,5 +147,13 @@ public class Project {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getCurrentSpices() {
+        return currentSpices;
+    }
+
+    public void setCurrentSpices(Integer currentSpices) {
+        this.currentSpices = currentSpices;
     }
 }

@@ -42,6 +42,7 @@ public class ProjectRestController {
         if(project == null) return ResponseEntity.notFound().build();
         project.setUserId(projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
+        project.setCurrentSpices(projectDetails.getCurrentSpices());
         project.setName(projectDetails.getName());
         project.setDescription(projectDetails.getDescription());
         project.setFollowUp(projectDetails.getFollowUp());
