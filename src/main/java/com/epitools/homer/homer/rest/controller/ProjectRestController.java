@@ -68,6 +68,7 @@ public class ProjectRestController {
     public Project createProject(@Valid @RequestBody Project project) {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         project.setUserId(userRepository.findByEmail(user).getId());
+        project.setCurrentSpices(0);
         project.setStatus(0);
         return projectRepository.save(project);
     }

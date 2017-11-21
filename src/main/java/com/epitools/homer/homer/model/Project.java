@@ -20,7 +20,6 @@ public class Project {
     @NotNull
     @Column(nullable=false)
     private Integer spices;
-    @NotNull
     @Column(nullable=false)
     private Integer currentSpices;
     @NotNull
