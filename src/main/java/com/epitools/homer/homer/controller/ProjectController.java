@@ -17,6 +17,7 @@ import java.util.Map;
 
 // TODO(carlendev) add 404 custom
 // TODO(carlendev) remove devtools
+// TODO(carlendev) check if project is on current user
 @Controller
 public class ProjectController {
 
@@ -52,9 +53,23 @@ public class ProjectController {
 
     @RequestMapping(value="/project/{id}", method=RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
     public String byId(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
-        Project project = projectRepository.findOne(projectId);
+        final Project project = projectRepository.findOne(projectId);
         if (project == null) model.put("error", "Wrong Project Id");
         else model.put("project", project);
         return "project/project";
+    }
+
+    @RequestMapping(value="/project/edit/{id}", method=RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
+    public String edit(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final Project project = projectRepository.findOne(projectId);
+        final User maybeUser = userRepository.findByEmail(user);
+        if (maybeUser == null) return "redirect:/project/all";
+        else if (project == null || !project.getUserId().equals(maybeUser.getId())) {
+            model.put("error", "Wrong Project Id");
+            model.put("project", new Project());
+        }
+        else model.put("project", project);
+        return "project/edit";
     }
 }

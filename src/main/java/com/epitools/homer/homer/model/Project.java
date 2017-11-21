@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 // TODO(carlendev) add spice positive verification in the model
-// TODO(carlendev) add current spices on the project
 @Entity
 @Table(name="project")
 public class Project {
