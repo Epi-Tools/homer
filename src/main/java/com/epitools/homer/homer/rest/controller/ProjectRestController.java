@@ -40,9 +40,10 @@ public class ProjectRestController {
                                            @Valid @RequestBody Project projectDetails) {
         Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
-        project.setUserId(projectDetails.getUserId());
+        project.setUserId(projectDetails.getUserId() == null ? project.getUserId() : projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
-        project.setCurrentSpices(projectDetails.getCurrentSpices());
+        project.setCurrentSpices(projectDetails.getCurrentSpices() == null ?
+                project.getCurrentSpices() : projectDetails.getCurrentSpices());
         project.setName(projectDetails.getName());
         project.setDescription(projectDetails.getDescription());
         project.setFollowUp(projectDetails.getFollowUp());
@@ -51,7 +52,7 @@ public class ProjectRestController {
         project.setDateFollowUp(projectDetails.getDateFollowUp());
         project.setDateFollowUp1(projectDetails.getDateFollowUp1());
         project.setDateDelivery(projectDetails.getDateDelivery());
-        project.setStatus(projectDetails.getStatus());
+        project.setStatus(projectDetails.getStatus() == null ? project.getStatus() : projectDetails.getStatus());
         Project updatedProject = projectRepository.save(project);
         return ResponseEntity.ok(updatedProject);
     }
