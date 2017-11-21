@@ -1,9 +1,11 @@
 package com.epitools.homer.homer.rest.controller;
 
 import com.epitools.homer.homer.model.Project;
+import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,10 +38,20 @@ public class ProjectRestController {
     }
 
     @RequestMapping(value="/projects/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Project> updateProject(@PathVariable(value="id") Integer projectId,
+    public ResponseEntity<Object> updateProject(@PathVariable(value="id") Integer projectId,
                                            @Valid @RequestBody Project projectDetails) {
-        Project project = projectRepository.findOne(projectId);
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User maybeUser = userRepository.findByEmail(user);
+        if (maybeUser == null) return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{ \"error\" : \"User not connected\" }");
+        final Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
+        if (!project.getUserId().equals(maybeUser.getId())) return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{ \"error\" : \"Can not edit this project\" }");
         project.setUserId(projectDetails.getUserId() == null ? project.getUserId() : projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
         project.setCurrentSpices(projectDetails.getCurrentSpices() == null ?
