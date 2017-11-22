@@ -15,6 +15,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 // TODO(carlendev) add AddSpices method
+// TODO(carlendev) refactor check if userid et project userid match
+// TODO(carlendev) check bootstrap not found error
 @RestController
 @RequestMapping("/api")
 public class ProjectRestController {
