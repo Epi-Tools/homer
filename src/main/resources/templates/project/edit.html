@@ -17,6 +17,7 @@
             <form>
                 <fieldset>
                     <h1>Project <span th:text="${project.name}"></span></h1>
+                    <button id="delete-button" class="btn btn-danger">Delete</button>
                     <div id="alert-project" class="alert alert-danger" style="display: none;">
                     </div>
                     <div class="form-group">
@@ -92,11 +93,32 @@
         const dateDelivery = [[${project.dateDelivery}]]
         const id = [[${project.id}]]
         /*]]>*/
+        const date = str => `${str}T00:00:00`
+
         $('#dateDelivery').val(`${dateDelivery.year}-${dateDelivery.monthValue}-${dateDelivery.dayOfMonth}`)
         $('#dateFollowUp').val(`${dateFollowUp.year}-${dateFollowUp.monthValue}-${dateFollowUp.dayOfMonth}`)
         $('#dateFollowUp1').val(`${dateFollowUp1.year}-${dateFollowUp1.monthValue}-${dateFollowUp1.dayOfMonth}`)
-        const date = str => `${str}T00:00:00`
+
         $('#alert-project').hide()
+
+        // TODO(carlendev) add modal for deletion
+        $('#delete-button').click(function (e) {
+            e.preventDefault()
+            $(this).prop('disabled', true)
+            $.ajax({
+                type: 'delete',
+                url: `/api/projects/${id}`,
+                success: () => {
+                    window.location.href = `/project/my`
+                    $(this).prop('disabled', false)
+                },
+                error: () => {
+                    $('#alert-project').show().html(`<ul><li>Cannot delete project</li></ul>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
         $('#project-btn').click(function (e) {
             $(this).prop('disabled',true)
             e.preventDefault()

@@ -1,7 +1,12 @@
 package com.epitools.homer.homer.util;
 
+import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.repository.UserRepository;
 import com.google.gson.JsonObject;
 import okhttp3.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -22,6 +27,18 @@ public class Utils {
         final RequestBody body = RequestBody.create(JSON, jData.toString());
         Request request = new Request.Builder().url(baseUrl + "/api/auth").post(body).build();
         return client.newCall(request).execute();
+    }
+
+    public static User getMaybeUser(final UserRepository userRepository) {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return userRepository.findByEmail(user);
+    }
+
+    public static ResponseEntity<Object> jsonError(final String msg) {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+            .body("{ \"error\" : \"" + msg + "\" }");
     }
 
 }
