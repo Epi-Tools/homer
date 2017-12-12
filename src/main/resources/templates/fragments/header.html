@@ -31,6 +31,9 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin' ? 'active' : ''}" >
+                        <a th:href="@{/admin}">Admin</a>
+                    </li>
                     <li sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" >
                         <a th:href="@{/login}">Login</a>
                     </li>
