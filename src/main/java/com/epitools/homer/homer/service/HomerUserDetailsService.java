@@ -35,7 +35,7 @@ public class HomerUserDetailsService implements UserDetailsService {
         com.epitools.homer.homer.model.User activeUserInfo = userRepository.findByEmail(email);
         System.out.println(activeUserInfo.getEmail());
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(activeUserInfo.isAdmin() ? "ADMIN" : "USER"));
+        grantedAuthorities.add(new SimpleGrantedAuthority(activeUserInfo.isAdmin() == 1 ? "ROLE_ADMIN" : "ROLE_USER"));
         return new User(activeUserInfo.getEmail(), "", grantedAuthorities);
     }
 }

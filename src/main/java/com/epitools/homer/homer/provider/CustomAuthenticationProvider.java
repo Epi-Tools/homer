@@ -46,12 +46,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             if (user == null) {
                 User nUser = new User();
                 nUser.setEmail(email);
-                nUser.setAdmin(false);
+                nUser.setAdmin(0);
                 userRepository.save(nUser);
-                grantedAuthorities.add(new SimpleGrantedAuthority(nUser.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER"));
+                grantedAuthorities.add(new SimpleGrantedAuthority(nUser.isAdmin() == 1 ? "ROLE_ADMIN" : "ROLE_USER"));
                 return new UsernamePasswordAuthenticationToken(email, passwordEncoder.encode(jsonObj.getString("token")), grantedAuthorities);
             }
-            grantedAuthorities.add(new SimpleGrantedAuthority(user.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER"));
+            grantedAuthorities.add(new SimpleGrantedAuthority(user.isAdmin() == 1 ? "ROLE_ADMIN" : "ROLE_USER"));
             return new UsernamePasswordAuthenticationToken(email, passwordEncoder.encode(jsonObj.getString("token")), grantedAuthorities);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

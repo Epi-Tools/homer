@@ -39,6 +39,15 @@ public class ProjectRestController {
         return ResponseEntity.ok().body(project);
     }
 
+    @RequestMapping(value="/projects/my", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> getMyProject() {
+        final User maybeUser = Utils.getMaybeUser(userRepository);
+        if (maybeUser == null) return Utils.jsonError("User not connected");
+        List<Project> projects = projectRepository.findByUserId(maybeUser.getId());
+        if(projects == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(projects);
+    }
+
     @RequestMapping(value="/projects/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> updateProject(@PathVariable(value="id") Integer projectId,
                                            @Valid @RequestBody Project projectDetails) {

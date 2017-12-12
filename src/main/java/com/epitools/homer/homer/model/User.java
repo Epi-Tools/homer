@@ -15,8 +15,8 @@ public class User {
     @Email
     @Column(nullable=false)
     private String email;
-    @Column(columnDefinition="boolean default false", nullable=false)
-    private boolean admin;
+    @Column(nullable=false)
+    private Integer admin;
     @Column(nullable=false)
     private Integer spices = 60;
 
@@ -36,11 +36,11 @@ public class User {
         this.email = email;
     }
 
-    public boolean isAdmin() {
+    public Integer isAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Integer admin) {
         this.admin = admin;
     }
 
