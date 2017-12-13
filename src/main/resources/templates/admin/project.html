@@ -15,9 +15,7 @@
         </div>
         <div th:if="${notFound == null}">
             <h2 th:text="'Owner ' + ${user.email}"></h2>
-            <div class="alert alert-danger" style="display: none;">
-                <h3 id="statusError"></h3>
-            </div>
+            <div id="statusError" class="alert alert-danger" style="display: none;"></div>
             <select id="status" class="form-control" style="margin-bottom: 15px;">
                 <option th:selected="${project.status == 1}" th:text="'Lance'"></option>
                 <option th:selected="${project.status == 0}" th:text="'En Creation'"></option>
@@ -148,17 +146,13 @@
                     $(this).prop('disabled', false)
                 },
                 error: error => {
-                    const responseError = error.responseJSON.errors
+                    const responseError = error.responseJSON.message
                     if (responseError === undefined) {
                         $(this).prop('disabled', false)
-                        $('#alert-project').show().html(`<ul><li>Wrong date or spice format</li></ul>`)
+                        $('#statusError').show().html(`<h5>Wrong status format</h5>`)
                         return;
                     }
-                    const errors = responseError.reduce((acc, curr) => {
-                        acc.push(`${curr.field} ${curr.defaultMessage}`)
-                        return acc
-                    }, []);
-                    $('#alert-project').show().html(`<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`)
+                    $('#statusError').show().html(`<h5>${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })
