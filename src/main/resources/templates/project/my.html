@@ -12,7 +12,7 @@
         <ul class="list-group active" th:each="task,iter : ${projects}">
             <ul class="list-group-item">
                 <a th:href="@{'/project/edit/' + ${projects[iter.index].id}}"><strong th:text="${projects[iter.index].name}"></strong></a>
-                <ul>
+                <ul style="padding-left: 0;">
                     <li class="list-group-item">
                         <strong>
                             <span class="label label-info" style="margin-right: 10px;">Status</span>
@@ -35,7 +35,6 @@
         </ul>
     </div>
 </div>
-<!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
