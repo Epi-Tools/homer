@@ -137,12 +137,12 @@
             const statusText = $('#status').find(":selected").text()
             const status = statusState.find(e => e.status === statusText).id
             $.ajax({
-                type: 'put',
-                url: `/api/admin/projects/status/${id}`,
-                data: JSON.stringify({ status }),
+                type: 'post',
+                url: `/api/admin/projects/status`,
+                data: JSON.stringify({ status, id }),
                 contentType: 'application/json; charset=utf-8',
                 success: () => {
-                    window.location.href = `/project/${id}`
+                    window.location.href = `/admin/project/${id}`
                     $(this).prop('disabled', false)
                 },
                 error: error => {
