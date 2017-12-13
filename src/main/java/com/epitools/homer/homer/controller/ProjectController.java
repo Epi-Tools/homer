@@ -6,6 +6,7 @@ import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.Map;
 // TODO(carlendev) remove devtools
 // TODO(carlendev) check if project is on current user
 @Controller
+@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 public class ProjectController {
 
     @Autowired
