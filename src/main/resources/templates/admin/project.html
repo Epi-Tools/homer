@@ -15,9 +15,12 @@
         </div>
         <div th:if="${notFound == null}">
             <h2 th:text="'Owner ' + ${user.email}"></h2>
+            <div class="alert alert-danger" style="display: none;">
+                <h3 id="statusError"></h3>
+            </div>
             <select id="status" class="form-control" style="margin-bottom: 15px;">
                 <option th:selected="${project.status == 1}" th:text="'Lance'"></option>
-                <option th:selected="${project.status == 0}" th:text="'En creation'"></option>
+                <option th:selected="${project.status == 0}" th:text="'En Creation'"></option>
             </select>
             <button id="status-btn" class="btn btn-info">Update</button>
             <form>
@@ -125,15 +128,16 @@
             })
         })
 
-        const statusState = {
-            'En Creation': 0,
-            'Lance': 1
-        }
+        const statusState = [
+            { status: 'En Creation', id: 0 },
+            { status: 'Lance', id: 1 }
+        ]
 
         $('#status-btn').click(function (e) {
             $(this).prop('disabled',true)
             e.preventDefault()
-            const status = statusState[$('#status').find(":selected").text()]
+            const statusText = $('#status').find(":selected").text()
+            const status = statusState.find(e => e.status === statusText).id
             $.ajax({
                 type: 'put',
                 url: `/api/admin/projects/status/${id}`,
