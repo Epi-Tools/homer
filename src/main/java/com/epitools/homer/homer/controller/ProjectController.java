@@ -77,6 +77,11 @@ public class ProjectController {
             model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
         }
+        else if (project.getStatus() != 0) {
+            model.put("notFound",
+                    "Project status does not allow you to edit the project, only a admin can do it");
+            model.put("project", new Project());
+        }
         else model.put("project", project);
         return "project/edit";
     }

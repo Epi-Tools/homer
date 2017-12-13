@@ -50,6 +50,7 @@ public class ProjectRestController {
         return ResponseEntity.ok().body(projects);
     }
 
+    // TODO: when non admin user want to edit or delete a project check it's status, it must be equal to 0
     @RequestMapping(value="/projects/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> updateProject(@PathVariable(value="id") Integer projectId,
                                            @Valid @RequestBody Project projectDetails) {
@@ -75,7 +76,7 @@ public class ProjectRestController {
         return ResponseEntity.ok(updatedProject);
     }
 
-    // TODO: make check on project status
+    // TODO: make check on project status and project owner
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(value="/projects/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> deleteProject(@PathVariable(value="id") Integer projectId) {
