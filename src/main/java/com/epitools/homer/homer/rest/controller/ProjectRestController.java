@@ -8,6 +8,7 @@ import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,7 @@ public class ProjectRestController {
     }
 
     @RequestMapping(value="/projects/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Object> deleteProject(@PathVariable(value="id") Integer projectId) {
         final User maybeUser = Utils.getMaybeUser(userRepository);
         if (maybeUser == null) return Utils.jsonError("User not connected");
