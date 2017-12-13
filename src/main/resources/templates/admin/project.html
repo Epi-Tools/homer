@@ -8,12 +8,12 @@
 <div th:replace="fragments/header :: header"/>
 <div class="container">
     <div class="starter-template" style="margin-bottom: 50px;">
-        <div th:if="${error}">
-            <div class="alert alert-info">
-                <span th:text="${error}"></span>
+        <div th:if="${notFound != null}">
+            <div class="alert alert-danger">
+                <span th:text="${notFound}"></span>
             </div>
         </div>
-        <div th:if="${error == null}">
+        <div th:if="${notFound == null}">
             <h2 th:text="'Owner ' + ${user.email}"></h2>
             <select id="status" class="form-control" style="margin-bottom: 15px;">
                 <option th:selected="${project.status == 1}" th:text="'Lance'"></option>

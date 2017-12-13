@@ -59,7 +59,10 @@ public class ProjectController {
     @RequestMapping(value="/project/{id}", method=RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
     public String byId(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         final Project project = projectRepository.findOne(projectId);
-        if (project == null) model.put("error", "Wrong Project Id");
+        if (project == null) {
+            model.put("notFound", "Wrong Project Id");
+            model.put("project", new Project());
+        }
         else model.put("project", project);
         return "project/project";
     }
@@ -71,7 +74,7 @@ public class ProjectController {
         final User maybeUser = userRepository.findByEmail(user);
         if (maybeUser == null) return "redirect:/project/all";
         else if (project == null || !project.getUserId().equals(maybeUser.getId())) {
-            model.put("error", "Wrong Project Id");
+            model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
         }
         else model.put("project", project);

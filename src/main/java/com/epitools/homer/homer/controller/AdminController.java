@@ -38,7 +38,10 @@ public class AdminController {
         if (maybeUser == null) return "redirect:/project/all";
         else model.put("user", maybeUser);
         final Project project = projectRepository.findOne(projectId);
-        if (project == null) model.put("error", "Wrong Project Id");
+        if (project == null) {
+            model.put("notFound", "Wrong Project Id");
+            model.put("project", new Project());
+        }
         else model.put("project", project);
         return "admin/project";
     }
