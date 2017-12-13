@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 // TODO(carlendev) add 404 custom
@@ -34,10 +36,11 @@ public class ProjectController {
 
     @GetMapping("/project/all")
     public String all(final Map<String, Object> model) {
-        model.put("projects", projectRepository.findAll());
-        model.put("username",
-                userRepository.
-                    findByEmail(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()));
+        final List<Project> projects = projectRepository.findAll();
+        final List<User> users = new ArrayList<>();
+        for (Project project : projects) users.add(userRepository.findOne(project.getUserId()));
+        model.put("projects", projects);
+        model.put("users", users);
         return "project/all";
     }
 

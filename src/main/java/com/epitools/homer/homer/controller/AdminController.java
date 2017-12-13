@@ -4,14 +4,13 @@ import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
+import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -41,5 +40,15 @@ public class AdminController {
         else model.put("project", project);
         return "admin/project";
     }
+
+    @RequestMapping(value="api/admin/projects/status/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> udpateStatus(@PathVariable(value="id") final Integer projectId,
+                                               @RequestParam(value="status", required=true) Integer status) {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User maybeUser = userRepository.findByEmail(user);
+        if (maybeUser == null) return Utils.jsonError("User not connected");
+        return Utils.jsonError("User not connected");
+    }
+
 
 }
