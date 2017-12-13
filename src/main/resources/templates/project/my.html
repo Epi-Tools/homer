@@ -13,16 +13,23 @@
             <ul class="list-group-item">
                 <a th:href="@{'/project/edit/' + ${projects[iter.index].id}}"><strong th:text="${projects[iter.index].name}"></strong></a>
                 <ul>
-                    <li class="list-group-item"><strong>Description -> </strong><span th:text="${projects[iter.index].description}"></span></li>
-                    <li class="list-group-item"><strong>Asked Spices -> </strong><span th:text="${projects[iter.index].spices}"></span></li>
-                    <li class="list-group-item"><strong>Current Spices -> </strong><span th:text="${projects[iter.index].currentSpices}"></span></li>
-                    <li class="list-group-item"><strong>FollowUp -> </strong><span th:text="${projects[iter.index].followUp}"></span></li>
-                    <li class="list-group-item"><strong>Date FollowUp -> </strong><span th:text="${projects[iter.index].DateFollowUp}"></span></li>
-                    <li class="list-group-item"><strong>FollowUp 1 -> </strong><span th:text="${projects[iter.index].followUp1}"></span></li>
-                    <li class="list-group-item"><strong>Date FollowUp 1 -> </strong><span th:text="${projects[iter.index].DateFollowUp1}"></span></li>
-                    <li class="list-group-item"><strong>Delivery -> </strong><span th:text="${projects[iter.index].delivery}"></span></li>
-                    <li class="list-group-item"><strong>Date Delivery -> </strong><span th:text="${projects[iter.index].dateDelivery}"></span></li>
-                    <li class="list-group-item"><strong>Developer -> </strong><span th:text="${username}"></span></li>
+                    <li class="list-group-item">
+                        <strong>
+                            <span class="label label-info" style="margin-right: 10px;">Status</span>
+                        </strong>
+                        <span th:if="${projects[iter.index].status == 0}">En Création</span>
+                        <span th:if="${projects[iter.index].status == 1}">Lancé</span>
+                    </li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Description</span></strong><span th:text="${projects[iter.index].description}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Asked Spices</span></strong><span th:text="${projects[iter.index].spices}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Current Spices</span></strong><span th:text="${projects[iter.index].currentSpices}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">FollowUp</span></strong><span th:text="${projects[iter.index].followUp}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date FollowUp</span></strong><span th:text="${projects[iter.index].DateFollowUp}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">FollowUp 1</span></strong><span th:text="${projects[iter.index].followUp1}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date FollowUp 1</span></strong><span th:text="${projects[iter.index].DateFollowUp1}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Delivery</span></strong><span th:text="${projects[iter.index].delivery}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${projects[iter.index].dateDelivery}"></span></li>
+                    <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${username}"></span></li>
                 </ul>
             </ul>
         </ul>
