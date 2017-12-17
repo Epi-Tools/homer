@@ -29,6 +29,9 @@
                     <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/my' ? 'active' : ''}" >
                         <a th:href="@{/project/my}">My Projects</a>
                     </li>
+                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'active' : ''}" >
+                        <a th:href="@{/user}">Profile</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin' ? 'active' : ''}" >
