@@ -37,13 +37,59 @@
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${user.email}"></span></li>
             </ul>
             <h2>Bets</h2>
-            <ul class="list-group-item">
-
+            <div th:if="${canBet == true}">
+                <div id="betError" class="alert alert-danger" style="display: none;"></div>
+                <select id="bet" class="form-control" style="margin-bottom: 15px;">
+                    <option th:text="5"></option>
+                    <option th:text="15"></option>
+                </select>
+                <button id="bet-btn" class="btn btn-info">Bet</button>
+            </div>
+            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
+                <li>
+                    <strong th:text="${bets[iter.index].userId}"></strong>
+                     |
+                    <strong th:text="${bets[iter.index].spices}"></strong>
+                </li>
             </ul>
         </div>
     </div>
 </div>
 <!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
+<script th:inline="javascript">
+    $(document).ready(() => {
+        /*<![CDATA[*/
+        const id = [[${project.id}]]
+        /*]]>*/
+
+        $('#bet-btn').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const betText = $('#bet').find(":selected").text()
+            const bet = +betText
+            $.ajax({
+                type: 'post',
+                url: `/bet/project/${id}`,
+                data: JSON.stringify({ spices: bet, id }),
+                contentType: 'application/json; charset=utf-8',
+                success: () => {
+                    window.location.href = `/bet/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.message
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#betError').show().html(`<h5>Wrong bet format</h5>`)
+                        return;
+                    }
+                    $('#betError').show().html(`<h5>${responseError}</h5>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+    })
+</script>
 </body>
 </html>

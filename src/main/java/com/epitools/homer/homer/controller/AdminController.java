@@ -48,7 +48,7 @@ public class AdminController {
     }
 
     @RequestMapping(value="api/admin/projects/status", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Object> udpateStatus(@RequestBody Update update) {
+    public ResponseEntity<Object> udpateStatus(@RequestBody final Update update) {
         final Project project = projectRepository.findOne(update.getId());
         if (project == null) return Utils.jsonError("Cannot find project");
         project.setStatus(update.getStatus());

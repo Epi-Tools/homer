@@ -73,6 +73,8 @@ public class BetRestController {
         return ResponseEntity.ok().build();
     }
 
+    // TODO check if user already bet and bet value 5 or 15 AND check project max spices and status
+    // TODO AND user current spices > 0
     @RequestMapping(value="/bets", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public Bet createBet(@Valid @RequestBody Bet bet) {
         return betRepository.save(bet);
