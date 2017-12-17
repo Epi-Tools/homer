@@ -12,9 +12,9 @@ public class Bet {
     private Integer id;
     @NotNull
     @Column(nullable=false)
-    private String userId;
+    private Integer userId;
     @Column(nullable=false)
-    private String projectId;
+    private Integer projectId;
     @Column(nullable=false)
     private Integer spices = 5;
 
@@ -26,11 +26,11 @@ public class Bet {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -42,11 +42,11 @@ public class Bet {
         this.spices = spices;
     }
 
-    public String getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 }
