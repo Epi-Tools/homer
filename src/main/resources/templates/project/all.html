@@ -11,7 +11,12 @@
         <h1>Projects</h1>
         <ul class="list-group active" th:each="task,iter : ${projects}">
             <ul class="list-group-item">
-                <a th:href="@{'/project/' + ${projects[iter.index].id}}"><strong th:text="${projects[iter.index].name}"></strong></a>
+                <a th:href="@{'/project/' + ${projects[iter.index].id}}">
+                    <strong th:text="${projects[iter.index].name}"></strong>
+                </a>
+                <strong class="pull-right" th:if="${projects[iter.index].status == 1}">
+                    <a th:href="@{'/bet/project/' + ${projects[iter.index].id}}">Bet</a>
+                </strong>
                 <ul style="padding-left: 0;">
                     <li class="list-group-item">
                         <strong>

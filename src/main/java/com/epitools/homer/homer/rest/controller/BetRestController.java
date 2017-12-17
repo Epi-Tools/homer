@@ -53,7 +53,6 @@ public class BetRestController {
         return ResponseEntity.ok().body(bets);
     }
 
-
     @RequestMapping(value="/bets/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bet> updateBet(@PathVariable(value="id") Integer betId,
                                            @Valid @RequestBody Bet betDetails) {
