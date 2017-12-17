@@ -11,4 +11,6 @@ public interface BetRepository extends JpaRepository<Bet, Integer> {
 
     List<Bet> findByProjectId(Integer id);
 
+    List<Bet> findByUserId(Integer id);
+
 }
