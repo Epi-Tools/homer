@@ -1,6 +1,7 @@
 package com.epitools.homer.homer.rest.controller;
 
 import com.epitools.homer.homer.model.Bet;
+import com.epitools.homer.homer.model.BetProvider;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.BetRepository;
 import com.epitools.homer.homer.repository.UserRepository;
@@ -9,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,6 +45,19 @@ public class BetRestController {
         List<Bet> bets = betRepository.findByProjectId(projectId);
         if(bets == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(bets);
+    }
+
+
+    @RequestMapping(value="/bets/project/provided/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<BetProvider>> getBetByProjectProvidedId(@PathVariable(value="id") Integer projectId) {
+        final List<Bet> bets = betRepository.findByProjectId(projectId);
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User userE = userRepository.findByEmail(user);
+        final List<Bet> betsUser = betRepository.findByUserId(userE.getId());
+        final List <BetProvider> providedBets = new ArrayList<>();
+        if (betsUser.isEmpty()) return ResponseEntity.ok().body(providedBets);
+        providedBets.addAll(Utils.getProvidedBets(bets, userRepository.findAll()));
+        return ResponseEntity.ok().body(providedBets);
     }
 
     @RequestMapping(value="/bets/my", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
