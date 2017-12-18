@@ -97,7 +97,7 @@ public class BetRestController {
 
     @RequestMapping(value="/bets", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> createBet(@Valid @RequestBody Bet bet) {
-        final Project project = projectRepository.findOne(bet.getId());
+        final Project project = projectRepository.findOne(bet.getProjectId());
         if (project == null || project.getStatus() != 1) return ResponseEntity.notFound().build();
         if (!bet.getSpices().equals(5) &&
                 !bet.getSpices().equals(15)) return Utils.jsonError("Bet should be equal to 5 or 15");
@@ -115,7 +115,7 @@ public class BetRestController {
             if (!betsUserProject.isEmpty()) return Utils.jsonError("User have already bet");
         }
         betE.setSpices(bet.getSpices());
-        betE.setProjectId((bet.getId()));
+        betE.setProjectId((bet.getProjectId()));
         betE.setUserId(userE.getId());
         betRepository.save(betE);
         project.setCurrentSpices(project.getCurrentSpices() + betE.getSpices());
