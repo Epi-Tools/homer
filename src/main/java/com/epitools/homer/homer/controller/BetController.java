@@ -1,9 +1,6 @@
 package com.epitools.homer.homer.controller;
 
-import com.epitools.homer.homer.model.Bet;
-import com.epitools.homer.homer.model.BetValidation;
-import com.epitools.homer.homer.model.Project;
-import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.model.*;
 import com.epitools.homer.homer.repository.BetRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
@@ -57,7 +54,8 @@ public class BetController {
             if (betsUserProject.isEmpty()) model.put("canBet", true);
             else model.put("canBet", false);
         }
-        model.put("bets", bets);
+        final List<BetProvider> providedBets = Utils.getProvidedBets(bets, userRepository.findAll());
+        model.put("bets", providedBets);
         return "bet/project";
     }
 

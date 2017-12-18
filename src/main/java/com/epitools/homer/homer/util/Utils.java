@@ -1,5 +1,7 @@
 package com.epitools.homer.homer.util;
 
+import com.epitools.homer.homer.model.Bet;
+import com.epitools.homer.homer.model.BetProvider;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.google.gson.JsonObject;
@@ -12,6 +14,9 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -41,4 +46,28 @@ public class Utils {
             .body("{ \"error\" : \"" + msg + "\" }");
     }
 
+    public static List<BetProvider> getProvidedBets(final List<Bet> bets, final List<User> users) {
+        final List<User> usersFiltered = new ArrayList<>();
+        bets.forEach(e -> {
+            final Integer userId = e.getUserId();
+            usersFiltered.addAll(users.stream().
+                    filter(f -> f.getId().equals(userId))
+                    .collect(Collectors.toList()));
+        });
+        final List<BetProvider> betProviders = new ArrayList<>();
+        bets.forEach(e -> {
+            final Integer userId = e.getUserId();
+            final User user = usersFiltered.stream().filter(f -> f.getId().equals(userId)).findFirst().get();
+            if (user.getId() != null) {
+                final BetProvider bet = new BetProvider();
+                bet.setId(e.getId());
+                bet.setProjectId(e.getProjectId());
+                bet.setUserId(user.getId());
+                bet.setUsername(user.getEmail());
+                bet.setSpices(e.getSpices());
+                betProviders.add(bet);
+            }
+        });
+        return betProviders;
+    }
 }

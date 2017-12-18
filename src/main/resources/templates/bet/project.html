@@ -47,9 +47,8 @@
             </div>
             <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
                 <li>
-                    <strong th:text="${bets[iter.index].userId}"></strong>
-                     |
-                    <strong th:text="${bets[iter.index].spices}"></strong>
+                    <span class="label label-info" th:text="${bets[iter.index].spices}"></span>
+                    <strong th:text="${bets[iter.index].username}"></strong>
                 </li>
             </ul>
         </div>
