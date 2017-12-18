@@ -2,8 +2,10 @@ package com.epitools.homer.homer.rest.controller;
 
 import com.epitools.homer.homer.model.Bet;
 import com.epitools.homer.homer.model.BetProvider;
+import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.BetRepository;
+import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -27,6 +30,9 @@ public class BetRestController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     @RequestMapping(value="/bets", method= RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public List<Bet> getAllBets() {
@@ -89,11 +95,33 @@ public class BetRestController {
         return ResponseEntity.ok().build();
     }
 
-    // TODO check if user already bet and bet value 5 or 15 AND check project max spices and status
-    // TODO AND user current spices > 0
     @RequestMapping(value="/bets", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public Bet createBet(@Valid @RequestBody Bet bet) {
-        return betRepository.save(bet);
+    public ResponseEntity<Object> createBet(@Valid @RequestBody Bet bet) {
+        final Project project = projectRepository.findOne(bet.getId());
+        if (project == null || project.getStatus() != 1) return ResponseEntity.notFound().build();
+        if (!bet.getSpices().equals(5) &&
+                !bet.getSpices().equals(15)) return Utils.jsonError("Bet should be equal to 5 or 15");
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User userE = userRepository.findByEmail(user);
+        final Bet betE = new Bet();
+        if (project.getCurrentSpices() + bet.getSpices() >
+                project.getSpices()) return Utils.jsonError("Max spices is reached");
+        if (userE.getSpices() - bet.getSpices() < 0) return Utils.jsonError("User haven't enough spices");
+        final List<Bet> betsUser = betRepository.findByUserId(userE.getId());
+        if (!betsUser.isEmpty()) {
+            List <Bet> betsUserProject = betsUser.stream()
+                    .filter(e -> e.getProjectId().equals(bet.getProjectId()))
+                    .collect(Collectors.toList());
+            if (!betsUserProject.isEmpty()) return Utils.jsonError("User have already bet");
+        }
+        betE.setSpices(bet.getSpices());
+        betE.setProjectId((bet.getId()));
+        betE.setUserId(userE.getId());
+        betRepository.save(betE);
+        project.setCurrentSpices(project.getCurrentSpices() + betE.getSpices());
+        projectRepository.save(project);
+        userE.setSpices(userE.getSpices() - betE.getSpices());
+        userRepository.save(userE);
+        return ResponseEntity.ok().build();
     }
 }
-

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class BetController {
     // TODO check if user already bet and bet value 5 or 15 AND check project max spices and status
     // TODO AND user current spices > 0
     @RequestMapping(value="/bet/project/{id}", method= RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Object> betById(@RequestBody final BetValidation bet) {
+    public ResponseEntity<Object> betById(@Valid @RequestBody final BetValidation bet) {
         final Project project = projectRepository.findOne(bet.getId());
         if (project == null || project.getStatus() != 1) return Utils.jsonError("Cannot find project");
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
