@@ -1,128 +1,160 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>HOMER | New Project</title>
-    <div th:replace="fragments/header :: header-css"/>
+    <div th:replace="fragments/header :: header-css" />
 </head>
-<body>
-<div th:replace="fragments/header :: header"/>
-<div class="container">
-    <div class="starter-template" style="margin-bottom: 50px;">
-        <form>
-            <fieldset>
-                <h1>New Project</h1>
-                <div id="alert-project" class="alert alert-danger" style="display: none;">
-                </div>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="form-control input-lg"
-                           placeholder="Name" required="true" autofocus="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="spices">Spices</label>
-                    <input type="number" name="spices" id="spices" class="form-control input-lg"
-                           placeholder="60" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" rows="5" id="description"
-                              required="true" placeholder="Description..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateFollowUp">Date FollowUp</label>
-                    <input type="date" name="dateFollowUp" id="dateFollowUp"
-                           class="form-control input-lg" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="followUp">FollowUp</label>
-                    <textarea class="form-control" rows="5" id="followUp"
-                              required="true" placeholder="FollowUp..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateFollowUp1">Date FollowUp 1</label>
-                    <input type="date" name="dateFollowUp1" id="dateFollowUp1"
-                           class="form-control input-lg" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="followUp1">FollowUp 1</label>
-                    <textarea class="form-control" rows="5" id="followUp1"
-                              required="true" placeholder="FollowUp 1..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="dateDelivery">Date Delivery</label>
-                    <input type="date" name="dateDelivery" id="dateDelivery"
-                           class="form-control input-lg" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="delivery">Delivery</label>
-                    <textarea class="form-control" rows="5" id="delivery"
-                              required="true" placeholder="Delivery..."></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create"
-                               id="project-btn"/>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6">
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-</div>
-<!-- /.container -->
-<div th:replace="fragments/footer :: footer"/>
-<script>
-    const date = str => `${str}T00:00:00`
 
-    $(document).ready(() => {
-        $('#alert-project').hide()
-        $('#project-btn').click(function (e) {
-            $(this).prop('disabled',true)
-            e.preventDefault()
-            const name = $('#name').val()
-            const spices = $('#spices').val()
-            const description = $('#description').val()
-            const followUp = $('#followUp').val()
-            const dateFollowUp = $('#dateFollowUp').val()
-            const followUp1 = $('#followUp1').val()
-            const dateFollowUp1 = $('#dateFollowUp1').val()
-            const delivery = $('#delivery').val()
-            const dateDelivery = $('#dateDelivery').val()
-            $.ajax({
-                type: 'post',
-                url: '/api/projects',
-                data: JSON.stringify({ name,
-                    spices,
-                    description,
-                    followUp,
-                    dateFollowUp: date(dateFollowUp) != 'T00:00:00' ? date(dateFollowUp) : undefined,
-                    followUp1,
-                    dateFollowUp1: date(dateFollowUp1) != 'T00:00:00' ? date(dateFollowUp1) : undefined,
-                    delivery,
-                    dateDelivery: date(dateDelivery) != 'T00:00:00' ? date(dateDelivery) : undefined }),
-                contentType: 'application/json; charset=utf-8',
-                success: () => {
-                    window.location.href = '/project/all'
-                    $(this).prop('disabled', false)
-                },
-                error: error => {
-                    const responseError = error.responseJSON.errors
-                    if (responseError === undefined) {
+<body>
+    <div th:replace="fragments/header :: header" />
+
+    <section class="section">
+        <div class="container">
+            <form>
+                <h1 class="title is-2 border">Créer un nouveau projet</h1>
+                <div id="alert-project" class="notification is-danger" style="display: none;"></div>
+
+
+                <div class="columns">
+                    <div class="column is-half">
+                        <div class="field">
+                            <label class="label">Nom du projet</label>
+                            <div class="control">
+                                <input class="input" type="text" name="name" id="name" placeholder="" autofocus="true" required="true" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Epices demandés</label>
+                            <div class="control">
+                                <input class="input" type="number" name="spices" id="spices" placeholder="60" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="field">
+                            <label class="label">Description du projet</label>
+                            <div class="control">
+                                <textarea class="textarea" name="description" id="description" placeholder="" required="true"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <h2 class="title is-2 border">Renseigner les rendus</h2>
+
+                <div class="columns">
+                    <div class="column is-half">
+                        <div class="field">
+                            <label class="label">Date du follow up</label>
+                            <div class="control">
+                                <input class="input" type="date" name="dateFollowUp" id="dateFollowUp" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Description du follow up</label>
+                    <div class="control">
+                        <textarea class="textarea" rows="5" id="followUp" placeholder=""></textarea>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-half">
+                        <div class="field">
+                            <label class="label">Date du follow up 1</label>
+                            <div class="control">
+                                <input class="input" type="date" name="dateFollowUp1" id="dateFollowUp1" required="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Description du follow up 1</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="" rows="5" id="followUp1"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Date du delivery</label>
+                    <div class="control">
+                        <input class="input" type="date" name="dateDelivery" id="dateDelivery" required=" true " />
+                    </div>
+                </div>
+                <div class="field ">
+                    <label class="label ">Description du delivery</label>
+                    <div class="control ">
+                        <textarea class="textarea " placeholder="e.g. Hello world " rows="5 " id="delivery " required="true "></textarea>
+                    </div>
+                </div>
+
+
+
+                <button class="button is-link is-fullwidth" id="project-btn">
+                    Créer le projet
+                </button>
+
+
+            </form>
+        </div>
+    </section>
+    <div th:replace="fragments/footer :: footer " />
+    <script>
+        const date = str => `${str}T00:00:00`
+
+        $(document).ready(() => {
+            $('#alert-project').hide()
+            $('#project-btn').click(function (e) {
+                $(this).prop('disabled', true)
+                e.preventDefault()
+                const name = $('#name').val()
+                const spices = $('#spices').val()
+                const description = $('#description').val()
+                const followUp = $('#followUp').val()
+                const dateFollowUp = $('#dateFollowUp').val()
+                const followUp1 = $('#followUp1').val()
+                const dateFollowUp1 = $('#dateFollowUp1').val()
+                const delivery = $('#delivery').val()
+                const dateDelivery = $('#dateDelivery').val()
+                $.ajax({
+                    type: 'post',
+                    url: '/api/projects',
+                    data: JSON.stringify({
+                        name,
+                        spices,
+                        description,
+                        followUp,
+                        dateFollowUp: date(dateFollowUp) != 'T00:00:00' ? date(dateFollowUp) : undefined,
+                        followUp1,
+                        dateFollowUp1: date(dateFollowUp1) != 'T00:00:00' ? date(dateFollowUp1) : undefined,
+                        delivery,
+                        dateDelivery: date(dateDelivery) != 'T00:00:00' ? date(dateDelivery) : undefined
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: () => {
+                        window.location.href = '/project/all'
                         $(this).prop('disabled', false)
-                        $('#alert-project').show().html(`<ul><li>Wrong date or spice format</li></ul>`)
-                        return;
+                    },
+                    error: error => {
+                        const responseError = error.responseJSON.errors
+                        if (responseError === undefined) {
+                            $(this).prop('disabled', false)
+                            $('#alert-project').show().html(`<div className="content"><ul><li>Wrong date or spice format</li></ul></div>`)
+                            return;
+                        }
+                        const errors = responseError.reduce((acc, curr) => {
+                            acc.push(`${curr.field} ${curr.defaultMessage}`)
+                            return acc
+                        }, []);
+                        $('#alert-project').show().html(`<div className="content"><ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`)
+                        $(this).prop('disabled', false)
                     }
-                    const errors = responseError.reduce((acc, curr) => {
-                        acc.push(`${curr.field} ${curr.defaultMessage}`)
-                        return acc
-                    }, []);
-                    $('#alert-project').show().html(`<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`)
-                    $(this).prop('disabled', false)
-                }
+                })
             })
         })
-    })
-</script>
+    </script>
 </body>
+
 </html>
