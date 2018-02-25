@@ -1,9 +1,12 @@
 package com.epitools.homer.homer.controller;
 
+import com.epitools.homer.homer.model.BetProvider;
 import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.repository.BetRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
+import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +34,9 @@ public class ProjectController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BetRepository betRepository;
 
     @GetMapping("/project/new")
     public String create() {
@@ -63,10 +69,13 @@ public class ProjectController {
         if (project == null) {
             model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
+            model.put("bets", new ArrayList<BetProvider>());
         }
         else {
             model.put("project", project);
             model.put("user", userRepository.findOne(project.getUserId()));
+            model.put("bets", Utils.
+                    getProvidedBets(betRepository.findByProjectId(project.getId()), userRepository.findAll()));
         }
         return "project/project";
     }

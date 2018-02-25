@@ -1,8 +1,10 @@
 package com.epitools.homer.homer.controller;
 
+import com.epitools.homer.homer.model.BetProvider;
 import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.Update;
 import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.repository.BetRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.epitools.homer.homer.util.Utils;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,6 +29,9 @@ public class AdminController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BetRepository betRepository;
 
     @GetMapping("/admin")
     public String admin(final Map<String, Object> model) {
@@ -54,11 +60,22 @@ public class AdminController {
         return "admin/project";
     }
 
+    // TODO set by contributor divide spice for project
     @RequestMapping(value="api/admin/projects/status", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> updateStatus(@Valid @RequestBody final Update update) {
         final Project project = projectRepository.findOne(update.getId());
         if (project == null) return Utils.jsonError("Cannot find project");
         project.setStatus(update.getStatus());
+        if (project.getStatus().equals(6)) {
+            final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+            final User maybeUser = userRepository.findByEmail(user);
+            if (maybeUser == null) return Utils.jsonError("Cannot find project");
+            maybeUser.setSpices(maybeUser.getSpices() + ((project.getSpices() * 2)));
+            final List<BetProvider> betProviders = Utils.
+                    getProvidedBets(betRepository.findByProjectId(project.getId()), userRepository.findAll());
+            betProviders.forEach(e -> userRepository.findOne(e.getUserId())
+                    .setSpices(userRepository.findOne(e.getUserId()).getSpices() + e.getSpices() * 2));
+        }
         return ResponseEntity.ok(projectRepository.save(project));
     }
 
