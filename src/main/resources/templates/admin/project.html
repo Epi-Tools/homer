@@ -24,8 +24,11 @@
                 <option th:selected="${project.status == 4}" th:text="'Follow-Up 2'"></option>
                 <option th:selected="${project.status == 5}" th:text="'Delivery'"></option>
                 <option th:selected="${project.status == 6}" th:text="'Termine'"></option>
+                <option th:selected="${project.status == 7}" th:text="'Close'"></option>
             </select>
-            <button id="status-btn" class="btn btn-info">Update</button>
+            <div th:if="${isDone == false}">
+                <button id="status-btn" class="btn btn-info">Update</button>
+            </div>
             <form>
                 <fieldset>
                     <h1>Project <span th:text="${project.name}"></span></h1>
