@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
-    private static final String baseUrl = "http://localhost:3000";
+    private static final String baseUrl = "https://blih.cleverapps.io";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static Response authBlih(final String login, final String password) throws NoSuchAlgorithmException,
