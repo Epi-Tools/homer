@@ -88,7 +88,7 @@ public class BetController {
         betE.setUserId(userE.getId());
         betRepository.save(betE);
         project.setCurrentSpices(project.getCurrentSpices() + betE.getSpices());
-	if (project.getCurrentSpices().equals(project.getSpices())) project.setStatus(project.getStatus() + 1);
+        if (project.getCurrentSpices().equals(project.getSpices())) project.setStatus(project.getStatus() + 1);
         projectRepository.save(project);
         userE.setSpices(userE.getSpices() - betE.getSpices());
         userRepository.save(userE);

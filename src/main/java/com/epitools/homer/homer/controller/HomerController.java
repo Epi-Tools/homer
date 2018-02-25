@@ -18,10 +18,7 @@ public class HomerController {
     UserRepository userRepository;
 
     private void getProjects(final Map<String, Object> model) {
-        model.put("projects", projectRepository.findAll());
-        //model.put("username",
-        //        userRepository.
-        //               findByEmail(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()));
+        model.put("projects", projectRepository.findAllByOrderByIdDesc());
     }
 
     @GetMapping("/")

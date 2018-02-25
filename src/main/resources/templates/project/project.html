@@ -14,63 +14,33 @@
             </div>
         </div>
         <div th:if="${notFound == null}">
-            <form>
-                <fieldset>
-                    <h1>Project <span th:text="${project.name}"></span></h1>
-                    <div id="alert-project" class="alert alert-danger" style="display: none;">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control input-lg"
-                               disabled="true" th:value="${project.name}"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="spices">Spices</label>
-                        <input type="number" name="spices" id="spices" class="form-control input-lg"
-                               disabled="true" th:value="${project.spices}"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="currentSpices">Current Spices</label>
-                        <input type="number" name="currentSpices" id="currentSpices" class="form-control input-lg"
-                               disabled="true" th:value="${project.currentSpices}"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" rows="5" id="description"
-                                  disabled="true" th:inline="text">[[${project.description}]]</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateFollowUp">Date FollowUp</label>
-                        <input type="date" name="dateFollowUp" id="dateFollowUp" class="form-control input-lg"
-                               disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="followUp">FollowUp</label>
-                        <textarea class="form-control" rows="5" id="followUp"
-                                  disabled="true" th:inline="text">[[${project.followUp}]]</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateFollowUp1">Date FollowUp 1</label>
-                        <input type="date" name="dateFollowUp1" id="dateFollowUp1" class="form-control input-lg"
-                               required="true" disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="followUp1">FollowUp 1</label>
-                        <textarea class="form-control" rows="5" id="followUp1"
-                                  disabled="true" th:inline="text">[[${project.followUp1}]]</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateDelivery">Date Delivery</label>
-                        <input type="date" name="dateDelivery" id="dateDelivery" class="form-control input-lg"
-                               disabled="true"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="delivery">Delivery</label>
-                        <textarea class="form-control" rows="5" id="delivery"
-                                  disabled="true" th:inline="text">[[${project.delivery}]]</textarea>
-                    </div>
-                </fieldset>
-            </form>
+            <h1>Project <span th:text="${project.name}"></span></h1>
+            <ul style="padding-left: 0;">
+                <ul style="padding-left: 0;">
+                    <li class="list-group-item">
+                        <strong>
+                            <span class="label label-info" style="margin-right: 10px;">Status</span>
+                        </strong>
+                        <span th:if="${project.status == 0}">En Création</span>
+                        <span th:if="${project.status == 1}">Lancé</span>
+                        <span th:if="${project.status == 2}">Validé</span>
+                        <span th:if="${project.status == 3}">Follow-Up 1</span>
+                        <span th:if="${project.status == 4}">Follow-Up 2</span>
+                        <span th:if="${project.status == 5}">Delivery</span>
+                        <span th:if="${project.status == 6}">Terminé</span>
+                    </li>
+                </ul>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Description</span></strong><span th:text="${project.description}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Asked Spices</span></strong><span th:text="${project.spices}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Current Spices</span></strong><span th:text="${project.currentSpices}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">FollowUp</span></strong><span th:text="${project.followUp}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date FollowUp</span></strong><span th:text="${project.DateFollowUp}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">FollowUp 1</span></strong><span th:text="${project.followUp1}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date FollowUp 1</span></strong><span th:text="${project.DateFollowUp1}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Delivery</span></strong><span th:text="${project.delivery}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${project.dateDelivery}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${user.email}"></span></li>
+            </ul>
         </div>
     </div>
 </div>

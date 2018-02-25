@@ -23,11 +23,11 @@
                         </strong>
                         <span th:if="${project.status == 0}">En Création</span>
                         <span th:if="${project.status == 1}">Lancé</span>
-			<span th:if="${project.status == 2}">Validé</span>
-			<span th:if="${project.status == 3}">Follow-Up 1</span>
+                        <span th:if="${project.status == 2}">Validé</span>
+                        <span th:if="${project.status == 3}">Follow-Up 1</span>
                         <span th:if="${project.status == 4}">Follow-Up 2</span>
-			<span th:if="${project.status == 5}">Delivery</span>
-			<span th:if="${project.status == 6}">Terminé</span>
+                        <span th:if="${project.status == 5}">Delivery</span>
+                        <span th:if="${project.status == 6}">Terminé</span>
                     </li>
                 </ul>
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Description</span></strong><span th:text="${project.description}"></span></li>

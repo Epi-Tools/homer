@@ -39,7 +39,7 @@ public class ProjectController {
 
     @GetMapping("/project/all")
     public String all(final Map<String, Object> model) {
-        final List<Project> projects = projectRepository.findAll();
+        final List<Project> projects = projectRepository.findAllByOrderByIdDesc();
         final List<User> users = new ArrayList<>();
         for (Project project : projects) users.add(userRepository.findOne(project.getUserId()));
         model.put("projects", projects);
@@ -52,7 +52,7 @@ public class ProjectController {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User maybeUser = userRepository.findByEmail(user);
         if (maybeUser == null) return "redirect:/project/all";
-        model.put("projects", projectRepository.findByUserId(maybeUser.getId()));
+        model.put("projects", projectRepository.findByUserIdOrderByIdDesc(maybeUser.getId()));
         model.put("username", maybeUser.getEmail());
         return "project/my";
     }
@@ -64,7 +64,10 @@ public class ProjectController {
             model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
         }
-        else model.put("project", project);
+        else {
+            model.put("project", project);
+            model.put("user", userRepository.findOne(project.getUserId()));
+        }
         return "project/project";
     }
 

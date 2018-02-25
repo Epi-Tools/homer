@@ -8,5 +8,10 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
+
     List<Project> findByUserId(Integer id);
+
+    List<Project> findByUserIdOrderByIdDesc(Integer id);
+
+    List<Project> findAllByOrderByIdDesc();
 }

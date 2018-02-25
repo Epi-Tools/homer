@@ -29,7 +29,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String admin(final Map<String, Object> model) {
-        model.put("projects", projectRepository.findAll());
+        model.put("projects", projectRepository.findAllByOrderByIdDesc());
         return "admin/admin";
     }
 
@@ -49,7 +49,7 @@ public class AdminController {
     }
 
     @RequestMapping(value="api/admin/projects/status", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Object> udpateStatus(@Valid @RequestBody final Update update) {
+    public ResponseEntity<Object> updateStatus(@Valid @RequestBody final Update update) {
         final Project project = projectRepository.findOne(update.getId());
         if (project == null) return Utils.jsonError("Cannot find project");
         project.setStatus(update.getStatus());
