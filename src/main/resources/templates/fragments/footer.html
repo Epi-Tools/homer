@@ -1,41 +1,25 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 </head>
-
 <body>
-    <footer class="footer" th:fragment="footer">
+<div th:fragment="footer">
+    <div class="footer navbar-fixed-bottom">
         <div class="container">
-            <div class="content has-text-centered">
-                <p>
-                    <strong>HOMER</strong>
-
-                </p>
-                <p>
-                    <span sec:authorize="isAuthenticated()">
-                        Logged user:
-                        <span sec:authentication="name"></span> |
-                        <a th:href="@{/logout}">Sign Out</a>
-                    </span>
-                </p>
-            </div>
+            <footer style="background-color: #2c2c2c;">
+                HOMER
+                <span sec:authorize="isAuthenticated()">
+                    | Logged user: <span sec:authentication="name"></span> |
+                    <a th:href="@{/logout}">Sign Out</a>
+                </span>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                        crossorigin="anonymous"></script>
+            </footer>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-        <script src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const $navbarBurger = $('.navbar-burger')[0];
-                const $navbarMenu = $(".navbar-menu")[0];
-                console.log("burger", $navbarBurger);
-                console.log("menu", $navbarMenu);
-                $navbarBurger.addEventListener('click', function () {
-                    $navbarBurger.classList.toggle('is-active');
-                    $navbarMenu.classList.toggle('is-active');
-                })
-            });
-        </script>
-    </footer>
+    </div>
+</div>
 </body>
-
 </html>

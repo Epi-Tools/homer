@@ -1,69 +1,41 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <title>HOMER | Projects</title>
-    <div th:replace="fragments/header :: header-css" />
+    <div th:replace="fragments/header :: header-css"/>
 </head>
-
 <body>
-    <div th:replace="fragments/header :: header" />
-    <section class="section">
-        <div class="container">
-            <h1 class="title is-2 border">Projects</h1>
-            <ul class="list-group active" th:each="task,iter : ${projects}">
-                <ul class="list-group-item">
-                    <a th:href="@{'/project/' + ${projects[iter.index].id}}">
-                        <strong th:text="${projects[iter.index].name}"></strong>
-                    </a>
-                    <strong class="pull-right" th:if="${projects[iter.index].status == 1}">
-                        <a th:href="@{'/bet/project/' + ${projects[iter.index].id}}">Bet</a>
-                    </strong>
-                    <ul style="padding-left: 0;">
-                        <li class="list-group-item">
-                            <strong>
-                                <span class="label label-info" style="margin-right: 10px;">Status</span>
-                            </strong>
-                            <span th:if="${projects[iter.index].status == 0}">En Création</span>
-                            <span th:if="${projects[iter.index].status == 1}">Lancé</span>
-                        </li>
-                    </ul>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <div class="starter-template">
+        <h1>Projects</h1>
+        <ul class="list-group active" th:each="task,iter : ${projects}">
+            <ul class="list-group-item">
+                <a th:href="@{'/project/' + ${projects[iter.index].id}}">
+                    <strong th:text="${projects[iter.index].name}"></strong>
+                </a>
+                <strong class="pull-right" th:if="${projects[iter.index].status == 1}">
+                    <a th:href="@{'/bet/project/' + ${projects[iter.index].id}}">Bet</a>
+                </strong>
+                <ul style="padding-left: 0;">
                     <li class="list-group-item">
                         <strong>
-                            <span class="label label-info" style="margin-right: 10px;">Description</span>
+                            <span class="label label-info" style="margin-right: 10px;">Status</span>
                         </strong>
-                        <span th:text="${projects[iter.index].description}"></span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>
-                            <span class="label label-info" style="margin-right: 10px;">Asked Spices</span>
-                        </strong>
-                        <span th:text="${projects[iter.index].spices}"></span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>
-                            <span class="label label-info" style="margin-right: 10px;">Current Spices</span>
-                        </strong>
-                        <span th:text="${projects[iter.index].currentSpices}"></span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>
-                            <span class="label label-info" style="margin-right: 10px;">Date Delivery</span>
-                        </strong>
-                        <span th:text="${projects[iter.index].dateDelivery}"></span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>
-                            <span class="label label-info" style="margin-right: 10px;">Developer</span>
-                        </strong>
-                        <span th:text="${users[iter.index].email}"></span>
+                        <span th:if="${projects[iter.index].status == 0}">En Création</span>
+                        <span th:if="${projects[iter.index].status == 1}">Lancé</span>
                     </li>
                 </ul>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Description</span></strong><span th:text="${projects[iter.index].description}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Asked Spices</span></strong><span th:text="${projects[iter.index].spices}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Current Spices</span></strong><span th:text="${projects[iter.index].currentSpices}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${projects[iter.index].dateDelivery}"></span></li>
+                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${users[iter.index].email}"></span></li>
             </ul>
-        </div>
-    </section>
-    <!-- /.container -->
-    <div th:replace="fragments/footer :: footer" />
+        </ul>
+    </div>
+</div>
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
 </body>
-
 </html>
