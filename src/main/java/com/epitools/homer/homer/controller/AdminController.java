@@ -33,6 +33,12 @@ public class AdminController {
         return "admin/admin";
     }
 
+    @GetMapping("/admin/spices")
+    public String adminSpices(final Map<String, Object> model) {
+        model.put("users", userRepository.findAll());
+        return "admin/spices";
+    }
+
     @RequestMapping(value="/admin/project/{id}", method=RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
     public String adminProjectEdit(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();

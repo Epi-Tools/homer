@@ -17,9 +17,6 @@
                     <li th:classappend="${#httpServletRequest.getRequestURI() == '/home' || #httpServletRequest.getRequestURI() == '/' ? 'active' : ''}">
                         <a th:href="@{/}">Home</a>
                     </li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'active' : ''}">
-                        <a th:href="@{/about}">About</a>
-                    </li>
                     <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/all' ? 'active' : ''}" >
                         <a th:href="@{/project/all}">Projects</a>
                     </li>
@@ -32,10 +29,16 @@
                     <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'active' : ''}" >
                         <a th:href="@{/user}">Profile</a>
                     </li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'active' : ''}">
+                        <a th:href="@{/about}">About</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin' ? 'active' : ''}" >
                         <a th:href="@{/admin}">Admin</a>
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/spices' ? 'active' : ''}" >
+                        <a th:href="@{/admin/spices}">Global Spices</a>
                     </li>
                     <li sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" >
                         <a th:href="@{/login}">Login</a>
