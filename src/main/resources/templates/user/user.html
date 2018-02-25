@@ -5,23 +5,31 @@
     <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-
 <div th:replace="fragments/header :: header"/>
-
 <div class="container">
-
     <div class="starter-template">
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h1 th:inline="text">Profile [[${#httpServletRequest.remoteUser}]]</h1>
         <h3 th:text="'Your current spices number is ' + ${user.spices}"></h3>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
-
+        <h2>Projects</h2>
+        <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${myProjects}">
+            <li>
+                <span class="label label-info" style="margin-right: 10px;" th:text="${myProjects[iter.index].spices}"></span>
+                <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
+                    <strong th:text="${myProjects[iter.index].name}"></strong>
+                </a>
+            </li>
+        </ul>
+        <h2>Bets</h2>
+        <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
+            <li>
+                <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
+                <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
+                    <strong th:text="${myProjects[iter.index].name}"></strong>
+                </a>
+            </li>
+        </ul>
     </div>
-
 </div>
-<!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
-
 </body>
 </html>

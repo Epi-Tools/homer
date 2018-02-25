@@ -34,7 +34,6 @@ public class BetController {
     @Autowired
     BetRepository betRepository;
 
-    // TODO: check redirection if user is not connected
     @RequestMapping(value="/bet/project/{id}", method= RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
     public String byId(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         final Project project = projectRepository.findOne(projectId);
