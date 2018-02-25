@@ -65,6 +65,8 @@ public class AdminController {
     public ResponseEntity<Object> updateStatus(@Valid @RequestBody final Update update) {
         final Project project = projectRepository.findOne(update.getId());
         if (project == null) return Utils.jsonError("Cannot find project");
+        // INFO NOT REDONE PROJET
+        if (project.getStatus().equals(7)) return ResponseEntity.ok(projectRepository.save(project));
         project.setStatus(update.getStatus());
         if (project.getStatus().equals(6)) {
             final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -75,6 +77,7 @@ public class AdminController {
                     getProvidedBets(betRepository.findByProjectId(project.getId()), userRepository.findAll());
             betProviders.forEach(e -> userRepository.findOne(e.getUserId())
                     .setSpices(userRepository.findOne(e.getUserId()).getSpices() + e.getSpices() * 2));
+            project.setStatus(7);
         }
         return ResponseEntity.ok(projectRepository.save(project));
     }
