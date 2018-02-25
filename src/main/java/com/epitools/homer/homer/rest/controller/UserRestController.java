@@ -8,19 +8,22 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+// TODO check admin permission
 @RestController
 @RequestMapping("/api")
-@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
 public class UserRestController {
 
     @Autowired
     UserRepository userRepository;
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/users", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -33,6 +36,7 @@ public class UserRestController {
         return ResponseEntity.ok().body(user);
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/users/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<User> updateUser(@PathVariable(value="id") Integer userId,
                                            @Valid @RequestBody User userDetails) {
@@ -45,6 +49,7 @@ public class UserRestController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<User> deleteUser(@PathVariable(value="id") Integer userId) {
         User user = userRepository.findOne(userId);

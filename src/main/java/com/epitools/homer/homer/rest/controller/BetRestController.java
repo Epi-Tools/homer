@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
 public class BetRestController {
 
     @Autowired
@@ -75,6 +75,7 @@ public class BetRestController {
         return ResponseEntity.ok().body(bets);
     }
 
+    // TODO check project status, it should be equal to zero
     @RequestMapping(value="/bets/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bet> updateBet(@PathVariable(value="id") Integer betId,
                                            @Valid @RequestBody Bet betDetails) {
@@ -87,6 +88,8 @@ public class BetRestController {
         return ResponseEntity.ok(updatedBet);
     }
 
+    // TODO check project status, it should be equal to zero
+    // TODO set to admin
     @RequestMapping(value="/bets/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bet> deleteBet(@PathVariable(value="id") Integer betId) {
         Bet bet = betRepository.findOne(betId);

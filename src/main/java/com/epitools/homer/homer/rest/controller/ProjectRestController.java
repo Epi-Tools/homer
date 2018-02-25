@@ -5,6 +5,7 @@ import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.epitools.homer.homer.util.Utils;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 // TODO(carlendev) check bootstrap not found error
 @RestController
 @RequestMapping("/api")
-@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
 public class ProjectRestController {
     
     @Autowired
@@ -57,7 +58,8 @@ public class ProjectRestController {
         final User maybeUser = Utils.getMaybeUser(userRepository);
         if (maybeUser == null) return Utils.jsonError("User not connected");
         final Project project = projectRepository.findOne(projectId);
-        if(project == null) return ResponseEntity.notFound().build();
+        if (project == null) return ResponseEntity.notFound().build();
+	if (!project.getStatus().equals(0)) return Utils.jsonError("Can not edit this project");
         if (!project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not edit this project");
         project.setUserId(projectDetails.getUserId() == null ? project.getUserId() : projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
@@ -77,7 +79,6 @@ public class ProjectRestController {
     }
 
     // TODO: make check on project status and project owner
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(value="/projects/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> deleteProject(@PathVariable(value="id") Integer projectId) {
         final User maybeUser = Utils.getMaybeUser(userRepository);
@@ -85,6 +86,7 @@ public class ProjectRestController {
         final Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
         if (!project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not delete this project");
+	if (!project.getStatus().equals(0)) return Utils.jsonError("Can not delete this project");
         projectRepository.delete(project);
         return ResponseEntity.ok().build();
     }

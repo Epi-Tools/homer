@@ -22,7 +22,7 @@ import java.util.Map;
 // TODO(carlendev) remove devtools
 // TODO(carlendev) check if project is on current user
 @Controller
-@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
 public class ProjectController {
 
     @Autowired
