@@ -39,6 +39,7 @@ public class BetController {
     public String byId(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         final Project project = projectRepository.findOne(projectId);
         if (project == null || project.getStatus() != 1) {
+	    if (project.getStatus().equals(2)) return "redirect:/project/" + String.valueOf(projectId);
             model.put("notFound", "Project not found");
             model.put("project", new Project());
         } else model.put("project", project);
@@ -63,22 +64,35 @@ public class BetController {
     // TODO check if user already bet and bet value 5 or 15 AND check project max spices and status
     // TODO AND user current spices > 0
     @RequestMapping(value="/bet/project/{id}", method= RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Object> betById(@Valid @RequestBody final BetValidation bet) {
-        final Project project = projectRepository.findOne(bet.getId());
-        if (project == null || project.getStatus() != 1) return Utils.jsonError("Cannot find project");
+    public ResponseEntity<Object> betById(@PathVariable(value="id") final Integer projectId,
+					  @Valid @RequestBody final BetValidation bet) {
+	final Project project = projectRepository.findOne(projectId);
+        if (project == null || project.getStatus() != 1) return ResponseEntity.notFound().build();
+        if (!bet.getSpices().equals(5) &&
+                !bet.getSpices().equals(15)) return Utils.jsonError("Bet should be equal to 5 or 15");
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         final User userE = userRepository.findByEmail(user);
         final Bet betE = new Bet();
+        if (project.getCurrentSpices() + bet.getSpices() >
+                project.getSpices()) return Utils.jsonError("Max spices is reached");
+        if (userE.getSpices() - bet.getSpices() < 0) return Utils.jsonError("User haven't enough spices");
+        final List<Bet> betsUser = betRepository.findByUserId(userE.getId());
+        if (!betsUser.isEmpty()) {
+            List <Bet> betsUserProject = betsUser.stream()
+                    .filter(e -> e.getProjectId().equals(projectId))
+                    .collect(Collectors.toList());
+            if (!betsUserProject.isEmpty()) return Utils.jsonError("User have already bet");
+        }
         betE.setSpices(bet.getSpices());
-        betE.setProjectId((bet.getId()));
+        betE.setProjectId(projectId);
         betE.setUserId(userE.getId());
         betRepository.save(betE);
         project.setCurrentSpices(project.getCurrentSpices() + betE.getSpices());
+	if (project.getCurrentSpices().equals(project.getSpices())) project.setStatus(project.getStatus() + 1);
         projectRepository.save(project);
         userE.setSpices(userE.getSpices() - betE.getSpices());
         userRepository.save(userE);
         return ResponseEntity.ok().build();
     }
-
 
 }

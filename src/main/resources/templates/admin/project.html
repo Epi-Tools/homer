@@ -19,6 +19,11 @@
             <select id="status" class="form-control" style="margin-bottom: 15px;">
                 <option th:selected="${project.status == 1}" th:text="'Lance'"></option>
                 <option th:selected="${project.status == 0}" th:text="'En Creation'"></option>
+		<option th:selected="${project.status == 2}" th:text="'Valide'"></option>
+                <option th:selected="${project.status == 3}" th:text="'Follow-Up 1'"></option>
+                <option th:selected="${project.status == 4}" th:text="'Follow-Up 2'"></option>
+                <option th:selected="${project.status == 5}" th:text="'Delivery'"></option>
+		<option th:selected="${project.status == 6}" th:text="'Termine'"></option>
             </select>
             <button id="status-btn" class="btn btn-info">Update</button>
             <form>
@@ -127,8 +132,13 @@
         })
 
         const statusState = [
-            { status: 'En Creation', id: 0 },
-            { status: 'Lance', id: 1 }
+		{ status: 'En Creation', id: 0 },
+		{ status: 'Lance', id: 1 },
+		{ status: 'Valide', id: 2 },
+		{ status: 'Follow-Up 1', id: 3 },
+		{ status: 'Follow-Up 2', id: 4 },
+		{ status: 'Delivery', id: 5 },
+		{ status: 'Termine', id: 6 }
         ]
 
         $('#status-btn').click(function (e) {

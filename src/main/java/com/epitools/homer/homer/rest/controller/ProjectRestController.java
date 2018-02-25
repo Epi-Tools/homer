@@ -60,7 +60,7 @@ public class ProjectRestController {
         final Project project = projectRepository.findOne(projectId);
         if (project == null) return ResponseEntity.notFound().build();
 	if (!project.getStatus().equals(0)) return Utils.jsonError("Can not edit this project");
-        if (!project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not edit this project");
+        if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not edit this project");
         project.setUserId(projectDetails.getUserId() == null ? project.getUserId() : projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
         project.setCurrentSpices(projectDetails.getCurrentSpices() == null ?
@@ -85,8 +85,8 @@ public class ProjectRestController {
         if (maybeUser == null) return Utils.jsonError("User not connected");
         final Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
-        if (!project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not delete this project");
-	if (!project.getStatus().equals(0)) return Utils.jsonError("Can not delete this project");
+        if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not delete this project");
+	if (maybeUser.isAdmin().equals(0) && !project.getStatus().equals(0)) return Utils.jsonError("Can not delete this project");
         projectRepository.delete(project);
         return ResponseEntity.ok().build();
     }
