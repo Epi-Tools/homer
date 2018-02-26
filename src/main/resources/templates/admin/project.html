@@ -6,34 +6,42 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<div class="container">
-    <div class="starter-template" style="margin-bottom: 50px;">
+<section class="section"><div class="container">
         <div th:if="${notFound != null}">
             <div class="alert alert-danger">
                 <span th:text="${notFound}"></span>
             </div>
         </div>
         <div th:if="${notFound == null}">
-            <h2 th:text="'Owner ' + ${user.email}"></h2>
-            <div id="statusError" class="alert alert-danger" style="display: none;"></div>
-            <select id="status" class="form-control" style="margin-bottom: 15px;">
-                <option th:selected="${project.status == 1}" th:text="'Lance'"></option>
-                <option th:selected="${project.status == 0}" th:text="'En Creation'"></option>
-                <option th:selected="${project.status == 2}" th:text="'Valide'"></option>
-                <option th:selected="${project.status == 3}" th:text="'Follow-Up 1'"></option>
-                <option th:selected="${project.status == 4}" th:text="'Follow-Up 2'"></option>
-                <option th:selected="${project.status == 5}" th:text="'Delivery'"></option>
-                <option th:selected="${project.status == 6}" th:text="'Termine'"></option>
-                <option th:selected="${project.status == 7}" th:text="'Close'"></option>
-            </select>
+            <h3 class="title is-3 border" th:text="'Projet ' + ${project.name}"></h3>
+            <h2 class="title is-5" th:text="'Owner: ' + ${user.email}" ></h2>
+            <h2 ></h2>
+            <div id="statusError" class="notification is-danger" style="display: none;"></div>
+            <div class="field">
+                <label for="" class="label">Status:</label>
+                <div class="control">
+                    <div class="select" style="margin-bottom: 15px;">
+                        <select id="status" >
+                            <option th:selected="${project.status == 1}" th:text="'Lance'"></option>
+                            <option th:selected="${project.status == 0}" th:text="'En Creation'"></option>
+                            <option th:selected="${project.status == 2}" th:text="'Valide'"></option>
+                            <option th:selected="${project.status == 3}" th:text="'Follow-Up 1'"></option>
+                            <option th:selected="${project.status == 4}" th:text="'Follow-Up 2'"></option>
+                            <option th:selected="${project.status == 5}" th:text="'Delivery'"></option>
+                            <option th:selected="${project.status == 6}" th:text="'Termine'"></option>
+                            <option th:selected="${project.status == 7}" th:text="'Close'"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div th:if="${isDone == false}">
-                <button id="status-btn" class="btn btn-info">Update</button>
+                <button id="status-btn" class="button is-link">Update</button>
             </div>
             <form>
                 <fieldset>
-                    <h1>Project <span th:text="${project.name}"></span></h1>
-                    <button id="delete-button" class="btn btn-danger">Delete</button>
-                    <div id="alert-project" class="alert alert-danger" style="display: none;">
+                    <button id="delete-button" class="button is-danger">Delete</button>
+                    <div id="alert-project" class="notification is-danger" style="display: none;">
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -96,8 +104,7 @@
                 </fieldset>
             </form>
         </div>
-    </div>
-</div>
+</div></section>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
     $(document).ready(() => {

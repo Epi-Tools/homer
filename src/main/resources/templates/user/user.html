@@ -6,30 +6,48 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<div class="container">
-    <div class="starter-template">
-        <h1 th:inline="text">Profile [[${#httpServletRequest.remoteUser}]]</h1>
-        <h3 th:text="'Your current spices number is ' + ${user.spices}"></h3>
-        <h2>Projects</h2>
-        <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${myProjects}">
-            <li>
-                <span class="label label-info" style="margin-right: 10px;" th:text="${myProjects[iter.index].spices}"></span>
-                <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
-                    <strong th:text="${myProjects[iter.index].name}"></strong>
-                </a>
-            </li>
-        </ul>
-        <h2>Bets</h2>
-        <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
-            <li>
-                <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
-                <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
-                    <strong th:text="${myProjects[iter.index].name}"></strong>
-                </a>
-            </li>
-        </ul>
+
+
+<section class="section">
+    <div class="container">
+        <h4 class="title is-4 border">Your informations</h4>
+        <p><strong th:inline="text">[[${#httpServletRequest.remoteUser}]]</strong></p>
+        <p >You have <strong th:text="${user.spices}"></strong> spices</p>
+        <div class="has-border-top">
+            <h2 class="title is-4 border">Your projects</h2>
+            <div class="columns">
+                <div class="column is-3" th:each="task,iter : ${myProjects}">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
+                                    <strong th:text="${myProjects[iter.index].name}"></strong>
+                                </a>
+                            </div>
+
+
+                            <div class="media-right">
+                                <span class="label label-info" th:text="${myProjects[iter.index].spices}"></span>
+
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="title is-4 border">Your bets</h2>
+            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
+                <li>
+                    <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
+                    <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
+                        <strong th:text="${myProjects[iter.index].name}"></strong>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+</section>
+
 <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

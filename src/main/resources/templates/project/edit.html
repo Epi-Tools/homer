@@ -6,17 +6,18 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<div class="container">
-    <div class="starter-template" style="margin-bottom: 50px;">
+<section class="section"><div class="container">
       <div th:if="${notFound != null}">
-            <div class="alert alert-danger">
-                <span th:text="${notFound}"></span>
-            </div>
+          <div class="notification is-danger">
+              <span th:text="${notFound}"></span>
+          </div>
         </div>
         <div th:if="${notFound == null}">
+
+            <h1 class="title is-2 border">Project <strong th:text="${project.name}"></strong></h1>
+
             <form>
                     <fieldset>
-                        <h1>Project <span th:text="${project.name}"></span></h1>
                         <button id="delete-button" class="btn btn-danger">Delete</button>
                         <div id="alert-project" class="alert alert-danger" style="display: none;">
                         </div>
@@ -81,8 +82,8 @@
                     </fieldset>
                 </form>
         </div>
-    </div>
 </div>
+</section>
 <!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">

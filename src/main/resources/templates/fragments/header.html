@@ -5,52 +5,46 @@
         <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     </div>
 </head>
-<body>
+
+
+<body style="display: flex; min-height: 100vh; flex-direction: column;">
 <div th:fragment="header">
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" th:href="@{/}">Homer</a>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a th:href="@{/}" class="navbar-item" th:classappend="${#httpServletRequest.getRequestURI() == '/home' || #httpServletRequest.getRequestURI() == '/' ? 'is-active' : ''}">Homer</a>
+            <button class="button navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" th:href="@{/about}" th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'is-active' : ''}">About</a>
+                <a class="navbar-item" th:href="@{/project/all}" sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/all' ? 'is-active' : ''}">Projects</a>
+                <a class="navbar-item" th:href="@{/project/new}" sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/new' ? 'is-active' : ''}">Create</a>
+                <a class="navbar-item" th:href="@{/project/my}" sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/my' ? 'is-active' : ''}">My Projects</a>
+                <a class="navbar-item" th:href="@{/user}" sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'is-active' : ''}">Profile</a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/home' || #httpServletRequest.getRequestURI() == '/' ? 'active' : ''}">
-                        <a th:href="@{/}">Home</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/all' ? 'active' : ''}" >
-                        <a th:href="@{/project/all}">Projects</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/new' ? 'active' : ''}" >
-                        <a th:href="@{/project/new}">Create</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/my' ? 'active' : ''}" >
-                        <a th:href="@{/project/my}">My Projects</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'active' : ''}" >
-                        <a th:href="@{/user}">Profile</a>
-                    </li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/about' ? 'active' : ''}">
-                        <a th:href="@{/about}">About</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin' ? 'active' : ''}" >
-                        <a th:href="@{/admin}">Admin</a>
-                    </li>
-                    <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/spices' ? 'active' : ''}" >
-                        <a th:href="@{/admin/spices}">Global Spices</a>
-                    </li>
-                    <li sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" >
-                        <a th:href="@{/login}">Login</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active' : ''}" >
-                        <a th:href="@{/logout}">Logout</a>
-                    </li>
-                </ul>
+            <div class="navbar-end">
+                <a class="navbar-item" th:href="@{/admin}" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin' ? 'is-active' : ''}">Admin</a>
+
+                <a class="navbar-item" th:href="@{/admin/spices}" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/spices' ? 'active' : ''}">Global Spices</a>
+
+                <a class="navbar-item" th:href="@{/login}" sec:authorize="!isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'is-active' : ''}">Login</a>
+
+                <a class="navbar-item" th:href="@{/logout}" sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'is-active' : ''}">
+                        <span class="icon">
+                            <i class="fa fa-power-off" aria-hidden="true"></i>
+                        </span>
+                </a>
             </div>
         </div>
     </nav>
 </div>
 
 </body>
+
+
+
 </html>
