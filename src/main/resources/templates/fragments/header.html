@@ -20,7 +20,7 @@
                     <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/all' ? 'active' : ''}" >
                         <a th:href="@{/project/all}">Projects</a>
                     </li>
-                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/create' ? 'active' : ''}" >
+                    <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/new' ? 'active' : ''}" >
                         <a th:href="@{/project/new}">Create</a>
                     </li>
                     <li sec:authorize="isAuthenticated()" th:classappend="${#httpServletRequest.getRequestURI() == '/project/my' ? 'active' : ''}" >
