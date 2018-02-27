@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>HOMER | Project | Bets</title>
+    <title>HOMER | Project | Contributors</title>
     <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
@@ -42,22 +42,40 @@
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${project.dateDelivery}"></span></li>
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${user.email}"></span></li>
             </ul>
-            <h2>Bets</h2>
-            <div th:if="${canBet == true}">
-                <div id="betError" class="alert alert-danger" style="display: none;"></div>
-                <select id="bet" class="form-control" style="margin-bottom: 15px;">
-                    <option th:text="5"></option>
-                    <option th:text="15"></option>
-                </select>
-                <button id="bet-btn" class="btn btn-info">Bet</button>
+            <h2 class="title is-2">Contributors</h2>
+            <div class="columns">
+                <div class="column is-four-fifths">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Email</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="email" id="contributor" placeholder="Email" />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <button id="contributor-btn" class="button is-primary">Add contributor</button>
+                </div>
             </div>
-            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
+            <div id="contributorError" class="has-text-danger" style="display: none;"></div>
+            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${contributors}">
                 <li>
-                    <span class="label label-info" th:text="${bets[iter.index].spices}"></span>
-                    <strong th:text="${bets[iter.index].username}"></strong>
+                    <div class="columns">
+                        <div class="column is-three-quarters">
+                            <strong th:text="${contributors[iter.index].username}"></strong>
+                        </div>
+                        <div class="column">
+                            <button class="button is-danger delete-btn" th:name="@{'delete-' + ${contributors[iter.index].id}}">Delete</button>
+                        </div>
+                    </div>
                 </li>
             </ul>
-        </div>
+            </div>
     </div>
 </div>
 <!-- /.container -->
@@ -68,28 +86,51 @@
         const id = [[${project.id}]]
         /*]]>*/
 
-        $('#bet-btn').click(function (e) {
+        $('#contributor-btn').click(function (e) {
             $(this).prop('disabled', true)
             e.preventDefault()
-            const betText = $('#bet').find(":selected").text()
-            const bet = +betText
+            const contributor = $('#contributor').val()
             $.ajax({
                 type: 'post',
-                url: `/bet/project/${id}`,
-                data: JSON.stringify({ spices: bet, id }),
+                url: `/contributor/project/${id}`,
+                data: JSON.stringify({ email: contributor, projectId: id }),
                 contentType: 'application/json; charset=utf-8',
                 success: () => {
-                    window.location.href = `/bet/project/${id}`
+                    window.location.href = `/contributor/project/${id}`
                     $(this).prop('disabled', false)
                 },
                 error: error => {
                     const responseError = error.responseJSON.error
                     if (responseError === undefined) {
                         $(this).prop('disabled', false)
-                        $('#betError').show().html(`<h5>Wrong bet format</h5>`)
+                        $('#contributorError').show().html(`<h5>Wrong contributor format</h5>`)
                         return;
                     }
-                    $('#betError').show().html(`<h5>${responseError}</h5>`)
+                    $('#contributorError').show().html(`<h5>${responseError}</h5>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
+        $('.delete-btn').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const idDelete = $(this).attr('name').split('-').pop();
+            $.ajax({
+                type: 'delete',
+                url: `/contributor/${idDelete}`,
+                success: () => {
+                    window.location.href = `/contributor/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#contributorError').show().html(`<h5>Wrong contributor format</h5>`)
+                        return;
+                    }
+                    $('#contributorError').show().html(`<h5>${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })

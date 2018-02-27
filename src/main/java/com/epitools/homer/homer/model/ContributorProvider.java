@@ -1,21 +1,27 @@
 package com.epitools.homer.homer.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name="contributor")
-public class Contributor {
+public class ContributorProvider {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
     @NotNull
     @Column(nullable=false)
     private Integer userId;
+
     @NotNull
     @Column(nullable=false)
     private Integer projectId;
+
+    @NotNull
+    private String username;
 
     public Integer getId() {
         return id;
@@ -39,5 +45,13 @@ public class Contributor {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

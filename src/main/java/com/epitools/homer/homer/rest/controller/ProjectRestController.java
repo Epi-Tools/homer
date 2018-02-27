@@ -85,8 +85,10 @@ public class ProjectRestController {
         if (maybeUser == null) return Utils.jsonError("User not connected");
         final Project project = projectRepository.findOne(projectId);
         if(project == null) return ResponseEntity.notFound().build();
-        if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not delete this project");
-	if (maybeUser.isAdmin().equals(0) && !project.getStatus().equals(0)) return Utils.jsonError("Can not delete this project");
+        if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId()))
+            return Utils.jsonError("Can not delete this project");
+        if (maybeUser.isAdmin().equals(0) && !project.getStatus().equals(0))
+            return Utils.jsonError("Can not delete this project");
         projectRepository.delete(project);
         return ResponseEntity.ok().build();
     }

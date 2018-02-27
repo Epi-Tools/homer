@@ -1,8 +1,6 @@
 package com.epitools.homer.homer.util;
 
-import com.epitools.homer.homer.model.Bet;
-import com.epitools.homer.homer.model.BetProvider;
-import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.model.*;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.google.gson.JsonObject;
 import okhttp3.*;
@@ -69,5 +67,30 @@ public class Utils {
             }
         });
         return betProviders;
+    }
+
+    public static List<ContributorProvider> getProvidedContributors(final List<Contributor> contributors,
+                                                                    final List<User> users) {
+        final List<User> usersFiltered = new ArrayList<>();
+        contributors.forEach(e -> {
+            final Integer userId = e.getUserId();
+            usersFiltered.addAll(users.stream().
+                    filter(f -> f.getId().equals(userId))
+                    .collect(Collectors.toList()));
+        });
+        final List<ContributorProvider> contributorProviders = new ArrayList<>();
+        contributors.forEach(e -> {
+            final Integer userId = e.getUserId();
+            final User user = usersFiltered.stream().filter(f -> f.getId().equals(userId)).findFirst().get();
+            if (user.getId() != null) {
+                final ContributorProvider contributorProvider = new ContributorProvider();
+                contributorProvider.setId(e.getId());
+                contributorProvider.setProjectId(e.getProjectId());
+                contributorProvider.setUserId(user.getId());
+                contributorProvider.setUsername(user.getEmail());
+                contributorProviders.add(contributorProvider);
+            }
+        });
+        return contributorProviders;
     }
 }
