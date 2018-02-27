@@ -1,9 +1,11 @@
 package com.epitools.homer.homer.controller;
 
 import com.epitools.homer.homer.model.BetProvider;
+import com.epitools.homer.homer.model.ContributorProvider;
 import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.BetRepository;
+import com.epitools.homer.homer.repository.ContributorRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.epitools.homer.homer.util.Utils;
@@ -38,6 +40,9 @@ public class ProjectController {
     @Autowired
     BetRepository betRepository;
 
+    @Autowired
+    ContributorRepository contributorRepository;
+
     @GetMapping("/project/new")
     public String create() {
         return "project/new";
@@ -58,7 +63,8 @@ public class ProjectController {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User maybeUser = userRepository.findByEmail(user);
         if (maybeUser == null) return "redirect:/project/all";
-        model.put("projects", projectRepository.findByUserIdOrderByIdDesc(maybeUser.getId()));
+        final List<Project> projects = projectRepository.findByUserIdOrderByIdDesc(maybeUser.getId());
+        model.put("projects", projects);
         model.put("username", maybeUser.getEmail());
         return "project/my";
     }
@@ -70,12 +76,16 @@ public class ProjectController {
             model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
             model.put("bets", new ArrayList<BetProvider>());
+            model.put("contributors", new ArrayList<ContributorProvider>());
         }
         else {
+            final List<User> userList = userRepository.findAll();
             model.put("project", project);
             model.put("user", userRepository.findOne(project.getUserId()));
             model.put("bets", Utils.
-                    getProvidedBets(betRepository.findByProjectId(project.getId()), userRepository.findAll()));
+                    getProvidedBets(betRepository.findByProjectId(project.getId()), userList));
+            model.put("contributors", Utils.
+                    getProvidedContributors(contributorRepository.findByProjectId(projectId), userList));
         }
         return "project/project";
     }

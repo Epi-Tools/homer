@@ -11,4 +11,6 @@ public interface ContributorRepository extends JpaRepository<Contributor, Intege
 
     List<Contributor> findByProjectId(Integer id);
 
+    Integer countAllByProjectId(Integer id);
+
 }

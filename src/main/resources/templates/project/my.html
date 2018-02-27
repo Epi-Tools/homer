@@ -33,6 +33,11 @@
                             <strong><span class="label label-info" style="margin-right: 10px;">Delivery</span></strong><span th:text="${projects[iter.index].delivery}"></span>
                             <strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${projects[iter.index].dateDelivery}"></span>
                             <strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${username}"></span>
+                            <div class="column">
+                                <a th:if="${projects[iter.index].status == 0}" th:href="@{'/contributor/project/' + ${projects[iter.index].id}}">
+                                    <span class="button is-primary" style="margin-right: 10px;">Contributors</span>
+                                </a>
+                            </div>
                         </div>
                         <div class="media-right">
                             <span th:text="${projects[iter.index].currentSpices}"></span>/<span th:text="${projects[iter.index].spices}"></span>

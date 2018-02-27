@@ -59,11 +59,17 @@
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${user.email}"></span></li>
             </ul>
         </div>
-        <h2>Bets</h2>
+        <h2 class="title is-2">Bets</h2>
         <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
             <li>
                 <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
                 <strong th:text="${bets[iter.index].username}"></strong>
+            </li>
+        </ul>
+        <h2 class="title is-2">Contributors</h2>
+        <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${contributors}">
+            <li>
+                <strong th:text="${contributors[iter.index].username}"></strong>
             </li>
         </ul>
     </div>

@@ -1,10 +1,8 @@
 package com.epitools.homer.homer.controller;
 
-import com.epitools.homer.homer.model.BetProvider;
-import com.epitools.homer.homer.model.Project;
-import com.epitools.homer.homer.model.Update;
-import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.model.*;
 import com.epitools.homer.homer.repository.BetRepository;
+import com.epitools.homer.homer.repository.ContributorRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.epitools.homer.homer.util.Utils;
@@ -32,6 +30,9 @@ public class AdminController {
 
     @Autowired
     BetRepository betRepository;
+
+    @Autowired
+    ContributorRepository contributorRepository;
 
     @GetMapping("/admin")
     public String admin(final Map<String, Object> model) {
@@ -76,7 +77,14 @@ public class AdminController {
             final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
             final User maybeUser = userRepository.findByEmail(user);
             if (maybeUser == null) return Utils.jsonError("Cannot find project");
-            maybeUser.setSpices(maybeUser.getSpices() + ((project.getSpices() * 2)));
+            final Integer contributorsNumber = contributorRepository.countAllByProjectId(project.getId());
+            final List<Contributor> contributorList = contributorRepository.findByProjectId(project.getId());
+            final Integer spicesFinal = ((project.getSpices() * 2) / (contributorsNumber + 1));
+            maybeUser.setSpices(maybeUser.getSpices() + spicesFinal);
+            contributorList.forEach(e -> {
+                final User cUser = userRepository.findOne(e.getUserId());
+                cUser.setSpices(cUser.getSpices() + spicesFinal);
+            });
             final List<BetProvider> betProviders = Utils.
                     getProvidedBets(betRepository.findByProjectId(project.getId()), userRepository.findAll());
             betProviders.forEach(e -> userRepository.findOne(e.getUserId())
