@@ -22,14 +22,14 @@
                 <div class="control">
                     <div class="select" style="margin-bottom: 15px;">
                         <select id="status" >
-                            <option th:selected="${project.status == 1}" th:text="'Lance'"></option>
-                            <option th:selected="${project.status == 0}" th:text="'En Creation'"></option>
-                            <option th:selected="${project.status == 2}" th:text="'Valide'"></option>
-                            <option th:selected="${project.status == 3}" th:text="'Follow-Up 1'"></option>
-                            <option th:selected="${project.status == 4}" th:text="'Follow-Up 2'"></option>
-                            <option th:selected="${project.status == 5}" th:text="'Delivery'"></option>
-                            <option th:selected="${project.status == 6}" th:text="'Termine'"></option>
-                            <option th:selected="${project.status == 7}" th:text="'Close'"></option>
+                            <option th:if="${project.status &lt;= 0}" th:selected="${project.status == 0}" th:text="'En Creation'"></option>
+                            <option th:if="${project.status &lt;= 1}" th:selected="${project.status == 1}" th:text="'Lance'"></option>
+                            <option th:if="${project.status &lt;= 2}" th:selected="${project.status == 2}" th:text="'Valide'"></option>
+                            <option th:if="${project.status &lt;= 3}" th:selected="${project.status == 3}" th:text="'Follow-Up 1'"></option>
+                            <option th:if="${project.status &lt;= 4}" th:selected="${project.status == 4}" th:text="'Follow-Up 2'"></option>
+                            <option th:if="${project.status &lt;= 5}" th:selected="${project.status == 5}" th:text="'Delivery'"></option>
+                            <option th:if="${project.status &lt;= 6}" th:selected="${project.status == 6}" th:text="'Termine'"></option>
+                            <option th:if="${project.status &lt;= 7}" th:selected="${project.status == 7}" th:text="'Close'"></option>
                         </select>
                     </div>
                 </div>
@@ -104,7 +104,8 @@
                 </fieldset>
             </form>
         </div>
-</div></section>
+</div>
+</section>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
     $(document).ready(() => {
@@ -141,13 +142,13 @@
         })
 
         const statusState = [
-		{ status: 'En Creation', id: 0 },
-		{ status: 'Lance', id: 1 },
-		{ status: 'Valide', id: 2 },
-		{ status: 'Follow-Up 1', id: 3 },
-		{ status: 'Follow-Up 2', id: 4 },
-		{ status: 'Delivery', id: 5 },
-		{ status: 'Termine', id: 6 }
+            { status: 'En Creation', id: 0 },
+            { status: 'Lance', id: 1 },
+            { status: 'Valide', id: 2 },
+            { status: 'Follow-Up 1', id: 3 },
+            { status: 'Follow-Up 2', id: 4 },
+            { status: 'Delivery', id: 5 },
+            { status: 'Termine', id: 6 }
         ]
 
         $('#status-btn').click(function (e) {
