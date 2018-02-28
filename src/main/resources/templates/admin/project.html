@@ -116,9 +116,9 @@
         /*]]>*/
         const date = str => `${str}T00:00:00`
 
-        $('#dateDelivery').val(`${dateDelivery.year}-${dateDelivery.monthValue}-${dateDelivery.dayOfMonth}`)
-        $('#dateFollowUp').val(`${dateFollowUp.year}-${dateFollowUp.monthValue}-${dateFollowUp.dayOfMonth}`)
-        $('#dateFollowUp1').val(`${dateFollowUp1.year}-${dateFollowUp1.monthValue}-${dateFollowUp1.dayOfMonth}`)
+        document.getElementById('dateFollowUp').value = `${dateFollowUp.year}-${(dateFollowUp.monthValue + "").length === 1 ? '0' + dateFollowUp.monthValue : dateFollowUp.monthValue }-${(dateFollowUp.dayOfMonth + "").length === 1 ? '0' + dateFollowUp.dayOfMonth: dateFollowUp.dayOfMonth }`
+        document.getElementById('dateFollowUp1').value = `${dateFollowUp1.year}-${(dateFollowUp1.monthValue + "").length === 1 ? '0' + dateFollowUp1.monthValue : dateFollowUp1.monthValue }-${(dateFollowUp1.dayOfMonth + "").length === 1 ? '0' + dateFollowUp1.dayOfMonth: dateFollowUp1.dayOfMonth }`
+        document.getElementById('dateDelivery').value = `${dateDelivery.year}-${(dateDelivery.monthValue + "").length === 1 ? '0' + dateDelivery.monthValue : dateDelivery.monthValue }-${(dateDelivery.dayOfMonth + "").length === 1 ? '0' + dateDelivery.dayOfMonth: dateDelivery.dayOfMonth }`
 
         $('#alert-project').hide()
 

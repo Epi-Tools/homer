@@ -75,17 +75,5 @@
     </div>
 </section>
 <div th:replace="fragments/footer :: footer"/>
-<script th:inline="javascript">
-    $(document).ready(() => {
-        /*<![CDATA[*/
-        const dateFollowUp = [[${project.dateFollowUp}]];
-        const dateFollowUp1 = [[${project.dateFollowUp1}]];
-        const dateDelivery = [[${project.dateDelivery}]];
-        /*]]>*/
-        $('#dateDelivery').val(`${dateDelivery.year}-${dateDelivery.monthValue}-${dateDelivery.dayOfMonth}`)
-        $('#dateFollowUp').val(`${dateFollowUp.year}-${dateFollowUp.monthValue}-${dateFollowUp.dayOfMonth}`)
-        $('#dateFollowUp1').val(`${dateFollowUp1.year}-${dateFollowUp1.monthValue}-${dateFollowUp1.dayOfMonth}`)
-    })
-</script>
 </body>
 </html>
