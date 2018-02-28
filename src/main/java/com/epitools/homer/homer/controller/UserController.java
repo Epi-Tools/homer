@@ -35,10 +35,14 @@ public class UserController {
         final User userE = userRepository.findByEmail(user);
         final List<Bet> betLists = betRepository.findByUserId(userE.getId());
         final List<Project> projects = new ArrayList<>();
-        final List<Project> myProjects = projectRepository.findByUserId(userE.getId());
+        final List<Project> myProjects = projectRepository
+                .findByUserIdAndStatusNotOrderByIdDesc(userE.getId(), 7);
+        final List<Project> myFinishProjects = projectRepository
+                .findByUserIdAndStatusOrderByIdDesc(userE.getId(), 7);
         betLists.forEach(e -> projects.add(projectRepository.findOne(e.getProjectId())));
         model.put("projects", projects);
         model.put("myProjects", myProjects);
+        model.put("myFinishProjects", myFinishProjects);
         model.put("bets", betLists);
         model.put("user", userE);
         return "user/user";

@@ -50,11 +50,16 @@ public class ProjectController {
 
     @GetMapping("/project/all")
     public String all(final Map<String, Object> model) {
-        final List<Project> projects = projectRepository.findAllByOrderByIdDesc();
+        final List<Project> projects = projectRepository.findByStatusNotOrderByIdDesc(7);
+        final List<Project> finishProjects = projectRepository.findByStatusOrderByIdDesc(7);
         final List<User> users = new ArrayList<>();
+        final List<User> usersFinish = new ArrayList<>();
         for (Project project : projects) users.add(userRepository.findOne(project.getUserId()));
+        for (Project project : finishProjects) usersFinish.add(userRepository.findOne(project.getUserId()));
         model.put("projects", projects);
         model.put("users", users);
+        model.put("finishProjects", finishProjects);
+        model.put("usersFinish", usersFinish);
         return "project/all";
     }
 
@@ -63,8 +68,12 @@ public class ProjectController {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User maybeUser = userRepository.findByEmail(user);
         if (maybeUser == null) return "redirect:/project/all";
-        final List<Project> projects = projectRepository.findByUserIdOrderByIdDesc(maybeUser.getId());
+        final List<Project> projects = projectRepository
+                .findByUserIdAndStatusNotOrderByIdDesc(maybeUser.getId(), 7);
+        final List<Project> finishProjects = projectRepository
+                .findByUserIdAndStatusOrderByIdDesc(maybeUser.getId(), 7);
         model.put("projects", projects);
+        model.put("finishProjects", finishProjects);
         model.put("username", maybeUser.getEmail());
         return "project/my";
     }

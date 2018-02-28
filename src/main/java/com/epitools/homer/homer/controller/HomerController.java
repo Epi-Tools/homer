@@ -18,7 +18,7 @@ public class HomerController {
     UserRepository userRepository;
 
     private void getProjects(final Map<String, Object> model) {
-        model.put("projects", projectRepository.findAllByOrderByIdDesc());
+        model.put("projects", projectRepository.findByStatusNotOrderByIdDesc(7));
     }
 
     @GetMapping("/")

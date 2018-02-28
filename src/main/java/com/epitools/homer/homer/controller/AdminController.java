@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,8 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String admin(final Map<String, Object> model) {
-        model.put("projects", projectRepository.findAllByOrderByIdDesc());
+        model.put("projects", projectRepository.findByStatusNotOrderByIdDesc(7));
+        model.put("finishProjects", projectRepository.findByStatusOrderByIdDesc(7));
         return "admin/admin";
     }
 
@@ -57,10 +59,19 @@ public class AdminController {
             model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
             model.put("isDone", true);
+            model.put("bets", new ArrayList<BetProvider>());
+            model.put("contributors", new ArrayList<ContributorProvider>());
         }
         else {
+            final List<User> userList = userRepository.findAll();
             model.put("project", project);
             model.put("isDone", project.getStatus().equals(7));
+            model.put("user", userRepository.findOne(project.getUserId()));
+            model.put("bets", Utils.
+                    getProvidedBets(betRepository.findByProjectId(project.getId()), userList));
+            model.put("contributors", Utils.
+                    getProvidedContributors(contributorRepository.findByProjectId(projectId), userList));
+
         }
         return "admin/project";
     }

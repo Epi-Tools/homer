@@ -14,7 +14,7 @@
         <p><strong th:inline="text">[[${#httpServletRequest.remoteUser}]]</strong></p>
         <p >You have <strong th:text="${user.spices}"></strong> spices</p>
         <div class="has-border-top">
-            <h2 class="title is-4 border">Your projects</h2>
+            <h2 class="title is-4 border">Your Current Projects</h2>
             <div class="columns">
                 <div class="column is-3" th:each="task,iter : ${myProjects}">
                     <div class="box">
@@ -35,12 +35,33 @@
                 </div>
             </div>
 
+            <h2 class="title is-4 border">Your Finish Projects</h2>
+            <div class="columns">
+                <div class="column is-3" th:each="task,iter : ${myFinishProjects}">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <a style="margin-right: 10px;" th:href="@{'/project/' + ${myFinishProjects[iter.index].id}}">
+                                    <strong th:text="${myFinishProjects[iter.index].name}"></strong>
+                                </a>
+                            </div>
+
+
+                            <div class="media-right">
+                                <span class="label label-info" th:text="${myFinishProjects[iter.index].spices}"></span>
+
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="title is-4 border">Your bets</h2>
             <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
                 <li>
                     <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
-                    <a style="margin-right: 10px;" th:href="@{'/project/' + ${myProjects[iter.index].id}}">
-                        <strong th:text="${myProjects[iter.index].name}"></strong>
+                    <a style="margin-right: 10px;" th:href="@{'/project/' + ${projects[iter.index].id}}">
+                        <strong th:text="${projects[iter.index].name}"></strong>
                     </a>
                 </li>
             </ul>
