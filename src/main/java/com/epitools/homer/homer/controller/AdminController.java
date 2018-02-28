@@ -101,6 +101,7 @@ public class AdminController {
             betProviders.forEach(e -> userRepository.findOne(e.getUserId())
                     .setSpices(userRepository.findOne(e.getUserId()).getSpices() + e.getSpices() * 2));
             project.setStatus(7);
+            betRepository.removeByProjectId(project.getId());
         }
         return ResponseEntity.ok(projectRepository.save(project));
     }
