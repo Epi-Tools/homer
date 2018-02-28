@@ -53,7 +53,7 @@ public class ProjectRestController {
         if(projects == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(projects);
     }
-    
+
     @RequestMapping(value="/projects/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> updateProject(@PathVariable(value="id") Integer projectId,
                                            @Valid @RequestBody Project projectDetails) {
