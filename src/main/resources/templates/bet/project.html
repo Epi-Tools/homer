@@ -42,19 +42,32 @@
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${project.dateDelivery}"></span></li>
                 <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${user.email}"></span></li>
             </ul>
-            <h2>Bets</h2>
-            <div th:if="${canBet == true}">
+            <div th:if="${canBet == true}" style="margin-top: 25px; margin-bottom: 25px;">
                 <div id="betError" class="alert alert-danger" style="display: none;"></div>
-                <select id="bet" class="form-control" style="margin-bottom: 15px;">
-                    <option th:text="5"></option>
-                    <option th:text="15"></option>
-                </select>
-                <button id="bet-btn" class="btn btn-info">Bet</button>
+                <label for="bet" class="label">You Can Bet</label>
+                <div class="control">
+                    <div class="select" style="margin-bottom: 15px;">
+                        <select id="bet" class="form-control" style="margin-bottom: 15px;">
+                            <option th:text="5"></option>
+                            <option th:text="15"></option>
+                        </select>
+                    </div>
+                    <button id="bet-btn" class="button is-success">Bet</button>
+                </div>
             </div>
+            <h2 class="title is-2">Bets</h2>
+            <div id="betDeletionError" class="has-text-danger" style="display: none;"></div>
             <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
                 <li>
-                    <span class="label label-info" th:text="${bets[iter.index].spices}"></span>
-                    <strong th:text="${bets[iter.index].username}"></strong>
+                    <div class="columns">
+                        <div class="column is-three-quarters">
+                            <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
+                            <strong th:text="${bets[iter.index].username}"></strong>
+                        </div>
+                        <div class="column">
+                            <button class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -90,6 +103,30 @@
                         return;
                     }
                     $('#betError').show().html(`<h5>${responseError}</h5>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
+        $('.delete-btn-bet').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const idDelete = $(this).attr('name').split('-').pop();
+            $.ajax({
+                type: 'delete',
+                url: `/api/bets/${idDelete}`,
+                success: () => {
+                    window.location.href = `/bet/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#contributorError').show().html(`<h5 class="title is-5">Wrong bet format</h5>`)
+                        return;
+                    }
+                    $('#betDeletionError').show().html(`<h5 class="title is-5">${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })

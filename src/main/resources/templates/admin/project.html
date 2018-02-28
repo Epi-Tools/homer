@@ -15,7 +15,6 @@
         <div th:if="${notFound == null}">
             <h3 class="title is-3 border" th:text="'Projet ' + ${project.name}"></h3>
             <h2 class="title is-5" th:text="'Owner: ' + ${user.email}" ></h2>
-            <h2 ></h2>
             <div id="statusError" class="notification is-danger" style="display: none;"></div>
             <div class="field">
                 <label for="" class="label">Status:</label>
@@ -105,10 +104,18 @@
             </form>
         </div>
         <h2 class="title is-2">Bets</h2>
+        <div id="betError" class="has-text-danger" style="display: none;"></div>
         <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
             <li>
-                <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
-                <strong th:text="${bets[iter.index].username}"></strong>
+                <div class="columns">
+                    <div class="column is-three-quarters">
+                        <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
+                        <strong th:text="${bets[iter.index].username}"></strong>
+                    </div>
+                    <div class="column">
+                        <button class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
+                    </div>
+                </div>
             </li>
         </ul>
         <h2 class="title is-2">Contributors</h2>
@@ -233,6 +240,30 @@
                         return acc
                     }, []);
                     $('#alert-project').show().html(`<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
+        $('.delete-btn-bet').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const idDelete = $(this).attr('name').split('-').pop();
+            $.ajax({
+                type: 'delete',
+                url: `/api/bets/${idDelete}`,
+                success: () => {
+                    window.location.href = `/admin/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#contributorError').show().html(`<h5 class="title is-5">Wrong bet format</h5>`)
+                        return;
+                    }
+                    $('#betError').show().html(`<h5 class="title is-5">${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })

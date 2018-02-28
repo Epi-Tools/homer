@@ -88,13 +88,26 @@ public class BetRestController {
         return ResponseEntity.ok(updatedBet);
     }
 
-    // TODO check project status, it should be equal to zero
-    // TODO set to admin
     @RequestMapping(value="/bets/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Bet> deleteBet(@PathVariable(value="id") Integer betId) {
-        Bet bet = betRepository.findOne(betId);
-        if(bet == null) return ResponseEntity.notFound().build();
-        betRepository.delete(bet);
+    public ResponseEntity<Object> deleteBet(@PathVariable(value="id") Integer betId) {
+        final Bet bet = betRepository.findOne(betId);
+        if (bet == null) return ResponseEntity.notFound().build();
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User userE = userRepository.findByEmail(user);
+        final Project project = projectRepository.findOne(bet.getProjectId());
+        if (project == null) return ResponseEntity.notFound().build();
+        if (userE.isAdmin().equals(0) && project.getUserId().equals(userE.getId()))
+            return Utils.jsonError("Can not delete this bet");
+        if (project.getStatus() > 1 && userE.isAdmin().equals(0)) return Utils.jsonError("Can not delete this bet");
+        if (project.getStatus() > 1 && userE.isAdmin().equals(1)) betRepository.delete(bet);
+        else {
+            final User userB = userRepository.findOne(bet.getUserId());
+            userB.setSpices(userB.getSpices() + bet.getSpices());
+            project.setCurrentSpices(project.getCurrentSpices() - bet.getSpices());
+            projectRepository.save(project);
+            userRepository.save(userB);
+            betRepository.delete(bet);
+        }
         return ResponseEntity.ok().build();
     }
 
