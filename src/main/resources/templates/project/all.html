@@ -21,14 +21,15 @@
                                <span th:text="${projects[iter.index].description}"></span>
                            </p>
                             <strong><span th:text="${users[iter.index].email}"></span></strong>
-                                <progress th:if="${projects[iter.index].status == 0}" class="progress is-warning" value="0" max="100">En Création</progress>
-                                <progress th:if="${projects[iter.index].status == 1}" class="progress is-info" value="10" max="100">Lancé</progress>
-                                <progress th:if="${projects[iter.index].status == 2}" class="progress is-link" value="20" max="100">Validé</progress>
-                                <progress th:if="${projects[iter.index].status == 3}" class="progress is-info" value="40" max="100">Follow-Up 1</progress>
-                                <progress th:if="${projects[iter.index].status == 4}" class="progress is-link" value="60" max="100">Follow-Up 2</progress>
-                                <progress th:if="${projects[iter.index].status == 5}" class="progress is-link" value="80" max="100">Delivery</progress>
-                                <progress th:if="${projects[iter.index].status == 6}" class="progress is-success" value="100" max="100">Terminé</progress>
-                                <progress th:if="${projects[iter.index].status == 7}" class="progress is-success" value="100" max="100">Terminé</progress>
+                            <progress th:if="${projects[iter.index].status == 0}" class="progress is-warning" value="0" max="100">En Création</progress>
+                            <progress th:if="${projects[iter.index].status == 1}" class="progress is-info" value="10" max="100">Lancé</progress>
+                            <progress th:if="${projects[iter.index].status == 2}" class="progress is-link" value="20" max="100">Validé</progress>
+                            <progress th:if="${projects[iter.index].status == 3}" class="progress is-info" value="40" max="100">Follow-Up 1</progress>
+                            <progress th:if="${projects[iter.index].status == 4}" class="progress is-link" value="60" max="100">Follow-Up 2</progress>
+                            <progress th:if="${projects[iter.index].status == 5}" class="progress is-link" value="80" max="100">Delivery</progress>
+                            <progress th:if="${projects[iter.index].status == 6}" class="progress is-success" value="100" max="100">Terminé</progress>
+                            <progress th:if="${projects[iter.index].status == 7}" class="progress is-success" value="100" max="100">Terminé</progress>
+                            <a th:if="${projects[iter.index].status == 1}" th:href="@{'/bet/project/' + ${projects[iter.index].id}}" class="button is-primary">BET</a>
                         </div>
                         <div class="media-right">
                             <span th:text="${projects[iter.index].currentSpices}"></span>/<span th:text="${projects[iter.index].spices}"></span>

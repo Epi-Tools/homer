@@ -37,6 +37,7 @@
                                 <a th:if="${projects[iter.index].status == 0}" th:href="@{'/contributor/project/' + ${projects[iter.index].id}}">
                                     <span class="button is-primary" style="margin-right: 10px;">Contributors</span>
                                 </a>
+                                <a th:if="${projects[iter.index].status == 1}" th:href="@{'/bet/project/' + ${projects[iter.index].id}}" class="button is-primary">BET</a>
                             </div>
                         </div>
                         <div class="media-right">
