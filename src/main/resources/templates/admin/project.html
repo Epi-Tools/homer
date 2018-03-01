@@ -127,30 +127,27 @@
                 <button class="button is-link" id="project-btn">Edit</button>
                 <button id="delete-button" class="button is-danger">Delete</button>
             </form>
-
-
-
-
-
-        <h2 class="title is-2">Bets</h2>
-        <div class="content">
-            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
-                <li>
-                    <span th:text="${bets[iter.index].spices}"></span>
-                    <strong th:text="${bets[iter.index].username}"></strong>
-                </li>
-            </ul>
+            <h2 class="title is-2">Bets</h2>
+            <div class="content">
+                <div id="betError" class="has-text-danger" style="display: none;"></div>
+                <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
+                    <li>
+                        <span th:text="${bets[iter.index].spices}"></span>
+                        <strong th:text="${bets[iter.index].username}"></strong>
+                        <button class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
+                    </li>
+                </ul>
+            </div>
+            <h2 class="title is-2">Contributors</h2>
+            <div class="content">
+                <ul  th:each="task,iter : ${contributors}">
+                    <li>
+                        <strong th:text="${contributors[iter.index].username}"></strong>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <h2 class="title is-2">Contributors</h2>
-        <div class="content">
-            <ul  th:each="task,iter : ${contributors}">
-                <li>
-                    <strong th:text="${contributors[iter.index].username}"></strong>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section>
+    </section>
 </div>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
@@ -266,6 +263,30 @@
                         return acc
                     }, []);
                     $('#alert-project').show().html(`<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
+        $('.delete-btn-bet').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const idDelete = $(this).attr('name').split('-').pop();
+            $.ajax({
+                type: 'delete',
+                url: `/api/bets/${idDelete}`,
+                success: () => {
+                    window.location.href = `/admin/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#betError').show().html(`<h5 class="title is-5">Wrong bet format</h5>`)
+                        return;
+                    }
+                    $('#betError').show().html(`<h5 class="title is-5">${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })

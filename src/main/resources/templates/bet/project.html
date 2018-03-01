@@ -87,19 +87,19 @@
                 <button class="button is-link" id="bet-btn">Bet</button>
             </div>
             <div class="content">
-                <ul  th:each="task,iter : ${bets}">
+                <div id="betDeletionError" class="has-text-danger" style="display: none;"></div>
+                <ul th:each="task,iter : ${bets}">
                     <li>
                         <span th:text="${bets[iter.index].spices}"></span> -
                         <strong th:text="${bets[iter.index].username}"></strong>
+                        <button class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </section>
-
-
-
+<!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
     $(document).ready(() => {
@@ -129,6 +129,30 @@
                         return;
                     }
                     $('#betError').show().html(`<h5>${responseError}</h5>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
+        $('.delete-btn-bet').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const idDelete = $(this).attr('name').split('-').pop();
+            $.ajax({
+                type: 'delete',
+                url: `/api/bets/${idDelete}`,
+                success: () => {
+                    window.location.href = `/bet/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#betDeletionError').show().html(`<h5 class="title is-5">Wrong bet format</h5>`)
+                        return;
+                    }
+                    $('#betDeletionError').show().html(`<h5 class="title is-5">${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })

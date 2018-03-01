@@ -54,7 +54,6 @@ public class ProjectRestController {
         return ResponseEntity.ok().body(projects);
     }
 
-    // TODO: when non admin user want to edit or delete a project check it's status, it must be equal to 0
     @RequestMapping(value="/projects/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> updateProject(@PathVariable(value="id") Integer projectId,
                                            @Valid @RequestBody Project projectDetails) {
@@ -62,12 +61,14 @@ public class ProjectRestController {
         if (maybeUser == null) return Utils.jsonError("User not connected");
         final Project project = projectRepository.findOne(projectId);
         if (project == null) return ResponseEntity.notFound().build();
-	if (!project.getStatus().equals(0)) return Utils.jsonError("Can not edit this project");
-        if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId())) return Utils.jsonError("Can not edit this project");
+        if (maybeUser.isAdmin().equals(0) && !project.getStatus().equals(0))
+            return Utils.jsonError("Can not edit this project");
+        if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId()))
+            return Utils.jsonError("Can not edit this project");
         project.setUserId(projectDetails.getUserId() == null ? project.getUserId() : projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
         project.setCurrentSpices(projectDetails.getCurrentSpices() == null ?
-                project.getCurrentSpices() : projectDetails.getCurrentSpices());
+        project.getCurrentSpices() : projectDetails.getCurrentSpices());
         project.setName(projectDetails.getName());
         project.setDescription(projectDetails.getDescription());
         project.setFollowUp(projectDetails.getFollowUp());
