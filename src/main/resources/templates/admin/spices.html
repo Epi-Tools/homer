@@ -8,21 +8,27 @@
 
 <div th:replace="fragments/header :: header"/>
 
-<div class="container">
+<div class="section">
+    <div class="container">
 
-    <div class="starter-template">
-        <h1>Spices List</h1>
+        <h1 class="title is-2 border">Spices List</h1>
+        <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>User email</th>
+                    <th>Spice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="task, iter : ${users}">
+                    <td>
+                        <span th:text="${users[iter.index].email}"></span>
+                    </td>
+                    <td><span  th:text="${users[iter.index].spices}"></span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <h2>Users</h2>
-    <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${users}">
-        <li>
-            <span class="label label-info" style="margin-right: 10px;" th:text="${users[iter.index].spices}"></span>
-            <strong style="margin-right: 10px;" th:text="${users[iter.index].email}"></strong>
-        </li>
-    </ul>
-
-
 </div>
 
 <div th:replace="fragments/footer :: footer"/>

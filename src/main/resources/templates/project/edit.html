@@ -7,83 +7,108 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <section class="section"><div class="container">
-      <div th:if="${notFound != null}">
-          <div class="notification is-danger">
-              <span th:text="${notFound}"></span>
-          </div>
+    <div th:if="${notFound != null}">
+        <div class="notification is-danger">
+            <span th:text="${notFound}"></span>
         </div>
-        <div th:if="${notFound == null}">
+    </div>
+    <div th:if="${notFound == null}">
 
-            <h1 class="title is-2 border">Project <strong th:text="${project.name}"></strong></h1>
-
-            <form>
-                    <fieldset>
-                        <button id="delete-button" class="btn btn-danger">Delete</button>
-                        <div id="alert-project" class="alert alert-danger" style="display: none;">
+        <h1 class="title is-2 border">Project <strong th:text="${project.name}"></strong></h1>
+        <div id="alert-project" class="notification is-danger" style="display: none"></div>
+        <form>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control">
+                            <input class="input" id="name" type="text" autofocus="true" required="true" th:value="${project.name}" />
                         </div>
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control input-lg"
-                                   required="true" th:value="${project.name}" autofocus="true"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="spices">Spices</label>
-                            <input type="number" name="spices" id="spices" class="form-control input-lg"
-                                   required="true" th:value="${project.spices}"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="currentSpices">Current Spices</label>
-                            <input type="number" name="currentSpices" id="currentSpices" class="form-control input-lg"
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Current Spices</label>
+                        <div class="control">
+                            <input type="number" name="currentSpices" id="currentSpices" class="input"
                                    required="true" th:value="${project.currentSpices}"/>
                         </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" rows="5" id="description"
-                                      required="true" th:inline="text">[[${project.description}]]</textarea>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Spices</label>
+                        <div class="control">
+                            <input type="number" name="spices" id="spices" class="input" required="true" th:value="${project.spices}"/>
                         </div>
-                        <div class="form-group">
-                            <label for="dateFollowUp">Date FollowUp</label>
-                            <input type="date" name="dateFollowUp" id="dateFollowUp" class="form-control input-lg"
-                                   required="true"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="followUp">FollowUp</label>
-                            <textarea class="form-control" rows="5" id="followUp"
-                                      required="true" th:inline="text">[[${project.followUp}]]</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="dateFollowUp1">Date FollowUp 1</label>
-                            <input type="date" name="dateFollowUp1" id="dateFollowUp1" class="form-control input-lg"
-                                   required="true"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="followUp1">FollowUp 1</label>
-                            <textarea class="form-control" rows="5" id="followUp1"
-                                      required="true" th:inline="text">[[${project.followUp1}]]</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="dateDelivery">Date Delivery</label>
-                            <input type="date" name="dateDelivery" id="dateDelivery" class="form-control input-lg"
-                                   required="true"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="delivery">Delivery</label>
-                            <textarea class="form-control" rows="5" id="delivery"
-                                      required="true" th:inline="text">[[${project.delivery}]]</textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Edit"
-                                       id="project-btn"/>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label for="description" class="label">Description</label>
+                    <textarea class="textarea" rows="5" id="description"
+                              required="true" th:inline="text">[[${project.description}]]</textarea>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="dateFollowUp">Date FollowUp</label>
+                <div class="control">
+                    <input type="date" name="dateFollowUp" id="dateFollowUp" class="input" required="true"/>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label for="description" class="label">Description</label>
+                    <textarea class="textarea" rows="5" id="followUp" required="true" th:inline="text">[[${project.followUp}]]</textarea>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="dateFollowUp">Date FollowUp 1</label>
+                <div class="control">
+                    <input type="date" name="dateFollowUp1" id="dateFollowUp1" class="input" required="true"/>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label for="description" class="label">Description</label>
+                    <textarea class="textarea" rows="5" id="followUp1" required="true" th:inline="text">[[${project.followUp1}]]</textarea>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="dateFollowUp">Date FollowUp 1</label>
+                <div class="control">
+                    <input type="date" name="dateDelivery" id="dateDelivery" class="input"
+                           required="true"/>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label for="description" class="label">Description</label>
+                    <textarea class="textarea" rows="5" id="delivery" required="true" th:inline="text">[[${project.delivery}]]</textarea>
+                </div>
+            </div>
+            <button class="button is-link" id="project-btn" type="submit">Edit</button>
+            <button id="delete-button" class="button is-danger">Delete</button>
+        </form>
+    </div>
 </div>
 </section>
+<div class="modal" id="deleteModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Suppression du projet</p>
+        </header>
+        <section class="modal-card-body">
+            Êtes-vous sûr de vouloir supprimer le projet <strong th:text="${project.name}"></strong> ?
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-danger" id="deleteProjectButtonModal">Supprimer</button>
+            <button class="button" id="closeDeleteModalButton">Annuler</button>
+        </footer>
+    </div>
+</div>
 <!-- /.container -->
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
@@ -104,15 +129,25 @@
 
         // TODO(carlendev) add modal for deletion
         $('#delete-button').click(function (e) {
+            e.preventDefault();
+            $("#deleteModal").addClass("is-active")
+        })
+
+
+        $("#closeDeleteModalButton").click(function (e) {
+            $("#deleteModal").removeClass("is-active")
+        })
+
+        $("#deleteProjectButtonModal").click(function(e) {
             e.preventDefault()
             $(this).prop('disabled', true)
             $.ajax({
                 type: 'delete',
                 url: `/api/projects/${id}`,
                 success: () => {
-                    window.location.href = `/project/my`
-                    $(this).prop('disabled', false)
-                },
+                window.location.href = `/project/my`
+                $(this).prop('disabled', false)
+            },
                 error: () => {
                     $('#alert-project').show().html(`<ul><li>Cannot delete project</li></ul>`)
                     $(this).prop('disabled', false)

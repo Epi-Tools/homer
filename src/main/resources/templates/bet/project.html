@@ -6,61 +6,100 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<div class="container">
-    <div class="starter-template">
+<section class="section">
+    <div class="container">
         <div th:if="${notFound != null}">
-            <div class="alert alert-danger">
+            <div class="notification is-danger">
                 <span th:text="${notFound}"></span>
             </div>
         </div>
         <div th:if="${notFound == null}">
-            <h1>Project <span th:text="${project.name}"></span></h1>
-            <ul style="padding-left: 0;">
-                <ul style="padding-left: 0;">
-                    <li class="list-group-item">
-                        <strong>
-                            <span class="label label-info" style="margin-right: 10px;">Status</span>
-                        </strong>
-                        <span th:if="${project.status == 0}">En Création</span>
-                        <span th:if="${project.status == 1}">Lancé</span>
-                        <span th:if="${project.status == 2}">Validé</span>
-                        <span th:if="${project.status == 3}">Follow-Up 1</span>
-                        <span th:if="${project.status == 4}">Follow-Up 2</span>
-                        <span th:if="${project.status == 5}">Delivery</span>
-                        <span th:if="${project.status == 6}">Terminé</span>
-                        <span th:if="${project.status == 7}">Terminé</span>
+            <h1 class="title is-2 border">Project <span th:text="${project.name}"></span></h1>
+            <h4 class="title is-4">Developer: <span th:text="${user.email}"></span></h4>
+            <h6 class="title is-6 has-text-centered">
+                <span th:if="${project.status == 0}">En Création</span>
+                <span th:if="${project.status == 1}">Lancé</span>
+                <span th:if="${project.status == 2}">Validé</span>
+                <span th:if="${project.status == 3}">Follow-Up 1</span>
+                <span th:if="${project.status == 4}">Follow-Up 2</span>
+                <span th:if="${project.status == 5}">Delivery</span>
+                <span th:if="${project.status == 6}">Terminé</span>
+                <span th:if="${project.status == 7}">Terminé</span>
+            </h6>
+            <progress th:if="${project.status == 0}" class="progress is-warning" value="0" max="100">En Création</progress>
+            <progress th:if="${project.status == 1}" class="progress is-info" value="10" max="100">Lancé</progress>
+            <progress th:if="${project.status == 2}" class="progress is-link" value="20" max="100">Validé</progress>
+            <progress th:if="${project.status == 3}" class="progress is-info" value="40" max="100">Follow-Up 1</progress>
+            <progress th:if="${project.status == 4}" class="progress is-link" value="60" max="100">Follow-Up 2</progress>
+            <progress th:if="${project.status == 5}" class="progress is-link" value="80" max="100">Delivery</progress>
+            <progress th:if="${project.status == 6}" class="progress is-success" value="100" max="100">Terminé</progress>
+            <progress th:if="${project.status == 7}" class="progress is-success" value="100" max="100">Terminé</progress>
+            <div class="columns">
+                <div class="column">
+                    <strong>Description:</strong>
+                    <p>
+                        <span th:text="${project.description}"></span>
+                    </p>
+                </div>
+                <div class="column">
+                    <strong>Asked spices</strong>
+                    <p>
+                        <span th:text="${project.spices}"></span>
+                    </p>
+                </div>
+                <div class="column">
+                    <strong>Current spices</strong>
+                    <p>
+                        <span th:text="${project.currentSpices}"></span>
+                    </p>
+                </div>
+            </div>
+            <hr/>
+            <div class="columns">
+                <div class="column is-4">
+                    <strong>Follow up <span th:text="${project.DateFollowUp}"></span></strong>
+                    <p>
+                        <span th:text="${project.followUp}"></span>
+                    </p>
+                </div>
+                <div class="column is-4">
+                    <strong>Follow up 1 <span th:text="${project.DateFollowUp1}"></span></strong>
+                    <p>
+                        <span th:text="${project.followUp1}"></span>
+                    </p>
+                </div>
+                <div class="column is-4">
+                    <strong>Delivery <span th:text="${project.DateDelivery}"></span></strong>
+                    <p>
+                        <span th:text="${project.delivery}"></span>
+                    </p>
+                </div>
+            </div>
+            <h2 class="title is-2 border">Bets</h2>
+            <div th:if="${canBet == true}">
+                <div id="betError" class="notification is-danger" style="display: none;"></div>
+                <div class="select">
+                    <select id="bet">
+                        <option th:text="5"></option>
+                        <option th:text="15"></option>
+                    </select>
+                </div>
+                <button class="button is-link" id="bet-btn">Bet</button>
+            </div>
+            <div class="content">
+                <ul  th:each="task,iter : ${bets}">
+                    <li>
+                        <span th:text="${bets[iter.index].spices}"></span> -
+                        <strong th:text="${bets[iter.index].username}"></strong>
                     </li>
                 </ul>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Description</span></strong><span th:text="${project.description}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Asked Spices</span></strong><span th:text="${project.spices}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Current Spices</span></strong><span th:text="${project.currentSpices}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">FollowUp</span></strong><span th:text="${project.followUp}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date FollowUp</span></strong><span th:text="${project.DateFollowUp}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">FollowUp 1</span></strong><span th:text="${project.followUp1}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date FollowUp 1</span></strong><span th:text="${project.DateFollowUp1}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Delivery</span></strong><span th:text="${project.delivery}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Date Delivery</span></strong><span th:text="${project.dateDelivery}"></span></li>
-                <li class="list-group-item"><strong><span class="label label-info" style="margin-right: 10px;">Developer</span></strong><span th:text="${user.email}"></span></li>
-            </ul>
-            <h2>Bets</h2>
-            <div th:if="${canBet == true}">
-                <div id="betError" class="alert alert-danger" style="display: none;"></div>
-                <select id="bet" class="form-control" style="margin-bottom: 15px;">
-                    <option th:text="5"></option>
-                    <option th:text="15"></option>
-                </select>
-                <button id="bet-btn" class="btn btn-info">Bet</button>
             </div>
-            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
-                <li>
-                    <span class="label label-info" th:text="${bets[iter.index].spices}"></span>
-                    <strong th:text="${bets[iter.index].username}"></strong>
-                </li>
-            </ul>
         </div>
     </div>
-</div>
-<!-- /.container -->
+</section>
+
+
+
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
     $(document).ready(() => {

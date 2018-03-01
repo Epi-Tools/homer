@@ -29,11 +29,12 @@
                             <progress th:if="${projects[iter.index].status == 5}" class="progress is-link" value="80" max="100">Delivery</progress>
                             <progress th:if="${projects[iter.index].status == 6}" class="progress is-success" value="100" max="100">Terminé</progress>
                             <progress th:if="${projects[iter.index].status == 7}" class="progress is-success" value="100" max="100">Terminé</progress>
-                            <a th:if="${projects[iter.index].status == 1}" th:href="@{'/bet/project/' + ${projects[iter.index].id}}" class="button is-primary">BET</a>
+                            <strong><a th:if="${projects[iter.index].status == 1}" th:href="@{'/bet/project/' + ${projects[iter.index].id}}" class="button is-warning is-fullwidth">BET</a></strong>
                         </div>
-                        <div class="media-right">
-                            <span th:text="${projects[iter.index].currentSpices}"></span>/<span th:text="${projects[iter.index].spices}"></span>
-                        </div>
+                            <div class="media-right">
+                                <span th:text="${projects[iter.index].currentSpices}"></span>/<span th:text="${projects[iter.index].spices}"></span>
+                            </div>
+
                     </article>
                 </div>
             </div>
