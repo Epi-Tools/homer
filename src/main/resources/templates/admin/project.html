@@ -149,6 +149,21 @@
         </div>
     </section>
 </div>
+<div class="modal" id="deleteModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Suppression du projet</p>
+        </header>
+        <section class="modal-card-body">
+            Êtes-vous sûr de vouloir supprimer le projet <strong th:text="${project.name}"></strong> ?
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-danger" id="confirmDeleteProjectButton">Supprimer</button>
+            <button class="button" id="closeDeleteModalButton">Annuler</button>
+        </footer>
+    </div>
+</div>
 <div th:replace="fragments/footer :: footer"/>
 <script th:inline="javascript">
     $(document).ready(() => {
@@ -169,19 +184,29 @@
         // TODO(carlendev) add modal for deletion
         $('#delete-button').click(function (e) {
             e.preventDefault()
+            $("#deleteModal").addClass("is-active")
+        })
+
+        $("#closeDeleteModalButton").click(function(e) {
+            e.preventDefault()
+            $("#deleteModal").removeClass("is-active")
+        })
+
+        $("#confirmDeleteProjectButton").click(function(e) {
+            e.preventDefault()
             $(this).prop('disabled', true)
             $.ajax({
                 type: 'delete',
                 url: `/api/projects/${id}`,
                 success: () => {
-                    window.location.href = `/admin`
-                    $(this).prop('disabled', false)
-                },
-                error: () => {
-                    $('#alert-project').show().html(`<ul><li>Cannot delete project</li></ul>`)
-                    $(this).prop('disabled', false)
-                }
-            })
+                window.location.href = `/admin`
+            $(this).prop('disabled', false)
+        },
+            error: () => {
+                $('#alert-project').show().html(`<ul><li>Cannot delete project</li></ul>`)
+                $(this).prop('disabled', false)
+            }
+        })
         })
 
         const statusState = [
