@@ -130,11 +130,13 @@
             <h2 class="title is-2">Bets</h2>
             <div class="content">
                 <div id="betError" class="has-text-danger" style="display: none;"></div>
-                <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
+                <ul  th:each="task,iter : ${bets}">
                     <li>
-                        <span th:text="${bets[iter.index].spices}"></span>
-                        <strong th:text="${bets[iter.index].username}"></strong>
-                        <button class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
+                        <div style="flex-direction: row;align-items: center;justify-content: flex-start;display: flex;">
+                            <span style="margin-left: 10px" th:text="${bets[iter.index].spices}"></span>
+                            <strong style="margin-left: 10px" th:text="${bets[iter.index].username}"></strong>
+                            <button style="margin-left: 10px" class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
+                        </div>
                     </li>
                 </ul>
             </div>
