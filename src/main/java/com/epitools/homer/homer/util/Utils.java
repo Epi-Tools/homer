@@ -88,6 +88,8 @@ public class Utils {
                 bet.setProjectId(e.getProjectId());
                 bet.setProjectName(projects.stream()
                         .filter(f -> f.getId().equals(e.getProjectId())).findFirst().get().getName());
+                bet.setProjectStatus(projects.stream()
+                        .filter(f -> f.getId().equals(e.getProjectId())).findFirst().get().getStatus());
                 bet.setUserId(user.getId());
                 bet.setUsername(user.getEmail());
                 bet.setSpices(e.getSpices());
