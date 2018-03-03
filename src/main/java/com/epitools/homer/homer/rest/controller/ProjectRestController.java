@@ -33,7 +33,7 @@ public class ProjectRestController {
     @Autowired
     BetRepository betRepository;
 
-    @RequestMapping(value="/projects", method= RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value="/projects", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
@@ -50,6 +50,15 @@ public class ProjectRestController {
         final User maybeUser = Utils.getMaybeUser(userRepository);
         if (maybeUser == null) return Utils.jsonError("User not connected");
         List<Project> projects = projectRepository.findByUserId(maybeUser.getId());
+        if(projects == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(projects);
+    }
+
+    @RequestMapping(value="/projects/finished/my", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> getMyFinishedProject() {
+        final User maybeUser = Utils.getMaybeUser(userRepository);
+        if (maybeUser == null) return Utils.jsonError("User not connected");
+        List<Project> projects = projectRepository.findByUserIdAndStatusOrderByIdDesc(maybeUser.getId(), 7);
         if(projects == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(projects);
     }
