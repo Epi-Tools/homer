@@ -89,8 +89,11 @@
         <div class="content">
             <ul  th:each="task,iter : ${bets}">
                 <li>
-                    <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
-                    <strong th:text="${bets[iter.index].username}"></strong>
+                   <div style="display: flex; align-items: center; justify-content: flex-start; flex-direction: row">
+                       <span style="margin-left: 10px" th:text="${bets[iter.index].spices}"></span>
+                       <span style="margin-left: 10px"> - </span>
+                       <strong style="margin-left: 10px" th:text="${bets[iter.index].username}"></strong>
+                   </div>
                 </li>
             </ul>
         </div>
