@@ -1,4 +1,5 @@
 package com.epitools.homer.homer.model;
+
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;

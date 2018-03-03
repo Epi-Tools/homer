@@ -49,7 +49,7 @@ public class ProjectRestController {
     public ResponseEntity<Object> getMyProject() {
         final User maybeUser = Utils.getMaybeUser(userRepository);
         if (maybeUser == null) return Utils.jsonError("User not connected");
-        List<Project> projects = projectRepository.findByUserId(maybeUser.getId());
+        List<Project> projects = projectRepository.findByUserIdAndStatusNotOrderByIdDesc(maybeUser.getId(), 7);
         if(projects == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(projects);
     }

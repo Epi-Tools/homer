@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -31,14 +32,15 @@ public class ValidationRestController {
         return ResponseEntity.ok().body(validation);
     }
 
+    @Transactional
     @RequestMapping(value="/validations/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Validation> updateValidation(@PathVariable(value="id") Integer validationId,
                                          @Valid @RequestBody Validation validationDetails) {
         Validation validation = validationRepository.findOne(validationId);
         if(validation == null) return ResponseEntity.notFound().build();
-        validation.setUserId(validationDetails.getUserId());
-        validation.setProjectId(validationDetails.getProjectId());
-        validation.setProjectStatus(validationDetails.getProjectStatus());
+        validation.setUser(validationDetails.getUser());
+        validation.setProject(validationDetails.getProject());
+        validation.setStatus(validationDetails.getStatus());
         Validation updatedValidation = validationRepository.save(validation);
         return ResponseEntity.ok(updatedValidation);
     }
