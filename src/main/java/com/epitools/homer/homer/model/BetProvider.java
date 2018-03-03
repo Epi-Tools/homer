@@ -5,19 +5,19 @@ import javax.validation.constraints.NotNull;
 public class BetProvider {
 
     @NotNull
-    private Integer id;
+    protected Integer id;
 
     @NotNull
-    private Integer userId;
+    protected Integer userId;
 
     @NotNull
-    private Integer projectId;
+    protected Integer projectId;
 
     @NotNull
-    private String username;
+    protected String username;
 
     @NotNull
-    private Integer spices;
+    protected Integer spices;
 
     public Integer getId() {
         return id;

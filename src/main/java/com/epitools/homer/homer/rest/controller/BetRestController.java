@@ -1,9 +1,6 @@
 package com.epitools.homer.homer.rest.controller;
 
-import com.epitools.homer.homer.model.Bet;
-import com.epitools.homer.homer.model.BetProvider;
-import com.epitools.homer.homer.model.Project;
-import com.epitools.homer.homer.model.User;
+import com.epitools.homer.homer.model.*;
 import com.epitools.homer.homer.repository.BetRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
@@ -73,6 +70,19 @@ public class BetRestController {
         List<Bet> bets = betRepository.findByUserId(maybeUser.getId());
         if(bets == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(bets);
+    }
+
+    @RequestMapping(value="/bets/project/my", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> getMyProjectBets() {
+        final User maybeUser = Utils.getMaybeUser(userRepository);
+        if (maybeUser == null) return Utils.jsonError("User not connected");
+        final List<Bet> betList = betRepository.findByUserId(maybeUser.getId());
+        if (betList == null) return ResponseEntity.notFound().build();
+        List<BetProjectProvider> betProjectProviderList = Utils.getProvidedProjectBets(betList,
+                userRepository.findAll(),
+                projectRepository.findByUserId(maybeUser.getId()));
+        if (betProjectProviderList == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(betProjectProviderList);
     }
 
     // TODO check project status, it should be equal to zero

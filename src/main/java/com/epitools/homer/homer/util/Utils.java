@@ -44,7 +44,7 @@ public class Utils {
             .body("{ \"error\" : \"" + msg + "\" }");
     }
 
-    public static List<BetProvider> getProvidedBets(final List<Bet> bets, final List<User> users) {
+    private static List<User> getUserFilteredByBet(final List<Bet> bets, final List<User> users) {
         final List<User> usersFiltered = new ArrayList<>();
         bets.forEach(e -> {
             final Integer userId = e.getUserId();
@@ -52,6 +52,11 @@ public class Utils {
                     filter(f -> f.getId().equals(userId))
                     .collect(Collectors.toList()));
         });
+        return usersFiltered;
+    }
+
+    public static List<BetProvider> getProvidedBets(final List<Bet> bets, final List<User> users) {
+        final List<User> usersFiltered = getUserFilteredByBet(bets, users);
         final List<BetProvider> betProviders = new ArrayList<>();
         bets.forEach(e -> {
             final Integer userId = e.getUserId();
@@ -60,6 +65,29 @@ public class Utils {
                 final BetProvider bet = new BetProvider();
                 bet.setId(e.getId());
                 bet.setProjectId(e.getProjectId());
+                bet.setUserId(user.getId());
+                bet.setUsername(user.getEmail());
+                bet.setSpices(e.getSpices());
+                betProviders.add(bet);
+            }
+        });
+        return betProviders;
+    }
+
+    public static List<BetProjectProvider> getProvidedProjectBets(final List<Bet> bets,
+                                                                  final List<User> users,
+                                                                  final List<Project> projects) {
+        final List<User> usersFiltered = getUserFilteredByBet(bets, users);
+        final List<BetProjectProvider> betProviders = new ArrayList<>();
+        bets.forEach(e -> {
+            final Integer userId = e.getUserId();
+            final User user = usersFiltered.stream().filter(f -> f.getId().equals(userId)).findFirst().get();
+            if (user.getId() != null) {
+                final BetProjectProvider bet = new BetProjectProvider();
+                bet.setId(e.getId());
+                bet.setProjectId(e.getProjectId());
+                bet.setProjectName(projects.stream()
+                        .filter(f -> f.getId().equals(e.getProjectId())).findFirst().get().getName());
                 bet.setUserId(user.getId());
                 bet.setUsername(user.getEmail());
                 bet.setSpices(e.getSpices());
