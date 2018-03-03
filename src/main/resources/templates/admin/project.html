@@ -127,6 +127,14 @@
                 <button class="button is-link" id="project-btn">Edit</button>
                 <button id="delete-button" class="button is-danger">Delete</button>
             </form>
+            <h2 style="margin-top: 15px;" class="title is-2">Contributors</h2>
+            <div class="content">
+                <ul  th:each="task,iter : ${contributors}">
+                    <li>
+                        <strong th:text="${contributors[iter.index].username}"></strong>
+                    </li>
+                </ul>
+            </div>
             <h2 class="title is-2">Bets</h2>
             <div class="content">
                 <div id="betError" class="has-text-danger" style="display: none;"></div>
@@ -140,14 +148,24 @@
                     </li>
                 </ul>
             </div>
-            <h2 class="title is-2">Contributors</h2>
+            <h2 class="title is-2">Validations</h2>
             <div class="content">
-                <ul  th:each="task,iter : ${contributors}">
+                <div id="validationError" class="has-text-danger" style="display: none;"></div>
+                <ul  th:each="task,iter : ${validations}">
                     <li>
-                        <strong th:text="${contributors[iter.index].username}"></strong>
+                        <div style="flex-direction: row;align-items: center;justify-content: flex-start;display: flex;">
+                            <span style="margin-left: 10px" class="has-text-danger" th:if="${!validations[iter.index].valid}">NO</span>
+                            <span style="margin-left: 10px" class="has-text-success" th:if="${validations[iter.index].valid}">YES</span>
+                            <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index].status == 3}">Follow-Up 1</span>
+                            <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index].status == 4}">Follow-Up 2</span>
+                            <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index].status == 5}">Delivery</span>
+                            <strong style="margin-left: 10px" th:text="${validations[iter.index].user.email}"></strong>
+                            <button style="margin-left: 10px" class="button is-danger delete-btn-validation" th:name="@{'delete-' + ${validations[iter.index].id}}">Delete</button>
+                        </div>
                     </li>
                 </ul>
             </div>
+
         </div>
     </section>
 </div>
@@ -314,6 +332,30 @@
                         return;
                     }
                     $('#betError').show().html(`<h5 class="title is-5">${responseError}</h5>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+
+        $('.delete-btn-validation').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            const idDelete = $(this).attr('name').split('-').pop();
+            $.ajax({
+                type: 'delete',
+                url: `/api/validations/${idDelete}`,
+                success: () => {
+                    window.location.href = `/admin/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#validationError').show().html(`<h5 class="title is-5">Wrong validation format</h5>`)
+                        return;
+                    }
+                    $('#validationError').show().html(`<h5 class="title is-5">${responseError}</h5>`)
                     $(this).prop('disabled', false)
                 }
             })

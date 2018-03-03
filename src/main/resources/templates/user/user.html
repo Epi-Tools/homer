@@ -56,15 +56,26 @@
                 </div>
             </div>
 
-            <h2 class="title is-4 border">Your bets</h2>
-            <ul class="list-group-item" style="list-style-type: none;" th:each="task,iter : ${bets}">
-                <li>
-                    <span class="label label-info" style="margin-right: 10px;" th:text="${bets[iter.index].spices}"></span>
-                    <a style="margin-right: 10px;" th:href="@{'/project/' + ${projects[iter.index].id}}">
-                        <strong th:text="${projects[iter.index].name}"></strong>
-                    </a>
-                </li>
-            </ul>
+            <h2 class="title is-4 border">Your Bets</h2>
+            <div class="columns">
+                <div class="column is-3" th:each="task,iter : ${bets}">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <a style="margin-right: 10px;" th:href="@{'/project/' + ${projects[iter.index].id}}">
+                                    <strong th:text="${projects[iter.index].name}"></strong>
+                                </a>
+                            </div>
+
+
+                            <div class="media-right">
+                                <span class="label label-info" th:text="${bets[iter.index].spices}"></span>
+
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

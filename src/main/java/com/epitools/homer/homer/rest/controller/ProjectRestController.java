@@ -5,6 +5,7 @@ import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.repository.BetRepository;
 import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
+import com.epitools.homer.homer.repository.ValidationRepository;
 import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class ProjectRestController {
 
     @Autowired
     BetRepository betRepository;
+
+    @Autowired
+    ValidationRepository validationRepository;
 
     @RequestMapping(value="/projects", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public List<Project> getAllProjects() {
@@ -91,6 +96,7 @@ public class ProjectRestController {
         return ResponseEntity.ok(updatedProject);
     }
 
+    @Transactional
     @RequestMapping(value="/projects/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> deleteProject(@PathVariable(value="id") Integer projectId) {
         final User maybeUser = Utils.getMaybeUser(userRepository);
@@ -102,6 +108,7 @@ public class ProjectRestController {
         if (maybeUser.isAdmin().equals(0) && !project.getStatus().equals(0))
             return Utils.jsonError("Can not delete this project");
         betRepository.removeByProjectId(project.getId());
+        validationRepository.removeByProjectId(project.getId());
         projectRepository.delete(project);
         return ResponseEntity.ok().build();
     }

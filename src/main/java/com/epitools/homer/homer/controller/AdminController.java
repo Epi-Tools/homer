@@ -1,10 +1,7 @@
 package com.epitools.homer.homer.controller;
 
 import com.epitools.homer.homer.model.*;
-import com.epitools.homer.homer.repository.BetRepository;
-import com.epitools.homer.homer.repository.ContributorRepository;
-import com.epitools.homer.homer.repository.ProjectRepository;
-import com.epitools.homer.homer.repository.UserRepository;
+import com.epitools.homer.homer.repository.*;
 import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +15,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Secured("ROLE_ADMIN")
@@ -34,6 +32,9 @@ public class AdminController {
 
     @Autowired
     ContributorRepository contributorRepository;
+
+    @Autowired
+    ValidationRepository validationRepository;
 
     @GetMapping("/admin")
     public String admin(final Map<String, Object> model) {
@@ -61,6 +62,7 @@ public class AdminController {
             model.put("isDone", true);
             model.put("bets", new ArrayList<BetProvider>());
             model.put("contributors", new ArrayList<ContributorProvider>());
+            model.put("validations", new ArrayList<Validation>());
         }
         else {
             final List<User> userList = userRepository.findAll();
@@ -71,7 +73,7 @@ public class AdminController {
                     getProvidedBets(betRepository.findByProjectId(project.getId()), userList));
             model.put("contributors", Utils.
                     getProvidedContributors(contributorRepository.findByProjectId(projectId), userList));
-
+            model.put("validations", validationRepository.findByProjectIdOrderByIdDesc(project.getId()));
         }
         return "admin/project";
     }
@@ -101,7 +103,23 @@ public class AdminController {
             betProviders.forEach(e -> userRepository.findOne(e.getUserId())
                     .setSpices(userRepository.findOne(e.getUserId()).getSpices() + e.getSpices() * 2));
             project.setStatus(7);
+            validationRepository.removeByProjectId(project.getId());
             betRepository.removeByProjectId(project.getId());
+        }
+        else if (project.getStatus() >= 3 && project.getStatus() <= 5) {
+            final Integer status = project.getStatus();
+            final Integer count = validationRepository.countByProjectAndStatus(project, status);
+            if (count.equals(0)) {
+                final List<Bet> betList = betRepository.findByProjectId(project.getId());
+                final List<Validation> validationsList = betList.stream().map(e -> {
+                    final Validation validation = new Validation();
+                    validation.setProject(projectRepository.findOne(e.getProjectId()));
+                    validation.setUser(userRepository.findOne(e.getUserId()));
+                    validation.setStatus(status);
+                    return validation;
+                }).collect(Collectors.toList());
+                validationRepository.save(validationsList);
+            }
         }
         return ResponseEntity.ok(projectRepository.save(project));
     }

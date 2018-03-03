@@ -27,7 +27,7 @@ public class Validation {
 
     @NotNull
     @Column(nullable=false)
-    private Boolean valid;
+    private Boolean valid = false;
 
     public Boolean getValid() {
         return valid;

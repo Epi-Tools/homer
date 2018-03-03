@@ -17,5 +17,4 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     List<Project> findByStatusOrderByIdDesc(Integer status);
 
-    List<Project> findAllByOrderByIdDesc();
 }
