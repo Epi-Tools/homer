@@ -102,8 +102,8 @@ public class ProjectController {
     @RequestMapping(value="/project/edit/{id}", method=RequestMethod.GET, produces={ MediaType.TEXT_HTML_VALUE })
     public String edit(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        final Project project = projectRepository.findOne(projectId);
         final User maybeUser = userRepository.findByEmail(user);
+        final Project project = projectRepository.findOne(projectId);
         if (maybeUser == null) return "redirect:/project/all";
         else if (project == null || !project.getUserId().equals(maybeUser.getId())) {
             model.put("notFound", "Wrong Project Id");

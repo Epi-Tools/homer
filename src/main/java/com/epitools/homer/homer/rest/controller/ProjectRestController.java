@@ -79,6 +79,8 @@ public class ProjectRestController {
             return Utils.jsonError("Can not edit this project");
         if (maybeUser.isAdmin().equals(0) && !project.getUserId().equals(maybeUser.getId()))
             return Utils.jsonError("Can not edit this project");
+        if (projectDetails.getSpices() % 5 != 0 && projectDetails.getSpices() % 15 != 0)
+            return Utils.jsonError("Wrong number of spices");
         project.setUserId(projectDetails.getUserId() == null ? project.getUserId() : projectDetails.getUserId());
         project.setSpices(projectDetails.getSpices());
         project.setCurrentSpices(projectDetails.getCurrentSpices() == null ?
@@ -114,11 +116,13 @@ public class ProjectRestController {
     }
 
     @RequestMapping(value="/projects", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public Project createProject(@Valid @RequestBody Project project) {
+    public Object createProject(@Valid @RequestBody Project project) {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         project.setUserId(userRepository.findByEmail(user).getId());
         project.setCurrentSpices(0);
         project.setStatus(0);
+        if (project.getSpices() % 5 != 0 && project.getSpices() % 15 != 0)
+            return Utils.jsonError("Wrong number of spices");
         return projectRepository.save(project);
     }
 }

@@ -24,17 +24,13 @@
                                     <strong th:text="${myProjects[iter.index].name}"></strong>
                                 </a>
                             </div>
-
-
                             <div class="media-right">
                                 <span class="label label-info" th:text="${myProjects[iter.index].spices}"></span>
-
                             </div>
                         </article>
                     </div>
                 </div>
             </div>
-
             <h2 class="title is-4 border">Your Finish Projects</h2>
             <div class="columns">
                 <div class="column is-3" th:each="task,iter : ${myFinishProjects}">
@@ -45,17 +41,13 @@
                                     <strong th:text="${myFinishProjects[iter.index].name}"></strong>
                                 </a>
                             </div>
-
-
                             <div class="media-right">
                                 <span class="label label-info" th:text="${myFinishProjects[iter.index].spices}"></span>
-
                             </div>
                         </article>
                     </div>
                 </div>
             </div>
-
             <h2 class="title is-4 border">Your Bets</h2>
             <div class="columns">
                 <div class="column is-3" th:each="task,iter : ${bets}">
@@ -66,11 +58,25 @@
                                     <strong th:text="${projects[iter.index].name}"></strong>
                                 </a>
                             </div>
-
-
                             <div class="media-right">
                                 <span class="label label-info" th:text="${bets[iter.index].spices}"></span>
-
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <h2 class="title is-4 border">Your Validations</h2>
+            <div class="columns">
+                <div class="column is-3" th:each="task,iter : ${validations}">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <a style="margin-right: 10px;" th:href="@{'/validation/project/' + ${validations[iter.index].project.id}}">
+                                    <strong th:text="${validations[iter.index].project.name}"></strong>
+                                </a>
+                            </div>
+                            <div class="media-right">
+                                <span class="label label-info">WAITING</span>
                             </div>
                         </article>
                     </div>

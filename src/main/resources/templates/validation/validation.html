@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HOMER | Project | Validations</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<section class="section">
+    <div class="container">
+        <div th:if="${notFound != null}">
+            <div class="notification is-danger">
+                <span th:text="${notFound}"></span>
+            </div>
+        </div>
+        <div th:if="${notFound == null}">
+            <h1 class="title is-2 border">Project <span th:text="${project.name}"></span></h1>
+            <h4 class="title is-4">Developer: <span th:text="${user.email}"></span></h4>
+            <h6 class="title is-6 has-text-centered">
+                <span th:if="${project.status == 0}">En Création</span>
+                <span th:if="${project.status == 1}">Lancé</span>
+                <span th:if="${project.status == 2}">Validé</span>
+                <span th:if="${project.status == 3}">Follow-Up 1</span>
+                <span th:if="${project.status == 4}">Follow-Up 2</span>
+                <span th:if="${project.status == 5}">Delivery</span>
+                <span th:if="${project.status == 6}">Terminé</span>
+                <span th:if="${project.status == 7}">Terminé</span>
+            </h6>
+            <progress th:if="${project.status == 0}" class="progress is-warning" value="0" max="100">En Création</progress>
+            <progress th:if="${project.status == 1}" class="progress is-info" value="10" max="100">Lancé</progress>
+            <progress th:if="${project.status == 2}" class="progress is-link" value="20" max="100">Validé</progress>
+            <progress th:if="${project.status == 3}" class="progress is-info" value="40" max="100">Follow-Up 1</progress>
+            <progress th:if="${project.status == 4}" class="progress is-link" value="60" max="100">Follow-Up 2</progress>
+            <progress th:if="${project.status == 5}" class="progress is-link" value="80" max="100">Delivery</progress>
+            <progress th:if="${project.status == 6}" class="progress is-success" value="100" max="100">Terminé</progress>
+            <progress th:if="${project.status == 7}" class="progress is-success" value="100" max="100">Terminé</progress>
+            <div class="columns">
+                <div class="column">
+                    <strong>Description:</strong>
+                    <p>
+                        <span th:text="${project.description}"></span>
+                    </p>
+                </div>
+                <div class="column">
+                    <strong>Asked spices</strong>
+                    <p>
+                        <span th:text="${project.spices}"></span>
+                    </p>
+                </div>
+                <div class="column">
+                    <strong>Current spices</strong>
+                    <p>
+                        <span th:text="${project.currentSpices}"></span>
+                    </p>
+                </div>
+            </div>
+            <hr/>
+            <div class="columns">
+                <div class="column is-4">
+                    <strong>Follow up <span th:text="${project.DateFollowUp}"></span></strong>
+                    <p>
+                        <span th:text="${project.followUp}"></span>
+                    </p>
+                </div>
+                <div class="column is-4">
+                    <strong>Follow up 1 <span th:text="${project.DateFollowUp1}"></span></strong>
+                    <p>
+                        <span th:text="${project.followUp1}"></span>
+                    </p>
+                </div>
+                <div class="column is-4">
+                    <strong>Delivery <span th:text="${project.DateDelivery}"></span></strong>
+                    <p>
+                        <span th:text="${project.delivery}"></span>
+                    </p>
+                </div>
+            </div>
+            <div th:if="${canValidate == true}">
+                <div id="validationError" class="notification is-danger" style="display: none;"></div>
+                <button id="validate-btn" class="button is-success">Validate</button>
+            </div>
+            <div class="content">
+                <div id="betDeletionError" class="has-text-danger" style="display: none;"></div>
+                <ul th:each="task,iter : ${validations}" style="list-style-type: none;">
+                    <h3 class="title is-3 border" th:if="${iter.index == 0}">Validations Follow-Up 1</h3>
+                    <h3 class="title is-3 border" th:if="${iter.index == 1}">Validations Follow-Up 2</h3>
+                    <h3 class="title is-3 border" th:if="${iter.index == 2}">Validations Delivery</h3>
+                    <li>
+                        <ul th:each="task2,iter2 : ${validations[iter.index]}">
+                            <li>
+                                <div style="display: flex; align-items: center; flex-direction: row; justify-content: flex-start">
+                                    <span style="margin-left: 10px" class="has-text-danger" th:if="${!validations[iter.index][iter2.index].valid}">NO</span>
+                                    <span style="margin-left: 10px" class="has-text-success" th:if="${validations[iter.index][iter2.index].valid}">YES</span>
+                                    <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index][iter2.index].status == 3}">Follow-Up 1</span>
+                                    <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index][iter2.index].status == 4}">Follow-Up 2</span>
+                                    <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index][iter2.index].status == 5}">Delivery</span>
+                                    <strong style="margin-left: 10px" th:text="${validations[iter.index][iter2.index].user.email}"></strong>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
+<script th:inline="javascript">
+    $(document).ready(() => {
+        /*<![CDATA[*/
+        const id = [[${project.id}]]
+        /*]]>*/
+
+        $('#validate-btn').click(function (e) {
+            $(this).prop('disabled', true)
+            e.preventDefault()
+            $.ajax({
+                type: 'put',
+                url: `/api/validations/status/project/${id}`,
+                contentType: 'application/json; charset=utf-8',
+                success: () => {
+                    window.location.href = `/validation/project/${id}`
+                    $(this).prop('disabled', false)
+                },
+                error: error => {
+                    const responseError = error.responseJSON.error
+                    if (responseError === undefined) {
+                        $(this).prop('disabled', false)
+                        $('#validationError').show().html(`<h5>Wrong validation format</h5>`)
+                        return;
+                    }
+                    $('#validationError').show().html(`<h5>${responseError}</h5>`)
+                    $(this).prop('disabled', false)
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>

@@ -38,6 +38,7 @@
                                     <span class="button is-primary" style="margin-right: 10px;">Contributors</span>
                                 </a>
                                 <a th:if="${projects[iter.index].status == 1}" th:href="@{'/bet/project/' + ${projects[iter.index].id}}" class="button is-primary">BET</a>
+                                <a th:if="${projects[iter.index].status &gt; 2 and projects[iter.index].status &lt; 6}" th:href="@{'/validation/project/' + ${projects[iter.index].id}}" class="button is-primary">Validation</a>
                             </div>
                         </div>
                         <div class="media-right">

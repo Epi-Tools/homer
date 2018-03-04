@@ -85,7 +85,8 @@ public class BetRestController {
         return ResponseEntity.ok().body(betProjectProviderList);
     }
 
-    // TODO check project status, it should be equal to zero
+    // TODO(carlendev) don't forget
+    // TODO(carlendev) check project status, it should be equal to zero
     @RequestMapping(value="/bets/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bet> updateBet(@PathVariable(value="id") Integer betId,
                                            @Valid @RequestBody Bet betDetails) {
