@@ -44,15 +44,17 @@ public class ValidationController {
             model.put("user", new User());
             model.put("validations", new ArrayList<ArrayList<Validation>>());
         }
-        model.put("project", project);
-        model.put("user", userRepository.findOne(project.getUserId()));
-        model.put("canValidate", validationRepository.
-                findByUserAndProjectAndStatusAndValidNot(maybeUser, project, project.getStatus(), true) != null);
-        final ArrayList<List<Validation>> validationListList = new ArrayList<>();
-        validationListList.add(validationRepository.findByProjectAndStatus(project, 3));
-        validationListList.add(validationRepository.findByProjectAndStatus(project, 4));
-        validationListList.add(validationRepository.findByProjectAndStatus(project, 5));
-        model.put("validations", validationListList);
+        else {
+            model.put("project", project);
+            model.put("user", userRepository.findOne(project.getUserId()));
+            model.put("canValidate", validationRepository.
+                    findByUserAndProjectAndStatusAndValidNot(maybeUser, project, project.getStatus(), true) != null);
+            final ArrayList<List<Validation>> validationListList = new ArrayList<>();
+            validationListList.add(validationRepository.findByProjectAndStatus(project, 3));
+            validationListList.add(validationRepository.findByProjectAndStatus(project, 4));
+            validationListList.add(validationRepository.findByProjectAndStatus(project, 5));
+            model.put("validations", validationListList);
+        }
         return "validation/validation";
     }
 
