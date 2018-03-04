@@ -73,8 +73,13 @@ public class ValidationRestController {
         final User userE = userRepository.findByEmail(user);
         final Project project = projectRepository.findOne(projectId);
         if (!project.getUserId().equals(userE.getId())) return Utils.jsonError("Can not valid this validation");
-        //check bet existence
-        return null;
+        final Bet bet = betRepository.findByUserIdAndProjectId(userE.getId(), project.getId());
+        if (bet == null) return Utils.jsonError("Can not valid this validation");
+        final Validation validation = validationRepository.
+                findByUserAndProjectAndStatusAndValidNot(userE, project, project.getStatus(), true);
+        if (validation == null) return ResponseEntity.notFound().build();
+        validation.setValid(true);
+        return ResponseEntity.ok(validationRepository.save(validation));
     }
 
     @Transactional

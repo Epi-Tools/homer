@@ -78,7 +78,7 @@ public class AdminController {
         return "admin/project";
     }
 
-    // TODO set by contributor divide spice for project
+    // TODO(carlendev) set by contributor divide spice for project
     @RequestMapping(value="api/admin/projects/status", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> updateStatus(@Valid @RequestBody final Update update) {
         final Project project = projectRepository.findOne(update.getId());

@@ -2,10 +2,7 @@ package com.epitools.homer.homer.rest.controller;
 
 import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.User;
-import com.epitools.homer.homer.repository.BetRepository;
-import com.epitools.homer.homer.repository.ProjectRepository;
-import com.epitools.homer.homer.repository.UserRepository;
-import com.epitools.homer.homer.repository.ValidationRepository;
+import com.epitools.homer.homer.repository.*;
 import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,6 +31,9 @@ public class ProjectRestController {
 
     @Autowired
     BetRepository betRepository;
+
+    @Autowired
+    ContributorRepository contributorRepository;
 
     @Autowired
     ValidationRepository validationRepository;
@@ -111,6 +111,7 @@ public class ProjectRestController {
             return Utils.jsonError("Can not delete this project");
         betRepository.removeByProjectId(project.getId());
         validationRepository.removeByProjectId(project.getId());
+        contributorRepository.removeByProjectId(project.getId());
         projectRepository.delete(project);
         return ResponseEntity.ok().build();
     }
