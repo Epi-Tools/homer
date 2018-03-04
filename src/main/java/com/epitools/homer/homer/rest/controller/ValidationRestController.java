@@ -5,12 +5,14 @@ import com.epitools.homer.homer.model.Project;
 import com.epitools.homer.homer.model.User;
 import com.epitools.homer.homer.model.Validation;
 import com.epitools.homer.homer.repository.BetRepository;
+import com.epitools.homer.homer.repository.ProjectRepository;
 import com.epitools.homer.homer.repository.UserRepository;
 import com.epitools.homer.homer.repository.ValidationRepository;
 import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,9 @@ public class ValidationRestController {
     @Autowired
     BetRepository betRepository;
 
+    @Autowired
+    ProjectRepository projectRepository;
+
     @RequestMapping(value="/validations", method= RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public List<Validation> getAllValidations() {
         return validationRepository.findAll();
@@ -41,22 +46,35 @@ public class ValidationRestController {
     @RequestMapping(value="/validations/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Validation> getValidationById(@PathVariable(value="id") Integer validationId) {
         Validation validation = validationRepository.findOne(validationId);
-        if(validation == null) return ResponseEntity.notFound().build();
+        if (validation == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(validation);
     }
 
     // TODO(carlendev) check project status and bet presence
+    @Secured("ROLE_ADMIN")
     @Transactional
     @RequestMapping(value="/validations/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Validation> updateValidation(@PathVariable(value="id") Integer validationId,
                                          @Valid @RequestBody Validation validationDetails) {
         Validation validation = validationRepository.findOne(validationId);
-        if(validation == null) return ResponseEntity.notFound().build();
+        if (validation == null) return ResponseEntity.notFound().build();
         validation.setUser(validationDetails.getUser());
         validation.setProject(validationDetails.getProject());
         validation.setStatus(validationDetails.getStatus());
         Validation updatedValidation = validationRepository.save(validation);
         return ResponseEntity.ok(updatedValidation);
+    }
+
+    @Transactional
+    @RequestMapping(value="/validations/status/project/{id}", method=RequestMethod.PUT,
+            produces={ MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Object> updateValidationValid(@PathVariable(value="id") Integer projectId) {
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User userE = userRepository.findByEmail(user);
+        final Project project = projectRepository.findOne(projectId);
+        if (!project.getUserId().equals(userE.getId())) return Utils.jsonError("Can not valid this validation");
+        //check bet existence
+        return null;
     }
 
     @Transactional
@@ -76,6 +94,7 @@ public class ValidationRestController {
         return ResponseEntity.ok().build();
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/validations", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public Validation createValidation(@Valid @RequestBody Validation validation) {
         return validationRepository.save(validation);

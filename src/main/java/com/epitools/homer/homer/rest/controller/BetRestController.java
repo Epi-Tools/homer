@@ -107,7 +107,7 @@ public class BetRestController {
         final User userE = userRepository.findByEmail(user);
         final Project project = projectRepository.findOne(bet.getProjectId());
         if (project == null) return ResponseEntity.notFound().build();
-        if (userE.isAdmin().equals(0) && project.getUserId().equals(userE.getId()))
+        if (userE.isAdmin().equals(0) && !project.getUserId().equals(userE.getId()))
             return Utils.jsonError("Can not delete this bet");
         if (project.getStatus() > 1 && userE.isAdmin().equals(0)) return Utils.jsonError("Can not delete this bet");
         if (project.getStatus() > 1 && userE.isAdmin().equals(1)) betRepository.delete(bet);

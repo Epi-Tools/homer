@@ -160,7 +160,7 @@
                             <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index].status == 4}">Follow-Up 2</span>
                             <span style="margin-left: 10px" class="has-text-info" th:if="${validations[iter.index].status == 5}">Delivery</span>
                             <strong style="margin-left: 10px" th:text="${validations[iter.index].user.email}"></strong>
-                            <button style="margin-left: 10px" class="button is-danger delete-btn-validation" th:name="@{'delete-' + ${validations[iter.index].id}}">Delete</button>
+                            <button style="margin-left: 10px" th:if="${!validations[iter.index].valid}" class="button is-danger delete-btn-validation" th:name="@{'delete-' + ${validations[iter.index].id}}">Delete</button>
                         </div>
                     </li>
                 </ul>

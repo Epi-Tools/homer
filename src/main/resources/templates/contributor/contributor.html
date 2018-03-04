@@ -125,7 +125,7 @@
             const contributor = $('#contributor').val()
             $.ajax({
                 type: 'post',
-                url: `/contributor/project/${id}`,
+                url: `/api/contributors/project/${id}`,
                 data: JSON.stringify({ email: contributor, projectId: id }),
                 contentType: 'application/json; charset=utf-8',
                 success: () => {
