@@ -1,29 +1,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-
 <head>
 </head>
-
 <body>
 <footer class="footer" th:fragment="footer">
     <div class="container">
         <div class="content has-text-centered">
             <p>
                 <strong>HOMER</strong>
-
             </p>
             <p>
-                    <span sec:authorize="isAuthenticated()">
-                        Logged user:
-                        <span sec:authentication="name"></span> |
-                        <a th:href="@{/logout}">Sign Out</a>
-                    </span>
+                <span sec:authorize="isAuthenticated()">
+                    Logged user:
+                    <span sec:authentication="name"></span> |
+                    <a th:href="@{/logout}">Sign Out</a>
+                </span>
             </p>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if (location.protocol !== 'https:' && window.location.href.substring(window.location.protocol.length).indexOf('cleverapps') !== -1)
+            location.href = 'https:' + window.location.href.substring(window.location.protocol.length)
         document.addEventListener('DOMContentLoaded', function () {
             const $navbarBurger = $('.navbar-burger')[0];
             const $navbarMenu = $(".navbar-menu")[0];
@@ -34,8 +34,8 @@
                 $navbarMenu.classList.toggle('is-active');
             })
         });
+        /*]]>*/
     </script>
 </footer>
 </body>
-
 </html>

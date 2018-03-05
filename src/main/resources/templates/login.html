@@ -46,6 +46,7 @@
     $(document).ready(() => {
         $('#alert-login').hide()
     $("#login-btn").removeClass("is-loading")
+
     $('#login-btn').click(e => {
         $("#login-btn").addClass("is-loading")
     e.preventDefault();
@@ -56,9 +57,16 @@
             url: '/login',
             data: { username, password },
             success: () => window.location.href = '/',
-        error: () => {
-        $("#login-btn").removeClass("is-loading")
-        $('#alert-login').show()
+        error: e => {
+        $.ajax({
+                type: 'get',
+                url: '/api/projects/my',
+                success: () =>  { console.log('Login'); window.location.href = '/'; },
+            error: e => {
+            $("#login-btn").removeClass("is-loading")
+            $('#alert-login').show()
+        }
+    })
     }
     })
     })
