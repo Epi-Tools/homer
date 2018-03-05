@@ -54,10 +54,10 @@ public class AdminController {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User maybeUser = userRepository.findByEmail(user);
         if (maybeUser == null) return "redirect:/project/all";
-        else model.put("user", maybeUser);
         final Project project = projectRepository.findOne(projectId);
         if (project == null) {
             model.put("notFound", "Wrong Project Id");
+            model.put("user", new User());
             model.put("project", new Project());
             model.put("isDone", true);
             model.put("bets", new ArrayList<BetProvider>());

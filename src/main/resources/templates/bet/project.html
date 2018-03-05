@@ -94,7 +94,7 @@
                             <span style="margin-left: 10px" th:text="${bets[iter.index].spices}"></span>
                             <span style="margin-left: 10px"> - </span>
                             <strong style="margin-left: 10px" th:text="${bets[iter.index].username}"></strong>
-                            <button style="margin-left: 10px" class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
+                            <button style="margin-left: 10px" th:if="${bets[iter.index].userId == userConnected.id}" class="button is-danger delete-btn-bet" th:name="@{'delete-' + ${bets[iter.index].id}}">Delete</button>
                         </div>
                     </li>
                 </ul>

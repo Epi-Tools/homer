@@ -11,6 +11,7 @@ import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,7 @@ public class ContributorRestController {
         return ResponseEntity.ok().body(contributor);
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/contributors/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Contributor> updateContributor(@PathVariable(value="id") Integer contributorId,
                                          @Valid @RequestBody Contributor contributorDetails) {

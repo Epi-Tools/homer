@@ -8,6 +8,7 @@ import com.epitools.homer.homer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -54,11 +55,8 @@ public class BetRestController {
     @RequestMapping(value="/bets/project/provided/{id}", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<BetProvider>> getBetByProjectProvidedId(@PathVariable(value="id") Integer projectId) {
         final List<Bet> bets = betRepository.findByProjectId(projectId);
-        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        final User userE = userRepository.findByEmail(user);
-        final List<Bet> betsUser = betRepository.findByUserId(userE.getId());
         final List <BetProvider> providedBets = new ArrayList<>();
-        if (betsUser.isEmpty()) return ResponseEntity.ok().body(providedBets);
+        if (bets.isEmpty()) return ResponseEntity.ok().body(providedBets);
         providedBets.addAll(Utils.getProvidedBets(bets, userRepository.findAll()));
         return ResponseEntity.ok().body(providedBets);
     }
@@ -78,15 +76,17 @@ public class BetRestController {
         if (maybeUser == null) return Utils.jsonError("User not connected");
         final List<Bet> betList = betRepository.findByUserId(maybeUser.getId());
         if (betList == null) return ResponseEntity.notFound().build();
+        final List<Project> projectList = projectRepository.findByUserId(maybeUser.getId());
+        if (projectList == null) return ResponseEntity.notFound().build();
         List<BetProjectProvider> betProjectProviderList = Utils.getProvidedProjectBets(betList,
-                userRepository.findAll(),
-                projectRepository.findByUserId(maybeUser.getId()));
+                userRepository.findAll(), projectList);
         if (betProjectProviderList == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(betProjectProviderList);
     }
 
     // TODO(carlendev) don't forget
     // TODO(carlendev) check project status, it should be equal to zero
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/bets/{id}", method=RequestMethod.PUT, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bet> updateBet(@PathVariable(value="id") Integer betId,
                                            @Valid @RequestBody Bet betDetails) {

@@ -72,7 +72,6 @@ public class ValidationRestController {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         final User userE = userRepository.findByEmail(user);
         final Project project = projectRepository.findOne(projectId);
-        if (!project.getUserId().equals(userE.getId())) return Utils.jsonError("Can not valid this validation");
         final Bet bet = betRepository.findByUserIdAndProjectId(userE.getId(), project.getId());
         if (bet == null) return Utils.jsonError("Can not valid this validation");
         final Validation validation = validationRepository.

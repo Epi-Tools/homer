@@ -44,7 +44,8 @@ public class BetController {
         } else model.put("project", project);
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         final User userE = userRepository.findByEmail(user);
-        model.put("user", userE);
+        model.put("userConnected", userE);
+        model.put("user", userRepository.findOne(project.getUserId()));
         final List<Bet> bets = betRepository.findByProjectId(projectId);
         final List<Bet> betsUser = betRepository.findByUserId(userE.getId());
         if (betsUser.isEmpty()) model.put("canBet", true);

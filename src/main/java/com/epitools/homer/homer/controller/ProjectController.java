@@ -86,6 +86,7 @@ public class ProjectController {
             model.put("project", new Project());
             model.put("bets", new ArrayList<BetProvider>());
             model.put("contributors", new ArrayList<ContributorProvider>());
+            model.put("user", new User());
         }
         else {
             final List<User> userList = userRepository.findAll();

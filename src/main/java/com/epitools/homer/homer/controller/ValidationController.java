@@ -32,7 +32,7 @@ public class ValidationController {
     @Autowired
     UserRepository userRepository;
 
-    @RequestMapping(value = "/validation/project/{id}", method = RequestMethod.GET, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(value = "/validation/project/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
     public String byId(@PathVariable(value="id") final Integer projectId, final Map<String, Object> model) {
         final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         final User maybeUser = userRepository.findByEmail(user);

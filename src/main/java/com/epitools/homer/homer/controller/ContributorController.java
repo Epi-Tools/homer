@@ -38,18 +38,20 @@ public class ContributorController {
         final Project project = projectRepository.findOne(projectId);
         final User maybeUser = userRepository.findByEmail(user);
         if (maybeUser == null) return "redirect:/project/all";
-        model.put("user", maybeUser);
         if (project == null || !project.getUserId().equals(maybeUser.getId())) {
             model.put("notFound", "Wrong Project Id");
             model.put("project", new Project());
+            model.put("user", new User());
         }
         else if (project.getStatus() != 0) {
             model.put("notFound",
                     "Project status does not allow you to edit the project, only a admin can do it");
             model.put("project", new Project());
+            model.put("user", new User());
         }
         else {
             model.put("project", project);
+            model.put("user", userRepository.findOne(project.getUserId()));
             model.put("contributors",
                     Utils.getProvidedContributors(contributorRepository.findByProjectId(project.getId()),
                             userRepository.findAll()));
