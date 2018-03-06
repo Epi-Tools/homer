@@ -51,20 +51,29 @@ public class ContributorRestController {
     public ResponseEntity<Contributor> updateContributor(@PathVariable(value="id") Integer contributorId,
                                          @Valid @RequestBody Contributor contributorDetails) {
         Contributor contributor = contributorRepository.findOne(contributorId);
-        if(contributor == null) return ResponseEntity.notFound().build();
+        if (contributor == null) return ResponseEntity.notFound().build();
         contributor.setProjectId(contributorDetails.getProjectId());
         Contributor updatedContributor = contributorRepository.save(contributor);
         return ResponseEntity.ok(updatedContributor);
     }
 
     @RequestMapping(value="/contributors/{id}", method=RequestMethod.DELETE, produces={ MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Contributor> deleteContributor(@PathVariable(value="id") Integer contributorId) {
+    public ResponseEntity<Object> deleteContributor(@PathVariable(value="id") Integer contributorId) {
         Contributor contributor = contributorRepository.findOne(contributorId);
-        if(contributor == null) return ResponseEntity.notFound().build();
+        if (contributor == null) return ResponseEntity.notFound().build();
+        final String user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User userE = userRepository.findByEmail(user);
+        final Project project = projectRepository.findOne(contributor.getProjectId());
+        if (project == null) return ResponseEntity.notFound().build();
+        if (!project.getUserId().equals(userE.getId()))
+            return Utils.jsonError("Not your project, you're not allowed to delete contributors on this project");
+        if (!project.getStatus().equals(0))
+            return Utils.jsonError("The project status does not allow you to delete contributors on this project");
         contributorRepository.delete(contributor);
         return ResponseEntity.ok().build();
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/contributors", method=RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public Contributor createContributor(@Valid @RequestBody Contributor contributor) {
         return contributorRepository.save(contributor);

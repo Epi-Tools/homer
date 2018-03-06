@@ -76,7 +76,7 @@ public class BetRestController {
         if (maybeUser == null) return Utils.jsonError("User not connected");
         final List<Bet> betList = betRepository.findByUserId(maybeUser.getId());
         if (betList == null) return ResponseEntity.notFound().build();
-        final List<Project> projectList = projectRepository.findByUserId(maybeUser.getId());
+        final List<Project> projectList = projectRepository.findAll();
         if (projectList == null) return ResponseEntity.notFound().build();
         List<BetProjectProvider> betProjectProviderList = Utils.getProvidedProjectBets(betList,
                 userRepository.findAll(), projectList);

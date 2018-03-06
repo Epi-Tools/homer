@@ -61,8 +61,6 @@ public class BetController {
         return "bet/project";
     }
 
-    // TODO check if user already bet and bet value 5 or 15 AND check project max spices and status
-    // TODO AND user current spices > 0
     @RequestMapping(value="/bet/project/{id}", method= RequestMethod.POST, produces={ MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> betById(@PathVariable(value="id") final Integer projectId,
 					  @Valid @RequestBody final BetValidation bet) {

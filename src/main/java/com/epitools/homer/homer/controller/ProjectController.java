@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// TODO(carlendev) add 404 custom
-// TODO(carlendev) remove devtools
-// TODO(carlendev) check if project is on current user
-// TODO(carlendev) reverse project list
 @Controller
 @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
 public class ProjectController {
