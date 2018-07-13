@@ -1,2 +1,2 @@
-# [homer](https://homer-strasbourg.cleverapps.io)
+# homer
 Web App, REST API for EPITECH HOMER
